@@ -40,13 +40,13 @@ public class User {
     @Column(name = "created_at")
     private Instant createdAt;
 
-//    @OneToMany(mappedBy = "user")
-//    private Set<Address> addresses = new LinkedHashSet<>();
-//
-//    @OneToMany(mappedBy = "user")
-//    private Set<Comment> comments = new LinkedHashSet<>();
-//
-//    @OneToMany(mappedBy = "user")
-//    private Set<Order> orders = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "user")
+    private Set<Address> addresses = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    private Set<Comment> comments = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    private Set<Order> orders = new LinkedHashSet<>();
 
 }
