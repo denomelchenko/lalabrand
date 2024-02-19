@@ -1,8 +1,12 @@
 package com.lalabrand.ecommerce.item;
 
+import com.lalabrand.ecommerce.item.color.Color;
 import com.lalabrand.ecommerce.item.item_comment.ItemComment;
+import com.lalabrand.ecommerce.item.size.Size;
 import com.lalabrand.ecommerce.order.ordered_item.OrderedItem;
 import com.lalabrand.ecommerce.item.category.Category;
+import com.lalabrand.ecommerce.user.cart.Cart;
+import com.lalabrand.ecommerce.user.wishlist.Wishlist;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -66,5 +70,17 @@ public class Item {
 
     @OneToMany(mappedBy = "item")
     private Set<OrderedItem> orderedItems = new LinkedHashSet<>();
+
+    @ManyToMany(mappedBy = "items")
+    private Set<Cart> carts = new LinkedHashSet<>();
+
+    @ManyToMany(mappedBy = "items")
+    private Set<Color> colors = new LinkedHashSet<>();
+
+    @ManyToMany(mappedBy = "items")
+    private Set<Size> sizes = new LinkedHashSet<>();
+
+    @ManyToMany(mappedBy = "items")
+    private Set<Wishlist> wishlists = new LinkedHashSet<>();
 
 }
