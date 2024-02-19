@@ -4,6 +4,7 @@ import com.lalabrand.ecommerce.item.item_comment.ItemComment;
 import com.lalabrand.ecommerce.order.Order;
 import com.lalabrand.ecommerce.user.address.Address;
 import com.lalabrand.ecommerce.user.cart.Cart;
+import com.lalabrand.ecommerce.user.role.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -55,5 +56,8 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private Set<Order> orders = new LinkedHashSet<>();
+
+    @ManyToMany(mappedBy = "users")
+    private Set<Role> roles = new LinkedHashSet<>();
 
 }
