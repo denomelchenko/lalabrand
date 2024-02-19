@@ -4,6 +4,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+### Local configuration file (sdk path, etc) ###
+!/src/main/resources/application.properties
+
 ### STS ###
 .apt_generated
 .classpath
