@@ -1,6 +1,7 @@
 package com.lalabrand.ecommerce.item.size;
 
 import com.lalabrand.ecommerce.item.Item;
+import com.lalabrand.ecommerce.item.enums.SizeType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,7 +25,7 @@ public class Size {
 
     @Lob
     @Column(name = "type", nullable = false)
-    private String type;
+    private SizeType sizeType;
 
     @Column(name = "value", nullable = false, length = 40)
     private String value;
