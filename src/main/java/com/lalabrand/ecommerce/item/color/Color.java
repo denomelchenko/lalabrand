@@ -1,6 +1,7 @@
 package com.lalabrand.ecommerce.item.color;
 
 import com.lalabrand.ecommerce.item.Item;
+import com.lalabrand.ecommerce.item.enums.ColorEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,9 +23,9 @@ public class Color {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Lob
     @Column(name = "color", nullable = false)
-    private String color;
+    @Enumerated(EnumType.STRING)
+    private ColorEnum color;
 
     @ManyToMany
     @JoinTable(name = "items_colors",

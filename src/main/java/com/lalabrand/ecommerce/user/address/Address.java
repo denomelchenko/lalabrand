@@ -1,6 +1,7 @@
 package com.lalabrand.ecommerce.user.address;
 
 import com.lalabrand.ecommerce.user.User;
+import com.lalabrand.ecommerce.user.enums.Country;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,9 +20,9 @@ public class Address {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Lob
     @Column(name = "country", nullable = false)
-    private String country;
+    @Enumerated(EnumType.STRING)
+    private Country country;
 
     @Column(name = "zip", nullable = false, length = 10)
     private String zip;
