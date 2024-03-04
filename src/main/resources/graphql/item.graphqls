@@ -1,0 +1,17 @@
+type Query {
+    getBestSellersItems(size: Int): [Item]
+}
+
+type Item {
+    id: ID!
+    title: String,
+    shortDisc: String,
+    longDisc: String,
+    rating: String,
+    price: Float,
+    currency: String,
+    categoryId: Int,
+    availableCount: Int,
+    image: String,
+    soldCount: Int
+}
