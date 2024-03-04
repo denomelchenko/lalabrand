@@ -1,5 +1,5 @@
 type Query {
-    getBestSellersItems(size: Int): [Item]
+    getBestSellers(size: Int): [Item]
 }
 
 type Item {
