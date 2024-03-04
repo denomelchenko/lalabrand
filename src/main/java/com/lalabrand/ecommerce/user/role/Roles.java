@@ -1,6 +1,7 @@
 package com.lalabrand.ecommerce.user.role;
 
 import com.lalabrand.ecommerce.user.User;
+import com.lalabrand.ecommerce.user.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,4 +29,7 @@ public class Roles {
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> users = new LinkedHashSet<>();
 
+    @Column(name = "role", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Role role;
 }
