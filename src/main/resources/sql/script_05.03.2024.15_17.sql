@@ -5,7 +5,7 @@ create database lalabrand;
 use lalabrand;
 
 CREATE TABLE `user` (
-                        `id` integer PRIMARY KEY auto_increment,
+                        `id` integer PRIMARY KEY AUTO_INCREMENT,
                         `username` varchar(50) NOT NULL,
                         `first_name` varchar(50) NOT NULL,
                         `last_name` varchar(50) NOT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE `user` (
 );
 
 CREATE TABLE `address` (
-                           `id` integer PRIMARY KEY auto_increment,
+                           `id` integer PRIMARY KEY AUTO_INCREMENT,
                            `country` enum("UA","PL","DE","US","UK") NOT NULL,
                            `zip` varchar(10) NOT NULL,
                            `city` varchar(50) NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE `address` (
 );
 
 CREATE TABLE `shipping_info` (
-                                 `id` integer PRIMARY KEY auto_increment,
+                                 `id` integer PRIMARY KEY AUTO_INCREMENT,
                                  `price` decimal NOT NULL,
                                  `name` varchar(50) NOT NULL,
                                  `country` enum("UA","PL","DE","US","UK") NOT NULL,
@@ -37,7 +37,7 @@ CREATE TABLE `shipping_info` (
 );
 
 CREATE TABLE `roles` (
-                         `id` integer PRIMARY KEY auto_increment,
+                         `id` integer PRIMARY KEY AUTO_INCREMENT,
                          `role` enum('admin', 'user')
 );
 
@@ -48,7 +48,7 @@ CREATE TABLE `users_roles` (
 );
 
 CREATE TABLE `wishlist` (
-                            `id` integer PRIMARY KEY auto_increment,
+                            `id` integer PRIMARY KEY AUTO_INCREMENT,
                             `user_id` integer NOT NULL
 );
 
@@ -59,7 +59,7 @@ CREATE TABLE `wishlist_record` (
 );
 
 CREATE TABLE `cart` (
-                        `id` integer PRIMARY KEY auto_increment,
+                        `id` integer PRIMARY KEY AUTO_INCREMENT,
                         `user_id` integer NOT NULL
 );
 
@@ -70,7 +70,7 @@ CREATE TABLE `cart_record` (
 );
 
 CREATE TABLE `ordered_item` (
-                                `id` integer PRIMARY KEY auto_increment,
+                                `id` integer PRIMARY KEY AUTO_INCREMENT,
                                 `item_id` integer NOT NULL,
                                 `order_id` integer NOT NULL,
                                 `title` varchar(255) NOT NULL,
@@ -82,7 +82,7 @@ CREATE TABLE `ordered_item` (
 );
 
 CREATE TABLE `item` (
-                        `id` integer PRIMARY KEY auto_increment,
+                        `id` integer PRIMARY KEY AUTO_INCREMENT,
                         `title` varchar(40) NOT NULL,
                         `short_disc` varchar(128) NOT NULL,
                         `long_disc` varchar(255),
@@ -98,7 +98,7 @@ CREATE TABLE `item` (
 );
 
 CREATE TABLE `size` (
-                        `id` integer PRIMARY KEY auto_increment,
+                        `id` integer PRIMARY KEY AUTO_INCREMENT,
                         `type` enum("shoes","clothes") NOT NULL,
                         `value` varchar(40) NOT NULL
 );
@@ -109,7 +109,7 @@ CREATE TABLE `items_sizes` (
                                PRIMARY KEY (`size_id`, `item_id`)
 );
 CREATE TABLE `color` (
-                         `id` integer PRIMARY KEY auto_increment,
+                         `id` integer PRIMARY KEY AUTO_INCREMENT,
                          `color` enum("White", "Black", "Grey", "Yellow", "Red", "Blue", "Green", "Brown", "Pink", "Orange", "Purple") NOT NULL
 );
 
@@ -120,7 +120,7 @@ CREATE TABLE `items_colors` (
 );
 
 CREATE TABLE `order` (
-                         `id` integer PRIMARY KEY auto_increment,
+                         `id` integer PRIMARY KEY AUTO_INCREMENT,
                          `user_id` integer,
                          `total_price` decimal,
                          `shipping_fee` decimal,
@@ -132,7 +132,7 @@ CREATE TABLE `order` (
 );
 
 CREATE TABLE `item_comment` (
-                                `id` integer PRIMARY KEY auto_increment,
+                                `id` integer PRIMARY KEY AUTO_INCREMENT,
                                 `user_id` integer,
                                 `item_id` integer,
                                 `text` text NOT NULL,
@@ -141,12 +141,12 @@ CREATE TABLE `item_comment` (
 );
 
 CREATE TABLE `category` (
-                            `id` integer PRIMARY KEY auto_increment,
+                            `id` integer PRIMARY KEY AUTO_INCREMENT,
                             `name` varchar(50) UNIQUE
 );
 
 CREATE TABLE `look` (
-                        `id` integer PRIMARY KEY,
+                        `id` integer PRIMARY KEY AUTO_INCREMENT,
                         `gender` enum("man", "woman", "unisex"),
                         `image` varchar(255)
 );
