@@ -21,4 +21,9 @@ public class ItemController {
     public List<ItemDto> findBestSellers(@Argument Optional<Integer> limit) {
         return itemService.findBestSellersItems(limit);
     }
+
+    @QueryMapping(name = "itemsByTitle")
+    public List<ItemDto> findItemsByTitle(@Argument String title) {
+        return itemService.findItemsByTitle(title);
+    }
 }

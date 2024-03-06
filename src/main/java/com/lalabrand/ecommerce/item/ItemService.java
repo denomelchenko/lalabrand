@@ -26,6 +26,10 @@ public class ItemService {
         ));
     }
 
+    public List<ItemDto> findItemsByTitle(String title) {
+        return convertToItemDtoList(itemRepository.findByTitleContainingIgnoreCase(title));
+    }
+    
     private List<ItemDto> convertToItemDtoList(List<Item> items) {
         return items.stream()
                 .map(ItemDto::fromEntity)
