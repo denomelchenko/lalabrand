@@ -5,6 +5,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ItemService {
@@ -14,12 +15,14 @@ public class ItemService {
         this.itemRepository = itemRepository;
     }
 
-    public List<ItemDto> findBestSellersItems(Integer limit) {
-        if (limit == null || limit <= 0) {
+    public List<ItemDto> findBestSellersItems(Optional<Integer> limit) {
+        if (limit.isPresent() && limit.get() <= 0) {
             throw new IllegalArgumentException("Limit must be a positive integer");
+        } else if (limit.isEmpty()) {
+            limit = Optional.of(4);
         }
         return convertToItemDtoList(itemRepository.findItemsByOrderBySoldCountDesc(
-                PageRequest.of(0, limit, Sort.by(Sort.Direction.DESC, "soldCount"))
+                PageRequest.of(0, limit.get(), Sort.by(Sort.Direction.DESC, "soldCount"))
         ));
     }
 

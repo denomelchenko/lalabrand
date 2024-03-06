@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class ItemController {
@@ -17,8 +18,7 @@ public class ItemController {
     }
 
     @QueryMapping(name = "bestSellers")
-    public List<ItemDto> findBestSellers(@Argument Integer limit) {
+    public List<ItemDto> findBestSellers(@Argument Optional<Integer> limit) {
         return itemService.findBestSellersItems(limit);
     }
-
 }
