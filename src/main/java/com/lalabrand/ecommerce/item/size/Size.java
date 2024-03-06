@@ -24,7 +24,7 @@ public class Size {
     private Integer id;
 
     @Lob
-    @Column(name = "type", nullable = false)
+    @Column(name = "graphql/type", nullable = false)
     private SizeType sizeType;
 
     @Column(name = "value", nullable = false, length = 40)
