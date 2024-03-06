@@ -16,8 +16,8 @@ public class ItemController {
         this.itemService = itemService;
     }
 
-    @QueryMapping
+    @QueryMapping(name = "bestSellers")
     public List<ItemDto> getBestSellers(@Argument Integer limit) {
-        return itemService.getBestSellersItems(5);
+        return itemService.getBestSellersItems(limit);
     }
 }

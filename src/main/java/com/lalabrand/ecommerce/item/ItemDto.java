@@ -1,8 +1,6 @@
 package com.lalabrand.ecommerce.item;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.Value;
+import lombok.*;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -11,7 +9,8 @@ import java.math.BigDecimal;
  * DTO for {@link Item}
  */
 @Value
-@Data
+@Getter
+@Setter
 @Builder
 public class ItemDto implements Serializable {
     Integer id;
