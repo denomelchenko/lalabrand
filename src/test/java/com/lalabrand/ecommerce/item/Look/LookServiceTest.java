@@ -49,7 +49,7 @@ public class LookServiceTest {
         look.setItems(items);
         LookDto expectedLookDto = LookDto.fromEntity(look);
 
-        LookDto result = lookService.getLook(Optional.empty());
+        LookDto result = lookService.findLook(Optional.empty());
 
         assertEquals(expectedLookDto.getId(), result.getId());
         assertEquals(expectedLookDto.getImage(), result.getImage());
@@ -66,7 +66,7 @@ public class LookServiceTest {
         when(lookRepository.findById(1)).thenReturn(Optional.empty());
 
         assertThrows(EntityNotFoundException.class, () -> {
-            lookService.getLook(Optional.of(1));
+            lookService.findLook(Optional.of(1));
         });
     }
 

@@ -14,11 +14,13 @@ public class ItemService {
         this.itemRepository = itemRepository;
     }
 
-    public List<ItemDto> getBestSellersItems(Integer limit) {
+    public List<ItemDto> findBestSellersItems(Integer limit) {
         if (limit == null || limit <= 0) {
             throw new IllegalArgumentException("Limit must be a positive integer");
         }
-        return convertToItemDtoList(itemRepository.findItemsByOrderBySoldCountDesc(PageRequest.of(0, limit, Sort.by(Sort.Direction.DESC, "soldCount"))));
+        return convertToItemDtoList(itemRepository.findItemsByOrderBySoldCountDesc(
+                PageRequest.of(0, limit, Sort.by(Sort.Direction.DESC, "soldCount"))
+        ));
     }
 
     private List<ItemDto> convertToItemDtoList(List<Item> items) {
