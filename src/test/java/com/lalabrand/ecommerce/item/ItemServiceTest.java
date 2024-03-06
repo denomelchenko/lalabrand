@@ -5,6 +5,7 @@ import org.springframework.data.domain.PageRequest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -26,7 +27,7 @@ public class ItemServiceTest {
         items.add(new Item());
         when(itemRepository.findItemsByOrderBySoldCountDesc(PageRequest.of(0, 2))).thenReturn(items);
 
-        List<ItemDto> result = itemService.findBestSellersItems(2);
+        List<ItemDto> result = itemService.findBestSellersItems(Optional.of(2));
 
         assertEquals(2, result.size());
     }
@@ -37,7 +38,7 @@ public class ItemServiceTest {
         ItemRepository itemRepository = mock(ItemRepository.class);
         ItemService itemService = new ItemService(itemRepository);
 
-        assertThrows(IllegalArgumentException.class, () -> itemService.findBestSellersItems(-1));
+        assertThrows(IllegalArgumentException.class, () -> itemService.findBestSellersItems(Optional.of(-1)));
     }
 
 }
