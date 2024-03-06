@@ -17,7 +17,8 @@ public class ItemController {
     }
 
     @QueryMapping(name = "bestSellers")
-    public List<ItemDto> getBestSellers(@Argument Integer limit) {
-        return itemService.getBestSellersItems(limit);
+    public List<ItemDto> findBestSellers(@Argument Integer limit) {
+        return itemService.findBestSellersItems(limit);
     }
+
 }

@@ -13,7 +13,7 @@ public class LookService {
         this.lookRepository = lookRepository;
     }
 
-    public LookDto getLook(Optional<Integer> previousLookId) {
+    public LookDto findLook(Optional<Integer> previousLookId) {
         if (previousLookId.isPresent()) {
             Optional<Look> nextLook = lookRepository.findById(previousLookId.get() + 1);
             return nextLook.map(LookDto::fromEntity).orElseThrow(() ->
