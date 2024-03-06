@@ -1,7 +1,3 @@
-type Query {
-    getBestSellers(size: Int): [Item]
-}
-
 type Item {
     id: ID!
     title: String,
@@ -10,7 +6,6 @@ type Item {
     rating: String,
     price: Float,
     currency: String,
-    categoryId: Int,
     availableCount: Int,
     image: String,
     soldCount: Int
