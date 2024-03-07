@@ -27,12 +27,12 @@ public class LookService {
                         new EntityNotFoundException("There is no data in the table looks")));
             }
         } catch (EntityNotFoundException e) {
-            if (!Objects.equals(e.getMessage(), "There is no data in the table looks")) {
-                if (lookRepository.findFirstByOrderByIdAsc().isPresent()) {
-                    return LookDto.fromEntity(lookRepository.findFirstByOrderByIdAsc().get());
-                }
+            if (Objects.equals(e.getMessage(), "Look with ID: " + previousLookId + " is at the end of the table")
+                    && lookRepository.findFirstByOrderByIdAsc().isPresent()
+            ) {
+                return LookDto.fromEntity(lookRepository.findFirstByOrderByIdAsc().get());
             }
-            System.err.println(Arrays.toString(e.getStackTrace()));;
+            System.err.println(Arrays.toString(e.getStackTrace()));
         }
         return null;
     }
