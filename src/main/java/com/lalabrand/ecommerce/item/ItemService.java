@@ -29,7 +29,11 @@ public class ItemService {
     public List<ItemDto> findItemsByTitle(String title) {
         return convertToItemDtoList(itemRepository.findByTitleContainingIgnoreCase(title));
     }
-    
+
+    public List<ItemDto> findItemsByCategoryId(Integer categoryId){
+        return convertToItemDtoList(itemRepository.findAllByCategoryId(categoryId));
+    }
+
     private List<ItemDto> convertToItemDtoList(List<Item> items) {
         return items.stream()
                 .map(ItemDto::fromEntity)
