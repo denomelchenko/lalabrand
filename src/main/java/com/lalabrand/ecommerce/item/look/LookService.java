@@ -35,8 +35,6 @@ public class LookService {
                 Optional<Look> nextLook = lookRepository.findFirstByOrderByIdAsc();
                 if (nextLook.isPresent()) {
                     return LookDto.fromEntity(nextLook.get());
-                } else {
-                    throw new EntityNotFoundException("There is no data in the table looks");
                 }
             }
             System.err.println(Arrays.toString(e.getStackTrace()));
