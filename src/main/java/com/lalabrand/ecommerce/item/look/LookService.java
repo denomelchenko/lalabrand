@@ -3,6 +3,8 @@ package com.lalabrand.ecommerce.item.look;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -14,13 +16,24 @@ public class LookService {
     }
 
     public LookDto findLook(Optional<Integer> previousLookId) {
-        if (previousLookId.isPresent()) {
-            Optional<Look> nextLook = lookRepository.findById(previousLookId.get() + 1);
-            return nextLook.map(LookDto::fromEntity).orElseThrow(() ->
-                    new EntityNotFoundException("Look not found for id: " + (previousLookId.get() + 1)));
-        } else {
-            return LookDto.fromEntity(lookRepository.findById(1).orElseThrow(() ->
-                    new EntityNotFoundException("Look not found for id: 1")));
+        try {
+            if (previousLookId.isPresent()) {
+                return LookDto.fromEntity(lookRepository.findFirstByIdGreaterThan(previousLookId.get())
+                        .orElseThrow(
+                                () -> new EntityNotFoundException("Look with ID: " + previousLookId + " is at the end of the table")
+                        ));
+            } else {
+                return LookDto.fromEntity(lookRepository.findFirstByOrderByIdAsc().orElseThrow(() ->
+                        new EntityNotFoundException("There is no data in the table looks")));
+            }
+        } catch (EntityNotFoundException e) {
+            if (!Objects.equals(e.getMessage(), "There is no data in the table looks")) {
+                if (lookRepository.findFirstByOrderByIdAsc().isPresent()) {
+                    return LookDto.fromEntity(lookRepository.findFirstByOrderByIdAsc().get());
+                }
+            }
+            System.err.println(Arrays.toString(e.getStackTrace()));;
         }
+        return null;
     }
 }
