@@ -1,7 +1,7 @@
 package com.lalabrand.ecommerce.order;
 
 import com.lalabrand.ecommerce.item.enums.Currency;
-import com.lalabrand.ecommerce.order.shippinh_info.ShippingInfo;
+import com.lalabrand.ecommerce.order.shipping_info.ShippingInfo;
 import com.lalabrand.ecommerce.user.User;
 import com.lalabrand.ecommerce.order.ordered_item.OrderedItem;
 import jakarta.persistence.*;
@@ -20,7 +20,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table(name = "`order`")
+@Table(name = "order")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
