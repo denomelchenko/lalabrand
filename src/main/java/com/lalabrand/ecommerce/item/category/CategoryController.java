@@ -9,7 +9,7 @@ public class CategoryController {
     public CategoryController(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
-    @QueryMapping
+    @QueryMapping(name = "allCategories")
     public List<Category> allCategories(){
         return categoryRepository.findAll();
     }
