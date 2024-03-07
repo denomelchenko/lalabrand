@@ -18,19 +18,26 @@ public class LookService {
     public LookDto findLook(Optional<Integer> previousLookId) {
         try {
             if (previousLookId.isPresent()) {
-                return LookDto.fromEntity(lookRepository.findFirstByIdGreaterThan(previousLookId.get())
-                        .orElseThrow(
-                                () -> new EntityNotFoundException("Look with ID: " + previousLookId + " is at the end of the table")
-                        ));
+                Optional<Look> nextLook = lookRepository.findFirstByIdGreaterThan(previousLookId.get());
+                if (nextLook.isPresent()) {
+                    return LookDto.fromEntity(nextLook.get());
+                }
+                throw new EntityNotFoundException("Look with ID: " + previousLookId + " is at the end of the table");
             } else {
-                return LookDto.fromEntity(lookRepository.findFirstByOrderByIdAsc().orElseThrow(() ->
-                        new EntityNotFoundException("There is no data in the table looks")));
+                Optional<Look> firstLook = lookRepository.findFirstByOrderByIdAsc();
+                if (firstLook.isPresent()) {
+                    return LookDto.fromEntity(firstLook.get());
+                }
+                throw new EntityNotFoundException("There is no data in the table looks");
             }
         } catch (EntityNotFoundException e) {
-            if (Objects.equals(e.getMessage(), "Look with ID: " + previousLookId + " is at the end of the table")
-                    && lookRepository.findFirstByOrderByIdAsc().isPresent()
-            ) {
-                return LookDto.fromEntity(lookRepository.findFirstByOrderByIdAsc().get());
+            if (Objects.equals(e.getMessage(), "Look with ID: " + previousLookId + " is at the end of the table")) {
+                Optional<Look> nextLook = lookRepository.findFirstByOrderByIdAsc();
+                if (nextLook.isPresent()) {
+                    return LookDto.fromEntity(nextLook.get());
+                } else {
+                    throw new EntityNotFoundException("There is no data in the table looks");
+                }
             }
             System.err.println(Arrays.toString(e.getStackTrace()));
         }
