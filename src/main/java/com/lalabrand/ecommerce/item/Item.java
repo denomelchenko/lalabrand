@@ -39,8 +39,8 @@ public class Item {
     @Column(name = "long_disc")
     private String longDisc;
 
-    @Column(name = "raiting", precision = 10)
-    private BigDecimal raiting;
+    @Column(name = "rating", precision = 10)
+    private BigDecimal rating;
 
     @Column(name = "price", nullable = false, precision = 10)
     private BigDecimal price;
@@ -49,7 +49,7 @@ public class Item {
     @Column(name = "currency", nullable = false)
     private String currency;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
@@ -61,6 +61,9 @@ public class Item {
 
     @Column(name = "image", nullable = false)
     private String image;
+
+    @Column(name = "sold_count", nullable = false)
+    private Integer soldCount;
 
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
@@ -82,5 +85,4 @@ public class Item {
 
     @ManyToMany(mappedBy = "items")
     private Set<Wishlist> wishlists = new LinkedHashSet<>();
-
 }
