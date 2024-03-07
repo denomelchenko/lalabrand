@@ -1,0 +1,12 @@
+type Item {
+    id: ID!
+    title: String,
+    shortDisc: String,
+    longDisc: String,
+    rating: String,
+    price: Float,
+    currency: String,
+    availableCount: Int,
+    image: String,
+    soldCount: Int
+}
