@@ -1,0 +1,4 @@
+type Query {
+    bestSellers(limit: Int): [Item],
+    itemsByTitle(title: String): [Item]
+}
