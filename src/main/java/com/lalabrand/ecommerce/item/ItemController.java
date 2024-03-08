@@ -17,7 +17,7 @@ public class ItemController {
     }
 
     @QueryMapping(name = "itemsByCategoryId")
-    public List<ItemDto> getItemsByCategoryId(@Argument Integer categoryId) {
+    public List<ItemDto> findItemsByCategoryId(@Argument Integer categoryId) {
         return itemService.findItemsByCategoryId(categoryId);
     }
 
