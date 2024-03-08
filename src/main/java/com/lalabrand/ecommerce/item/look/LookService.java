@@ -3,6 +3,8 @@ package com.lalabrand.ecommerce.item.look;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -14,13 +16,29 @@ public class LookService {
     }
 
     public LookDto findLook(Optional<Integer> previousLookId) {
-        if (previousLookId.isPresent()) {
-            Optional<Look> nextLook = lookRepository.findById(previousLookId.get() + 1);
-            return nextLook.map(LookDto::fromEntity).orElseThrow(() ->
-                    new EntityNotFoundException("Look not found for id: " + (previousLookId.get() + 1)));
-        } else {
-            return LookDto.fromEntity(lookRepository.findById(1).orElseThrow(() ->
-                    new EntityNotFoundException("Look not found for id: 1")));
+        try {
+            if (previousLookId.isPresent()) {
+                Optional<Look> nextLook = lookRepository.findFirstByIdGreaterThan(previousLookId.get());
+                if (nextLook.isPresent()) {
+                    return LookDto.fromEntity(nextLook.get());
+                }
+                throw new EntityNotFoundException("Look with ID: " + previousLookId + " is at the end of the table");
+            } else {
+                Optional<Look> firstLook = lookRepository.findFirstByOrderByIdAsc();
+                if (firstLook.isPresent()) {
+                    return LookDto.fromEntity(firstLook.get());
+                }
+                throw new EntityNotFoundException("There is no data in the table looks");
+            }
+        } catch (EntityNotFoundException e) {
+            if (Objects.equals(e.getMessage(), "Look with ID: " + previousLookId + " is at the end of the table")) {
+                Optional<Look> nextLook = lookRepository.findFirstByOrderByIdAsc();
+                if (nextLook.isPresent()) {
+                    return LookDto.fromEntity(nextLook.get());
+                }
+            }
+            System.err.println(Arrays.toString(e.getStackTrace()));
         }
+        return null;
     }
 }

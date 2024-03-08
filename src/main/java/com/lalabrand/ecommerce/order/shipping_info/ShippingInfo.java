@@ -1,11 +1,14 @@
-package com.lalabrand.ecommerce.order.shippinh_info;
+package com.lalabrand.ecommerce.order.shipping_info;
 
+import com.lalabrand.ecommerce.order.Order;
 import com.lalabrand.ecommerce.user.enums.Country;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -40,5 +43,8 @@ public class ShippingInfo {
 
     @Column(name = "user_id", nullable = false)
     private Integer userId;
+
+    @OneToMany(mappedBy = "shipping")
+    private Set<Order> orders = new LinkedHashSet<>();
 
 }

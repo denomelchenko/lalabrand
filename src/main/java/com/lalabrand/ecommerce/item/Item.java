@@ -2,6 +2,7 @@ package com.lalabrand.ecommerce.item;
 
 import com.lalabrand.ecommerce.item.color.Color;
 import com.lalabrand.ecommerce.item.item_comment.ItemComment;
+import com.lalabrand.ecommerce.item.look.Look;
 import com.lalabrand.ecommerce.item.size.Size;
 import com.lalabrand.ecommerce.order.ordered_item.OrderedItem;
 import com.lalabrand.ecommerce.item.category.Category;
@@ -49,7 +50,7 @@ public class Item {
     @Column(name = "currency", nullable = false)
     private String currency;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
@@ -85,4 +86,8 @@ public class Item {
 
     @ManyToMany(mappedBy = "items")
     private Set<Wishlist> wishlists = new LinkedHashSet<>();
+
+    @ManyToMany(mappedBy = "items")
+    private Set<Look> looks = new LinkedHashSet<>();
+
 }
