@@ -1,24 +1,18 @@
 package com.lalabrand.ecommerce.item;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.springframework.data.domain.PageRequest;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-
 public class ItemServiceTest {
-
-
-    // Should return a list of ItemDto objects when getBestSellersItems is called with a valid limit parameter
+    // should return a list of ItemDto when findBestSellersItems is called with a valid limit
     @Test
-    public void test_getBestSellersItems_validLimit() {
+    public void test_findBestSellersItems_validLimit() {
         // Arrange
         ItemRepository itemRepository = mock(ItemRepository.class);
         ItemService itemService = new ItemService(itemRepository);
@@ -27,18 +21,150 @@ public class ItemServiceTest {
         items.add(new Item());
         when(itemRepository.findItemsByOrderBySoldCountDesc(PageRequest.of(0, 2))).thenReturn(items);
 
+        // Act
         List<ItemDto> result = itemService.findBestSellersItems(Optional.of(2));
 
+        // Assert
         assertEquals(2, result.size());
     }
 
-    // Should throw an IllegalArgumentException when getBestSellersItems is called with a negative limit parameter
+    // should return an empty list when findItemsByTitle is called with a null or empty title
     @Test
-    public void test_getBestSellersItems_negativeLimit() {
+    public void test_findItemsByTitle_nullOrEmptyTitle() {
+        // Arrange
         ItemRepository itemRepository = mock(ItemRepository.class);
         ItemService itemService = new ItemService(itemRepository);
 
-        assertThrows(IllegalArgumentException.class, () -> itemService.findBestSellersItems(Optional.of(-1)));
+        // Act
+        List<ItemDto> result = itemService.findItemsByTitle(null);
+
+        // Assert
+        assertEquals(Collections.emptyList(), result);
+
+        // Act
+        result = itemService.findItemsByTitle("");
+
+        // Assert
+        assertEquals(Collections.emptyList(), result);
+    }
+
+    // should return a list of ItemDto when findItemsByTitle is called with a valid title
+    @Test
+    public void test_findItemsByTitle_validTitle() {
+        // Arrange
+        ItemRepository itemRepository = mock(ItemRepository.class);
+        ItemService itemService = new ItemService(itemRepository);
+        List<Item> items = new ArrayList<>();
+        items.add(new Item());
+        items.add(new Item());
+        when(itemRepository.findByTitleContainingIgnoreCase("title")).thenReturn(items);
+
+        // Act
+        List<ItemDto> result = itemService.findItemsByTitle("title");
+
+        // Assert
+        assertEquals(2, result.size());
+    }
+
+    // should return a list of ItemDto with size 4 when findBestSellersItems is called with an empty limit
+    @Test
+    public void test_findBestSellersItems_emptyLimit() {
+        // Arrange
+        ItemRepository itemRepository = mock(ItemRepository.class);
+        ItemService itemService = new ItemService(itemRepository);
+        List<Item> items = new ArrayList<>();
+        items.add(new Item());
+        items.add(new Item());
+        items.add(new Item());
+        items.add(new Item());
+        when(itemRepository.findItemsByOrderBySoldCountDesc(PageRequest.of(0, 4))).thenReturn(items);
+
+        // Act
+        List<ItemDto> result = itemService.findBestSellersItems(Optional.empty());
+
+        // Assert
+        assertEquals(4, result.size());
+    }
+
+    // should return items when findBestSellersItems is called with a negative limit
+    @Test
+    public void test_findBestSellersItems_negativeLimit() {
+        // Arrange
+        ItemRepository itemRepository = mock(ItemRepository.class);
+        ItemService itemService = new ItemService(itemRepository);
+
+        when(itemRepository.findItemsByOrderBySoldCountDesc(PageRequest.of(0, 5))).thenReturn(new ArrayList<>(4));
+        // Act and Assert
+        assertEquals(new ArrayList<>(), itemService.findBestSellersItems(Optional.of(-1)));
+    }
+
+    // should return an empty list when findItemsByTitle is called with a title that does not exist
+    @Test
+    public void test_findItemsByTitle_nonExistingTitle() {
+        // Arrange
+        ItemRepository itemRepository = mock(ItemRepository.class);
+        ItemService itemService = new ItemService(itemRepository);
+        when(itemRepository.findByTitleContainingIgnoreCase("non-existing")).thenReturn(Collections.emptyList());
+
+        // Act
+        List<ItemDto> result = itemService.findItemsByTitle("non-existing");
+
+        // Assert
+        assertEquals(Collections.emptyList(), result);
+    }
+
+    // should return a list of ItemDto with size equal to the limit when findBestSellersItems is called with a valid limit
+    @Test
+    public void test_findBestSellersItems_validLimitWithLimit() {
+        // Arrange
+        ItemRepository itemRepository = mock(ItemRepository.class);
+        ItemService itemService = new ItemService(itemRepository);
+        List<Item> items = new ArrayList<>();
+        items.add(new Item());
+        items.add(new Item());
+        when(itemRepository.findItemsByOrderBySoldCountDesc(PageRequest.of(0, 2))).thenReturn(items);
+
+        // Act
+        List<ItemDto> result = itemService.findBestSellersItems(Optional.of(2));
+
+        // Assert
+        assertEquals(2, result.size());
+    }
+
+    // should return a list of ItemDto with size equal to the number of items found when findItemsByTitle is called with a valid title
+    @Test
+    public void test_findItemsByTitle_validTitleWithItems() {
+        // Arrange
+        ItemRepository itemRepository = mock(ItemRepository.class);
+        ItemService itemService = new ItemService(itemRepository);
+        List<Item> items = new ArrayList<>();
+        items.add(new Item());
+        items.add(new Item());
+        when(itemRepository.findByTitleContainingIgnoreCase("title")).thenReturn(items);
+
+        // Act
+        List<ItemDto> result = itemService.findItemsByTitle("title");
+
+        // Assert
+        assertEquals(2, result.size());
+    }
+
+    // should return a list of ItemDto with all items sorted by sold count when findBestSellersItems is called with a limit greater than the number of items
+    @Test
+    public void test_findBestSellersItems_limitGreaterThanItems() {
+        // Arrange
+        ItemRepository itemRepository = mock(ItemRepository.class);
+        ItemService itemService = new ItemService(itemRepository);
+        List<Item> items = new ArrayList<>();
+        items.add(new Item());
+        items.add(new Item());
+        when(itemRepository.findItemsByOrderBySoldCountDesc(PageRequest.of(0, 3))).thenReturn(items);
+
+        // Act
+        List<ItemDto> result = itemService.findBestSellersItems(Optional.of(3));
+
+        // Assert
+        assertEquals(2, result.size());
     }
 
 }
