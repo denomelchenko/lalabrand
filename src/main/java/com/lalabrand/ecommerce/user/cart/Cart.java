@@ -28,7 +28,7 @@ public class Cart {
     private User user;
 
     @ManyToMany
-    @JoinTable(name = "cart_record",
+    @JoinTable(name = "cart_item",
             joinColumns = @JoinColumn(name = "cart_id"),
             inverseJoinColumns = @JoinColumn(name = "item_id"))
     private Set<Item> items = new LinkedHashSet<>();
