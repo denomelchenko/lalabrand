@@ -28,7 +28,7 @@ public class Wishlist {
     private User user;
 
     @ManyToMany
-    @JoinTable(name = "wishlist_record",
+    @JoinTable(name = "wishlist_item",
             joinColumns = @JoinColumn(name = "wishlist_id"),
             inverseJoinColumns = @JoinColumn(name = "item_id"))
     private Set<Item> items = new LinkedHashSet<>();

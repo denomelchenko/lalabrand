@@ -5,6 +5,7 @@ import com.lalabrand.ecommerce.order.Order;
 import com.lalabrand.ecommerce.user.address.Address;
 import com.lalabrand.ecommerce.user.cart.Cart;
 import com.lalabrand.ecommerce.user.role.Roles;
+import com.lalabrand.ecommerce.user.wishlist.Wishlist;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -59,5 +60,8 @@ public class User {
 
     @ManyToMany(mappedBy = "users")
     private Set<Roles> roles = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    private Set<Wishlist> wishlists = new LinkedHashSet<>();
 
 }
