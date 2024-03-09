@@ -1,6 +1,9 @@
 package com.lalabrand.ecommerce.item;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.*;
@@ -10,12 +13,23 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class ItemServiceTest {
+
+    @Mock
+    private ItemRepository itemRepository;
+
+    @InjectMocks
+    private ItemService itemService;
+
+    @Before()
+    public void before() {
+        itemRepository = mock(ItemRepository.class);
+        itemService = new ItemService(itemRepository);
+    }
+
     // should return a list of ItemDto when findBestSellersItems is called with a valid limit
     @Test
     public void test_findBestSellersItems_validLimit() {
         // Arrange
-        ItemRepository itemRepository = mock(ItemRepository.class);
-        ItemService itemService = new ItemService(itemRepository);
         List<Item> items = new ArrayList<>();
         items.add(new Item());
         items.add(new Item());
@@ -32,8 +46,6 @@ public class ItemServiceTest {
     @Test
     public void test_findItemsByTitle_nullOrEmptyTitle() {
         // Arrange
-        ItemRepository itemRepository = mock(ItemRepository.class);
-        ItemService itemService = new ItemService(itemRepository);
 
         // Act
         List<ItemDto> result = itemService.findItemsByTitle(null);
@@ -52,8 +64,6 @@ public class ItemServiceTest {
     @Test
     public void test_findItemsByTitle_validTitle() {
         // Arrange
-        ItemRepository itemRepository = mock(ItemRepository.class);
-        ItemService itemService = new ItemService(itemRepository);
         List<Item> items = new ArrayList<>();
         items.add(new Item());
         items.add(new Item());
@@ -70,8 +80,6 @@ public class ItemServiceTest {
     @Test
     public void test_findBestSellersItems_emptyLimit() {
         // Arrange
-        ItemRepository itemRepository = mock(ItemRepository.class);
-        ItemService itemService = new ItemService(itemRepository);
         List<Item> items = new ArrayList<>();
         items.add(new Item());
         items.add(new Item());
@@ -89,10 +97,6 @@ public class ItemServiceTest {
     // should return items when findBestSellersItems is called with a negative limit
     @Test
     public void test_findBestSellersItems_negativeLimit() {
-        // Arrange
-        ItemRepository itemRepository = mock(ItemRepository.class);
-        ItemService itemService = new ItemService(itemRepository);
-
         when(itemRepository.findItemsByOrderBySoldCountDesc(PageRequest.of(0, 5))).thenReturn(new ArrayList<>(4));
         // Act and Assert
         assertEquals(new ArrayList<>(), itemService.findBestSellersItems(Optional.of(-1)));
@@ -102,8 +106,6 @@ public class ItemServiceTest {
     @Test
     public void test_findItemsByTitle_nonExistingTitle() {
         // Arrange
-        ItemRepository itemRepository = mock(ItemRepository.class);
-        ItemService itemService = new ItemService(itemRepository);
         when(itemRepository.findByTitleContainingIgnoreCase("non-existing")).thenReturn(Collections.emptyList());
 
         // Act
@@ -117,8 +119,6 @@ public class ItemServiceTest {
     @Test
     public void test_findBestSellersItems_validLimitWithLimit() {
         // Arrange
-        ItemRepository itemRepository = mock(ItemRepository.class);
-        ItemService itemService = new ItemService(itemRepository);
         List<Item> items = new ArrayList<>();
         items.add(new Item());
         items.add(new Item());
@@ -135,8 +135,6 @@ public class ItemServiceTest {
     @Test
     public void test_findItemsByTitle_validTitleWithItems() {
         // Arrange
-        ItemRepository itemRepository = mock(ItemRepository.class);
-        ItemService itemService = new ItemService(itemRepository);
         List<Item> items = new ArrayList<>();
         items.add(new Item());
         items.add(new Item());
@@ -153,8 +151,6 @@ public class ItemServiceTest {
     @Test
     public void test_findBestSellersItems_limitGreaterThanItems() {
         // Arrange
-        ItemRepository itemRepository = mock(ItemRepository.class);
-        ItemService itemService = new ItemService(itemRepository);
         List<Item> items = new ArrayList<>();
         items.add(new Item());
         items.add(new Item());
