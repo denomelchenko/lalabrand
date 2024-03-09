@@ -1,13 +1,14 @@
 package com.lalabrand.ecommerce.item.category;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.lalabrand.ecommerce.item.Item;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,5 +23,8 @@ public class Category {
 
     @Column(name = "name", length = 50)
     private String name;
+
+    @OneToMany(mappedBy = "category")
+    private Set<Item> items = new LinkedHashSet<>();
 
 }

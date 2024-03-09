@@ -35,8 +35,8 @@ public class ItemComment {
     @Column(name = "text", nullable = false)
     private String text;
 
-    @Column(name = "raiting", nullable = false, precision = 10)
-    private BigDecimal raiting;
+    @Column(name = "rating", nullable = false, precision = 10)
+    private BigDecimal rating;
 
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
