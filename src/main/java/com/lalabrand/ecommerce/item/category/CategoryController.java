@@ -10,7 +10,7 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
     @QueryMapping(name = "allCategories")
-    public List<Category> allCategories(){
+    public List<CategoryDTO> allCategories(){
         return categoryService.findAllCategory();
     }
 }

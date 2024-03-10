@@ -8,7 +8,10 @@ public class CategoryService {
     public CategoryService(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
-    public List<Category> findAllCategory(){
-        return categoryRepository.findAll();
+    public List<CategoryDTO> findAllCategory(){
+        return categoryRepository.findAll()
+                .stream()
+                .map(category -> new CategoryDTO(category.getId(),category.getName()))
+                .toList();
     }
 }
