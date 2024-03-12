@@ -85,7 +85,7 @@ CREATE TABLE `ordered_item` (
 );
 
 CREATE TABLE `item_info` (
-                             `color` enum("White", "Black", "Grey", "Yellow", "Red", "Blue", "Green", "Brown", "Pink", "Orange", "Purple") NOT NULL,
+                             `color` enum('WHITE', 'BLACK', 'GREY', 'YELLOW', 'RED', 'BLUE', 'GREEN', 'BROWN', 'PINK', 'ORANGE', 'PURPLE') NOT NULL,
                              `image` varchar(255),
                              `item_id` integer PRIMARY KEY
 );
@@ -108,7 +108,7 @@ CREATE TABLE `item` (
 
 CREATE TABLE `size` (
                         `id` integer PRIMARY KEY auto_increment,
-                        `type` enum('Shoes','Clothes') NOT NULL,
+                        `type` enum('SHOES','CLOTHES') NOT NULL,
                         `value` varchar(40) NOT NULL
 );
 
