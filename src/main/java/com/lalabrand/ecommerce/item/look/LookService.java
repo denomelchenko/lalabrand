@@ -37,8 +37,7 @@ public class LookService {
                     return LookDto.fromEntity(nextLook.get());
                 }
             }
-            System.err.println(Arrays.toString(e.getStackTrace()));
+            throw new EntityNotFoundException();
         }
-        return null;
     }
 }
