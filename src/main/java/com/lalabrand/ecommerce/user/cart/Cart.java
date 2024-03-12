@@ -2,12 +2,14 @@ package com.lalabrand.ecommerce.user.cart;
 
 import com.lalabrand.ecommerce.item.Item;
 import com.lalabrand.ecommerce.user.User;
+import com.lalabrand.ecommerce.user.cart.cart_item.CartItem;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -31,6 +33,5 @@ public class Cart {
     @JoinTable(name = "cart_item",
             joinColumns = @JoinColumn(name = "cart_id"),
             inverseJoinColumns = @JoinColumn(name = "item_id"))
-    private Set<Item> items = new LinkedHashSet<>();
-
+    private Set<Item> items;
 }
