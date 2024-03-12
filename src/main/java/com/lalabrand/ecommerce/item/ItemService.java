@@ -1,5 +1,7 @@
 package com.lalabrand.ecommerce.item;
 
+import com.lalabrand.ecommerce.user.cart.CartRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -8,9 +10,12 @@ import java.util.*;
 @Service
 public class ItemService {
     private final ItemRepository itemRepository;
+    private final CartRepository cartRepository;
 
-    public ItemService(ItemRepository itemRepository) {
+    @Autowired
+    public ItemService(ItemRepository itemRepository, CartRepository cartRepository) {
         this.itemRepository = itemRepository;
+        this.cartRepository = cartRepository;
     }
 
     public List<ItemDto> findBestSellersItems(Optional<Integer> limit) {
@@ -18,6 +23,10 @@ public class ItemService {
         return convertToItemDtoList(itemRepository.findItemsByOrderBySoldCountDesc(
                 PageRequest.of(0, limit.get()))
         );
+    }
+
+    public Set<ItemDto> findCartItemsByUserId(Integer userId) {
+        return convertToItemDtoSet(cartRepository.findCartByUserId(userId).getItems());
     }
 
     public List<ItemDto> findItemsByTitle(String title) {
@@ -33,5 +42,13 @@ public class ItemService {
             itemDtoList.add(ItemDto.fromEntity(item));
         }
         return itemDtoList;
+    }
+
+    private Set<ItemDto> convertToItemDtoSet(Set<Item> items) {
+        Set<ItemDto> itemDtoSet = new LinkedHashSet<>();
+        for (Item item : items) {
+            itemDtoSet.add(ItemDto.fromEntity(item));
+        }
+        return itemDtoSet;
     }
 }
