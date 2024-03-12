@@ -15,4 +15,8 @@ public class CartService {
     public CartService(CartRepository cartRepository) {
         this.cartRepository = cartRepository;
     }
+
+    public CartDto findCartItemsByUserId(Integer userId) {
+        return CartDto.fromEntity(cartRepository.findCartByUserId(userId));
+    }
 }
