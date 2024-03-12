@@ -2,6 +2,7 @@ package com.lalabrand.ecommerce.item.item_info;
 
 import com.lalabrand.ecommerce.item.ItemDto;
 import com.lalabrand.ecommerce.item.enums.ColorEnum;
+import com.lalabrand.ecommerce.user.cart.cart_item.CartItem;
 import lombok.Builder;
 import lombok.Value;
 
