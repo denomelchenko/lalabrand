@@ -1,6 +1,5 @@
 package com.lalabrand.ecommerce.user.cart;
 
-import com.lalabrand.ecommerce.item.Item;
 import com.lalabrand.ecommerce.user.User;
 import com.lalabrand.ecommerce.user.cart.cart_item.CartItem;
 import jakarta.persistence.*;
@@ -9,8 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 @AllArgsConstructor

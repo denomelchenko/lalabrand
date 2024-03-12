@@ -6,6 +6,9 @@ import com.lalabrand.ecommerce.item.size.SizeDto;
 import lombok.Builder;
 import lombok.Value;
 
+/**
+ * DTO for {@link CartItem}
+ */
 @Value
 @Builder
 public class CartItemDto {

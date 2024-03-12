@@ -4,6 +4,9 @@ import com.lalabrand.ecommerce.item.enums.SizeType;
 import lombok.Builder;
 import lombok.Value;
 
+/**
+ * DTO for {@link Size}
+ */
 @Value
 @Builder
 public class SizeDto {
