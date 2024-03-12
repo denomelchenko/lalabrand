@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Controller
 public class ItemController {
@@ -23,5 +24,11 @@ public class ItemController {
     @QueryMapping(name = "itemsByTitle")
     public List<ItemDto> findItemsByTitle(@Argument String title) {
         return itemService.findItemsByTitle(title);
+    }
+
+    @QueryMapping(name = "wishlistItemsByUserId")
+    public Set<ItemDto> findWishlistItemsByUserId(@Argument Integer userId) {
+        return itemService.findCartItemsByUserId(userId);
+        //TODO: Add security here
     }
 }
