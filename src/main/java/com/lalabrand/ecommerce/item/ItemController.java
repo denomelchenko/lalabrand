@@ -25,10 +25,4 @@ public class ItemController {
     public List<ItemDto> findItemsByTitle(@Argument String title) {
         return itemService.findItemsByTitle(title);
     }
-
-    @QueryMapping(name = "cartItemsByUserId")
-    public Set<ItemDto> findCartItemsByUserId(@Argument Integer userId) {
-        return itemService.findCartItemsByUserId(userId);
-        //TODO: Add security here
-    }
 }
