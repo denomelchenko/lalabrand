@@ -29,12 +29,6 @@ public class Cart {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToMany
-    @JoinTable(name = "cart_item",
-            joinColumns = @JoinColumn(name = "cart_id"),
-            inverseJoinColumns = @JoinColumn(name = "item_id"))
-    private Set<Item> items;
-
     @OneToMany(mappedBy = "cart")
     private Set<CartItem> cartItems;
 
