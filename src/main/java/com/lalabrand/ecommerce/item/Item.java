@@ -76,9 +76,6 @@ public class Item {
     private Set<OrderedItem> orderedItems = new LinkedHashSet<>();
 
     @ManyToMany(mappedBy = "items")
-    private Set<Cart> carts = new LinkedHashSet<>();
-
-    @ManyToMany(mappedBy = "items")
     private Set<Color> colors = new LinkedHashSet<>();
 
     @ManyToMany(mappedBy = "items")
