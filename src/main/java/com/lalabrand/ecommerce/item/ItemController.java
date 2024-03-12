@@ -26,8 +26,8 @@ public class ItemController {
         return itemService.findItemsByTitle(title);
     }
 
-    @QueryMapping(name = "wishlistItemsByUserId")
-    public Set<ItemDto> findWishlistItemsByUserId(@Argument Integer userId) {
+    @QueryMapping(name = "cartItemsByUserId")
+    public Set<ItemDto> findCartItemsByUserId(@Argument Integer userId) {
         return itemService.findCartItemsByUserId(userId);
         //TODO: Add security here
     }
