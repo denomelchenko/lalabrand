@@ -23,7 +23,7 @@ public class Size {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Lob
+    @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
     private SizeType sizeType;
 
@@ -34,6 +34,6 @@ public class Size {
     @JoinTable(name = "items_sizes",
             joinColumns = @JoinColumn(name = "size_id"),
             inverseJoinColumns = @JoinColumn(name = "item_id"))
-    private Set<Item> items = new LinkedHashSet<>();
+    private Set<Item> items;
 
 }
