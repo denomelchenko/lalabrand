@@ -1,6 +1,7 @@
 package com.lalabrand.ecommerce.order.ordered_item;
 
 import com.lalabrand.ecommerce.item.Item;
+import com.lalabrand.ecommerce.item.enums.SizeType;
 import com.lalabrand.ecommerce.order.Order;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -34,7 +35,7 @@ public class OrderedItem {
     private String title;
 
     @Column(name = "size", nullable = false)
-    private String size;
+    private SizeType size;
 
     @Column(name = "color", nullable = false)
     private String color;
