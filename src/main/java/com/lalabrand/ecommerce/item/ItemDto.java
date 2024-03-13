@@ -21,7 +21,7 @@ public class ItemDto implements Serializable {
     BigDecimal price;
     String currency;
     Integer availableCount;
-    Integer salePrice;
+    BigDecimal salePrice;
     String image;
     Integer soldCount;
 

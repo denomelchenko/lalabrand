@@ -1,14 +1,14 @@
 package com.lalabrand.ecommerce.item;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.*;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -19,7 +19,7 @@ public class ItemServiceTest {
     @InjectMocks
     private ItemService itemService;
 
-    @Before()
+    @BeforeEach()
     public void before() {
         itemRepository = mock(ItemRepository.class);
         itemService = new ItemService(itemRepository);
