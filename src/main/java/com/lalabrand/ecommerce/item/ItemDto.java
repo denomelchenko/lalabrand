@@ -19,7 +19,6 @@ public class ItemDto implements Serializable {
     String longDisc;
     BigDecimal rating;
     BigDecimal price;
-    String currency;
     Integer availableCount;
     BigDecimal salePrice;
     String image;
@@ -33,7 +32,6 @@ public class ItemDto implements Serializable {
                 .longDisc(item.getLongDisc())
                 .rating(item.getRating())
                 .price(item.getPrice())
-                .currency(item.getCurrency())
                 .availableCount(item.getAvailableCount())
                 .salePrice(item.getSalePrice())
                 .image(item.getImage())
