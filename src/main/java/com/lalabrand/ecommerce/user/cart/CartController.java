@@ -17,8 +17,8 @@ public class CartController {
     }
 
     @QueryMapping(name = "cartByUserId")
-    public CartDto findCartByUserId(@Argument Integer userId) {
-        return cartService.findCartItemsByUserId(userId);
+    public Optional<CartDto> findCartByUserId(@Argument Integer userId) {
+        return cartService.findCartByUserId(userId);
         //TODO: Add security here
     }
 }
