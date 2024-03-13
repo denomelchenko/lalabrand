@@ -1,0 +1,3 @@
+extend type Query {
+    wishlistByUserId(userId: ID): Wishlist
+}
