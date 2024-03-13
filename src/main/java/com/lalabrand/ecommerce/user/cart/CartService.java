@@ -15,14 +15,14 @@ public class CartService {
         this.cartRepository = cartRepository;
     }
 
-    public CartDto findCartItemsByUserId(final Integer userId) {
+    public Optional<CartDto> findCartByUserId(final Integer userId) {
         if (userId == null) {
-            throw new IllegalArgumentException("userId cannot be null");
+            throw new IllegalArgumentException("UserId cannot be null");
         }
         Optional<Cart> cart = cartRepository.findCartByUserId(userId);
-        if (cart.isEmpty()) {
-            throw new EntityNotFoundException("Cart for this user is`t exist");
+        if (cart.isEmpty() || cart.get().getCartItems().isEmpty()) {
+            return Optional.empty();
         }
-        return CartDto.fromEntity(cart.get());
+        return Optional.of(CartDto.fromEntity(cart.get()));
     }
 }
