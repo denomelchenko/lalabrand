@@ -1,12 +1,13 @@
 type Item {
     id: ID!
-    title: String,
-    shortDisc: String,
-    longDisc: String,
+    title: String!,
+    shortDisc: String!,
+    longDisc: String!,
     rating: String,
-    price: Float,
+    price: Float!,
     currency: String,
-    availableCount: Int,
+    availableCount: Int!,
+    salePrice: Float,
     image: String,
-    soldCount: Int
+    soldCount: Int!
 }

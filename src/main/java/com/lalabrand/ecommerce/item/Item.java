@@ -6,7 +6,6 @@ import com.lalabrand.ecommerce.item.look.Look;
 import com.lalabrand.ecommerce.item.size.Size;
 import com.lalabrand.ecommerce.order.ordered_item.OrderedItem;
 import com.lalabrand.ecommerce.item.category.Category;
-import com.lalabrand.ecommerce.user.cart.Cart;
 import com.lalabrand.ecommerce.user.wishlist.Wishlist;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -16,7 +15,6 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -58,7 +56,7 @@ public class Item {
     private Integer availableCount;
 
     @Column(name = "sale_price", nullable = false)
-    private Integer salePrice;
+    private BigDecimal salePrice;
 
     @Column(name = "image", nullable = false)
     private String image;
@@ -70,24 +68,21 @@ public class Item {
     private Instant createdAt;
 
     @OneToMany(mappedBy = "item")
-    private Set<ItemComment> itemComments = new LinkedHashSet<>();
+    private Set<ItemComment> itemComments;
 
     @OneToMany(mappedBy = "item")
-    private Set<OrderedItem> orderedItems = new LinkedHashSet<>();
+    private Set<OrderedItem> orderedItems;
 
     @ManyToMany(mappedBy = "items")
-    private Set<Cart> carts = new LinkedHashSet<>();
+    private Set<Color> colors;
 
     @ManyToMany(mappedBy = "items")
-    private Set<Color> colors = new LinkedHashSet<>();
+    private Set<Size> sizes;
 
     @ManyToMany(mappedBy = "items")
-    private Set<Size> sizes = new LinkedHashSet<>();
+    private Set<Wishlist> wishlists;
 
     @ManyToMany(mappedBy = "items")
-    private Set<Wishlist> wishlists = new LinkedHashSet<>();
-
-    @ManyToMany(mappedBy = "items")
-    private Set<Look> looks = new LinkedHashSet<>();
+    private Set<Look> looks;
 
 }

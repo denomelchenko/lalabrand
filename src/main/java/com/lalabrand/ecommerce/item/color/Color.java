@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -31,6 +30,6 @@ public class Color {
     @JoinTable(name = "items_colors",
             joinColumns = @JoinColumn(name = "color_id"),
             inverseJoinColumns = @JoinColumn(name = "item_id"))
-    private Set<Item> items = new LinkedHashSet<>();
+    private Set<Item> items;
 
 }

@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -25,6 +24,6 @@ public class Category {
     private String name;
 
     @OneToMany(mappedBy = "category")
-    private Set<Item> items = new LinkedHashSet<>();
+    private Set<Item> items;
 
 }

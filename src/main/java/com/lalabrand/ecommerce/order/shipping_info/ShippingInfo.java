@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Getter
@@ -45,6 +44,6 @@ public class ShippingInfo {
     private Integer userId;
 
     @OneToMany(mappedBy = "shipping")
-    private Set<Order> orders = new LinkedHashSet<>();
+    private Set<Order> orders;
 
 }

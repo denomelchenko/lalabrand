@@ -12,7 +12,6 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -35,7 +34,7 @@ public class Order {
     private Instant createdAt;
 
     @OneToMany(mappedBy = "order")
-    private Set<OrderedItem> orderedItems = new LinkedHashSet<>();
+    private Set<OrderedItem> orderedItems;
 
     @Column(name = "total_price", precision = 10)
     private BigDecimal totalPrice;

@@ -1,5 +1,8 @@
 package com.lalabrand.ecommerce.item;
 
+import com.lalabrand.ecommerce.user.User;
+import com.lalabrand.ecommerce.user.cart.CartService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +12,7 @@ import java.util.*;
 public class ItemService {
     private final ItemRepository itemRepository;
 
+    @Autowired
     public ItemService(ItemRepository itemRepository) {
         this.itemRepository = itemRepository;
     }
