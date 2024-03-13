@@ -21,10 +21,10 @@ public class WishlistService {
         try {
             Optional<Wishlist> wishlist = wishlistRepository.findWishlistByUserId(userId);
             if (wishlist.isPresent()) {
-                logger.debug("Wishlist found for user with ID: {}", userId);
+                logger.info("Wishlist found for user with ID: {}", userId);
                 return wishlist.map(WishlistDto::fromEntity);
             } else {
-                logger.debug("No wishlist found for user with ID: {}", userId);
+                logger.info("No wishlist found for user with ID: {}", userId);
                 return Optional.empty();
             }
         } catch (Exception e) {
