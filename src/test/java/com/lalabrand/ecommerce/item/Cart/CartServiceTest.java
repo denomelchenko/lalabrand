@@ -1,7 +1,6 @@
 package com.lalabrand.ecommerce.item.Cart;
 
 import com.lalabrand.ecommerce.item.Item;
-import com.lalabrand.ecommerce.item.ItemDto;
 import com.lalabrand.ecommerce.item.enums.ColorEnum;
 import com.lalabrand.ecommerce.item.enums.SizeType;
 import com.lalabrand.ecommerce.item.item_info.ItemInfo;
@@ -12,7 +11,6 @@ import com.lalabrand.ecommerce.user.cart.CartRepository;
 import com.lalabrand.ecommerce.user.cart.CartService;
 
 import com.lalabrand.ecommerce.user.cart.cart_item.CartItem;
-import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
