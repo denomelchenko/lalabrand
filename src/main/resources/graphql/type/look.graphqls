@@ -1,5 +1,5 @@
 type Look {
-    id: ID,
-    image: String,
-    items: [Item]
+    id: ID!,
+    image: String!,
+    items: [Item!]
 }
