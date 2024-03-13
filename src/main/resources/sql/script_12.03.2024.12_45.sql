@@ -101,7 +101,7 @@ CREATE TABLE `item` (
                         `category_id` integer NOT NULL,
                         `sold_count` integer NOT NULL,
                         `available_count` integer NOT NULL,
-                        `sale_price` integer NOT NULL,
+                        `sale_price` decimal NOT NULL,
                         `image` varchar(255) NOT NULL,
                         `created_at` timestamp NOT NULL
 );
