@@ -1,5 +1,5 @@
 type Size {
-    id: ID
-    sizeType: SizeType
-    value: String
+    id: ID!
+    sizeType: SizeType!
+    value: String!
 }

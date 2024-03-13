@@ -1,6 +1,6 @@
 type ItemInfo {
-    id: ID
-    item: Item
-    color: Color
+    id: ID!
+    item: Item!
+    color: Color!
     image: String
 }

@@ -1,4 +1,4 @@
 type Cart {
-    id: ID,
+    id: ID!,
     cartItems: [CartItem]
 }
