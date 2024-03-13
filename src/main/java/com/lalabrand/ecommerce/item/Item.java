@@ -56,7 +56,7 @@ public class Item {
     private Integer availableCount;
 
     @Column(name = "sale_price", nullable = false)
-    private Integer salePrice;
+    private BigDecimal salePrice;
 
     @Column(name = "image", nullable = false)
     private String image;
