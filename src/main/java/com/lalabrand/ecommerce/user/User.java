@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Instant;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -47,21 +46,21 @@ public class User {
     private Instant createdAt;
 
     @OneToMany(mappedBy = "user")
-    private Set<Address> addresses = new LinkedHashSet<>();
+    private Set<Address> addresses;
 
     @OneToMany(mappedBy = "user")
-    private Set<Cart> carts = new LinkedHashSet<>();
+    private Set<Cart> carts;
 
     @OneToMany(mappedBy = "user")
-    private Set<ItemComment> itemComments = new LinkedHashSet<>();
+    private Set<ItemComment> itemComments;
 
     @OneToMany(mappedBy = "user")
-    private Set<Order> orders = new LinkedHashSet<>();
+    private Set<Order> orders;
 
     @ManyToMany(mappedBy = "users")
-    private Set<Roles> roles = new LinkedHashSet<>();
+    private Set<Roles> roles;
 
     @OneToMany(mappedBy = "user")
-    private Set<Wishlist> wishlists = new LinkedHashSet<>();
+    private Set<Wishlist> wishlists;
 
 }
