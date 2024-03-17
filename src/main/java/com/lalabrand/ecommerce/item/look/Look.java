@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Instant;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -33,5 +34,8 @@ public class Look {
             joinColumns = @JoinColumn(name = "look_id"),
             inverseJoinColumns = @JoinColumn(name = "item_id"))
     private Set<Item> items;
+
+    @Column(name = "created_at", nullable = false)
+    private Instant createdAt;
 
 }

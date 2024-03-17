@@ -1,10 +1,13 @@
-package com.lalabrand.ecommerce.order.shipping_info;
+package com.lalabrand.ecommerce.order.shipping;
 
+import com.lalabrand.ecommerce.order.shipping.shipping_option.ShippingOption;
 import com.lalabrand.ecommerce.order.Order;
 import com.lalabrand.ecommerce.user.enums.Country;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
 import java.util.Set;
@@ -17,9 +20,6 @@ public class ShippingInfo {
     @Id
     @Column(name = "id", nullable = false)
     private Integer id;
-
-    @Column(name = "price", nullable = false, precision = 10)
-    private BigDecimal price;
 
     @Column(name = "name", nullable = false, length = 50)
     private String name;
@@ -45,5 +45,13 @@ public class ShippingInfo {
 
     @OneToMany(mappedBy = "shipping")
     private Set<Order> orders;
+
+    @Column(name = "phone")
+    private String phone;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
+    @JoinColumn(name = "shipping_option_id")
+    private ShippingOption shippingOption;
 
 }

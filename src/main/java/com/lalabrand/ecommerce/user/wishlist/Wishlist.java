@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Set;
 
@@ -30,6 +32,7 @@ public class Wishlist {
     @JoinTable(name = "wishlist_item",
             joinColumns = @JoinColumn(name = "wishlist_id"),
             inverseJoinColumns = @JoinColumn(name = "item_id"))
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Item> items;
 
 }
