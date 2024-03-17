@@ -1,10 +1,11 @@
 package com.lalabrand.ecommerce.user;
 
+import com.lalabrand.ecommerce.user.enums.Language;
+import com.lalabrand.ecommerce.user.role.UserRole;
 import com.lalabrand.ecommerce.item.item_comment.ItemComment;
 import com.lalabrand.ecommerce.order.Order;
 import com.lalabrand.ecommerce.user.address.Address;
 import com.lalabrand.ecommerce.user.cart.Cart;
-import com.lalabrand.ecommerce.user.role.Roles;
 import com.lalabrand.ecommerce.user.wishlist.Wishlist;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,6 +14,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -57,10 +59,20 @@ public class User {
     @OneToMany(mappedBy = "user")
     private Set<Order> orders;
 
-    @ManyToMany(mappedBy = "users")
-    private Set<Roles> roles;
-
     @OneToMany(mappedBy = "user")
     private Set<Wishlist> wishlists;
+
+    @Column(name = "bonus")
+    private Integer bonus;
+
+    @Column(name = "password")
+    private String password;
+
+    @OneToMany(mappedBy = "user")
+    private Set<UserRole> userRoles = new LinkedHashSet<>();
+
+    @Column(name = "language")
+    @Enumerated(EnumType.STRING)
+    private Language language;
 
 }
