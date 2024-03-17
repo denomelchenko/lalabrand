@@ -16,14 +16,14 @@ import java.io.Serializable;
 public class ItemInfoDto implements Serializable {
     Integer id;
     ItemDto item;
-    ColorEnum color;
     String image;
+    ColorEnum color;
 
     public static ItemInfoDto fromEntity(ItemInfo itemInfo) {
         return ItemInfoDto.builder()
                 .id(itemInfo.getId())
-                .item(ItemDto.fromEntity(itemInfo.getItem()))
                 .color(itemInfo.getColor())
+                .item(ItemDto.fromEntity(itemInfo.getItem()))
                 .image(itemInfo.getImage())
                 .build();
     }

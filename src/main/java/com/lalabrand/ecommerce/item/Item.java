@@ -1,6 +1,6 @@
 package com.lalabrand.ecommerce.item;
 
-import com.lalabrand.ecommerce.item.color.Color;
+import com.lalabrand.ecommerce.item.available_color.AvailableColor;
 import com.lalabrand.ecommerce.item.item_comment.ItemComment;
 import com.lalabrand.ecommerce.item.look.Look;
 import com.lalabrand.ecommerce.item.size.Size;
@@ -12,6 +12,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -44,11 +46,8 @@ public class Item {
     @Column(name = "price", nullable = false, precision = 10)
     private BigDecimal price;
 
-    @Lob
-    @Column(name = "currency", nullable = false)
-    private String currency;
-
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
@@ -73,16 +72,19 @@ public class Item {
     @OneToMany(mappedBy = "item")
     private Set<OrderedItem> orderedItems;
 
-    @ManyToMany(mappedBy = "items")
-    private Set<Color> colors;
-
-    @ManyToMany(mappedBy = "items")
-    private Set<Size> sizes;
+    @ManyToMany
+    @JoinTable(name = "item_sizes",
+            joinColumns = @JoinColumn(name = "item_id"),
+            inverseJoinColumns = @JoinColumn(name = "size_id"))
+    Set<Size> sizes;
 
     @ManyToMany(mappedBy = "items")
     private Set<Wishlist> wishlists;
 
     @ManyToMany(mappedBy = "items")
     private Set<Look> looks;
+
+    @OneToOne(mappedBy = "item")
+    private AvailableColor availableColors;
 
 }
