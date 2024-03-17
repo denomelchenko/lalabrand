@@ -5,7 +5,6 @@ type Item {
     longDisc: String!,
     rating: String,
     price: Float!,
-    currency: String,
     availableCount: Int!,
     salePrice: Float,
     image: String,
