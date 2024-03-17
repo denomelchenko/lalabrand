@@ -8,8 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.Instant;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -34,6 +32,6 @@ public class Look {
     @JoinTable(name = "look_item",
             joinColumns = @JoinColumn(name = "look_id"),
             inverseJoinColumns = @JoinColumn(name = "item_id"))
-    private Set<Item> items = new LinkedHashSet<>();
+    private Set<Item> items;
 
 }
