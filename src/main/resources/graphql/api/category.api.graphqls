@@ -1,3 +1,4 @@
-extend type Query{
-    allCategories:[Category]
+extend type Query {
+    allCategories: [Category]
+    categoryById(id: ID): Category
 }
