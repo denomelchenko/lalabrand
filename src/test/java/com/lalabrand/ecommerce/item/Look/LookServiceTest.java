@@ -29,7 +29,7 @@ public class LookServiceTest {
 
     @BeforeEach
     public void beforeEach() {
-        LookRepository lookRepository = mock(LookRepository.class);
+        lookRepository = mock(LookRepository.class);
 
         lookService = new LookService(lookRepository);
     }
@@ -47,7 +47,7 @@ public class LookServiceTest {
         items.add(item);
         look.setItems(items);
 
-        when(lookRepository.findById(1)).thenReturn(Optional.of(look));
+        when(lookRepository.findFirstByOrderByIdAsc()).thenReturn(Optional.of(look));
 
         look.setItems(items);
         LookDto expectedLookDto = LookDto.fromEntity(look);
@@ -62,10 +62,6 @@ public class LookServiceTest {
     // should return the next LookDto when a previousLookId is provided
     @Test
     public void test_return_next_LookDto_when_previousLookId_provided() {
-        LookRepository lookRepository = mock(LookRepository.class);
-
-        lookService = new LookService(lookRepository);
-
         Look look = new Look();
         look.setId(1);
         look.setImage("image");
@@ -91,9 +87,6 @@ public class LookServiceTest {
     // should throw an EntityNotFoundException when the database is empty
     @Test
     public void test_throw_EntityNotFoundException_when_database_empty() {
-        LookRepository lookRepository = mock(LookRepository.class);
-
-        lookService = new LookService(lookRepository);
         System.out.println(lookRepository.findById(1));
 
         assertThrows(EntityNotFoundException.class, () -> {
