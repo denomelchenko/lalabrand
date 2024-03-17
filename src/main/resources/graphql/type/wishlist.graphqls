@@ -1,0 +1,4 @@
+type Wishlist {
+    id: ID,
+    items: [Item]
+}

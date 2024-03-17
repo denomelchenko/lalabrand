@@ -1,32 +1,33 @@
 package com.lalabrand.ecommerce.item;
 
+import com.lalabrand.ecommerce.user.User;
+import com.lalabrand.ecommerce.user.cart.CartService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ItemService {
     private final ItemRepository itemRepository;
 
+    @Autowired
     public ItemService(ItemRepository itemRepository) {
         this.itemRepository = itemRepository;
     }
 
     public List<ItemDto> findBestSellersItems(Optional<Integer> limit) {
-        if (limit.isPresent() && limit.get() <= 0) {
-            throw new IllegalArgumentException("Limit must be a positive integer");
-        } else if (limit.isEmpty()) {
-            limit = Optional.of(4);
-        }
+        limit = Optional.of(limit.filter(l -> l > 0).orElse(4));
         return convertToItemDtoList(itemRepository.findItemsByOrderBySoldCountDesc(
-                PageRequest.of(0, limit.get(), Sort.by(Sort.Direction.DESC, "soldCount"))
-        ));
+                PageRequest.of(0, limit.get()))
+        );
     }
 
     public List<ItemDto> findItemsByTitle(String title) {
+        if (title == null || title.isEmpty()) {
+            return Collections.emptyList();
+        }
         return convertToItemDtoList(itemRepository.findByTitleContainingIgnoreCase(title));
     }
 
@@ -35,8 +36,10 @@ public class ItemService {
     }
 
     private List<ItemDto> convertToItemDtoList(List<Item> items) {
-        return items.stream()
-                .map(ItemDto::fromEntity)
-                .toList();
+        List<ItemDto> itemDtoList = new LinkedList<>();
+        for (Item item : items) {
+            itemDtoList.add(ItemDto.fromEntity(item));
+        }
+        return itemDtoList;
     }
 }

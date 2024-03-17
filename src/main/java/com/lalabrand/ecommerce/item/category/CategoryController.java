@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import java.util.List;
 @Controller
 public class CategoryController {
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
     public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
     }
