@@ -31,7 +31,11 @@ public class ItemService {
         return convertToItemDtoList(itemRepository.findByTitleContainingIgnoreCase(title));
     }
 
-    public List<ItemDto> findItemsByCategoryId(Integer categoryId){
+    public List<ItemDto> findItemsByCategoryId(Integer categoryId) {
+        if (categoryId == null) {
+            return Collections.emptyList();
+        }
+
         return convertToItemDtoList(itemRepository.findAllByCategoryId(categoryId));
     }
 
