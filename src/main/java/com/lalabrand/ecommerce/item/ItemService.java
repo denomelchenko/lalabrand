@@ -32,7 +32,7 @@ public class ItemService {
     }
 
     public List<ItemDto> findItemsByCategoryId(Integer categoryId) {
-        if (categoryId == null) {
+        if (categoryId == null || categoryId < 0) {
             return Collections.emptyList();
         }
 
