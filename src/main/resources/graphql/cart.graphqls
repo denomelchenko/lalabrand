@@ -2,3 +2,7 @@ type Cart {
     id: ID!,
     cartItems: [CartItem]
 }
+
+type Query {
+    cartByUserId(userId: ID): Cart
+}

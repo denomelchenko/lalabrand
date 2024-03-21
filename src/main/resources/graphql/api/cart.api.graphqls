@@ -1,3 +1,0 @@
-extend type Query {
-    cartByUserId(userId: ID): Cart
-}
