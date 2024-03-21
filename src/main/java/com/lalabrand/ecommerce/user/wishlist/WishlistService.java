@@ -1,5 +1,6 @@
 package com.lalabrand.ecommerce.user.wishlist;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class WishlistService {
             }
         } catch (Exception e) {
             logger.error("Failed to get wishlist for user with ID: {}", userId, e);
-            throw new RuntimeException("Failed to find wishlist for user with ID: " + userId, e);
+            throw new EntityNotFoundException("Failed to find wishlist for user with ID: " + userId, e);
         }
     }
 }
