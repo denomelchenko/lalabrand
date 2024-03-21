@@ -21,7 +21,7 @@ public class WishlistService {
     public Optional<WishlistDto> findWishlistByUserId(Integer userId) {
         try {
             Optional<Wishlist> wishlist = wishlistRepository.findWishlistByUserId(userId);
-            if (wishlist.isPresent() && wishlist.get().getItems() != null && !wishlist.get().getItems().isEmpty() ) {
+            if (wishlist.isPresent() && wishlist.get().getItems() != null && !wishlist.get().getItems().isEmpty()) {
                 logger.info("Wishlist found for user with ID: {}", userId);
                 return wishlist.map(WishlistDto::fromEntity);
             } else {

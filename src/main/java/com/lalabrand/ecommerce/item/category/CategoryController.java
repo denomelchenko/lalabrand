@@ -24,3 +24,4 @@ public class CategoryController {
         return categoryService.findCategoryById(id).orElse(null);
     }
 }
+

@@ -1,5 +1,6 @@
 package com.lalabrand.ecommerce.item;
 
+import com.lalabrand.ecommerce.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -30,8 +31,8 @@ public class ItemService {
     }
 
     public List<ItemDto> findItemsByCategoryId(Integer categoryId) {
-        if (categoryId == null || categoryId < 0) {
-            throw new IllegalArgumentException("CategoryId can not be null or less then 0");
+        if (CommonUtils.isIdValid(categoryId)) {
+            throw new IllegalArgumentException("CategoryId can not be null or less then 1");
         }
 
         return convertToItemDtoList(itemRepository.findAllByCategoryId(categoryId));
