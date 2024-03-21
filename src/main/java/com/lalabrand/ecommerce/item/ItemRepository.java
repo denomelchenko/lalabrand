@@ -9,6 +9,8 @@ import java.util.List;
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Integer> {
     List<Item> findAllByCategoryId(Integer categoryId);
+
     List<Item> findItemsByOrderBySoldCountDesc(Pageable pageable);
+
     List<Item> findByTitleContainingIgnoreCase(String title);
 }

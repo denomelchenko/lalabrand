@@ -1,6 +1,7 @@
 package com.lalabrand.ecommerce.item.category;
 
 import com.lalabrand.ecommerce.user.wishlist.WishlistService;
+import com.lalabrand.ecommerce.utils.CommonUtils;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +41,7 @@ public class CategoryService {
     }
 
     public Optional<CategoryDTO> findCategoryById(Integer id) {
-        if (id == null || id < 1) {
+        if (!CommonUtils.isIdValid(id)) {
             throw new IllegalArgumentException("Id can not be null or less than 1");
         }
         Optional<Category> categoryEntityOptional = categoryRepository.findById(id);
