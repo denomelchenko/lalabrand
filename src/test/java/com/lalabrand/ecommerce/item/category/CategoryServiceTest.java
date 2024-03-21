@@ -1,8 +1,8 @@
 package com.lalabrand.ecommerce.item.category;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeAll;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
@@ -48,43 +48,34 @@ public class CategoryServiceTest {
         assertEquals("Category 2", result.get(1).getName());
     }
 
-    // Should return an empty list when findAllCategory is called with no data
+    // Should throw an Exception when findAllCategory is called with no data
     @Test
     public void test_findAllCategory_noData() {
         // Arrange
         when(categoryRepository.findAll()).thenReturn(Collections.emptyList());
 
-        // Act
-        List<CategoryDTO> result = categoryService.findAllCategory();
-
         // Assert
-        assertTrue(result.isEmpty());
+        assertThrows(EntityNotFoundException.class, () -> categoryService.findAllCategory());
     }
 
-    // Should handle exceptions thrown by categoryRepository.findAll() and return an empty list
+    // Should throw an exception when categoryRepository.findAll() throws an Exception
     @Test
     public void test_findAllCategory_exception() {
         // Arrange
         when(categoryRepository.findAll()).thenThrow(new RuntimeException());
 
-        // Act
-        List<CategoryDTO> result = categoryService.findAllCategory();
-
         // Assert
-        assertTrue(result.isEmpty());
+        assertThrows(RuntimeException.class, () -> categoryService.findAllCategory());
     }
 
-    // Should handle null values returned by categoryRepository.findAll() and return an empty list
+    // Should throw an EntityNotFoundException when categoryRepository.findAll() return an empty list
     @Test
     public void test_findAllCategory_nullData() {
         // Arrange
         when(categoryRepository.findAll()).thenReturn(null);
 
-        // Act
-        List<CategoryDTO> result = categoryService.findAllCategory();
-
         // Assert
-        assertTrue(result.isEmpty());
+        assertThrows(RuntimeException.class, () -> categoryService.findAllCategory());
     }
 
     // Should be able to find a CategoryDTO by id

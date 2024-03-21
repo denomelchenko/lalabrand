@@ -1,10 +1,6 @@
-package com.lalabrand.ecommerce.item.Look;
+package com.lalabrand.ecommerce.item.look;
 
 import com.lalabrand.ecommerce.item.Item;
-import com.lalabrand.ecommerce.item.look.Look;
-import com.lalabrand.ecommerce.item.look.LookDto;
-import com.lalabrand.ecommerce.item.look.LookRepository;
-import com.lalabrand.ecommerce.item.look.LookService;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
