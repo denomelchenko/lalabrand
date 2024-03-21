@@ -1,4 +1,4 @@
-package com.lalabrand.ecommerce.item.Cart;
+package com.lalabrand.ecommerce.item.cart;
 
 import com.lalabrand.ecommerce.item.Item;
 import com.lalabrand.ecommerce.item.enums.ColorEnum;
