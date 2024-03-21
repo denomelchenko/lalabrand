@@ -1,7 +1,5 @@
 package com.lalabrand.ecommerce.item;
 
-import com.lalabrand.ecommerce.user.User;
-import com.lalabrand.ecommerce.user.cart.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -26,14 +24,14 @@ public class ItemService {
 
     public List<ItemDto> findItemsByTitle(String title) {
         if (title == null || title.isEmpty()) {
-            return Collections.emptyList();
+            throw new IllegalArgumentException("Title can not be empty");
         }
         return convertToItemDtoList(itemRepository.findByTitleContainingIgnoreCase(title));
     }
 
     public List<ItemDto> findItemsByCategoryId(Integer categoryId) {
         if (categoryId == null || categoryId < 0) {
-            return Collections.emptyList();
+            throw new IllegalArgumentException("CategoryId can not be null or less then 0");
         }
 
         return convertToItemDtoList(itemRepository.findAllByCategoryId(categoryId));
