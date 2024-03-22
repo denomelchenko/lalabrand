@@ -4,5 +4,5 @@ type Cart {
 }
 
 type Query {
-    cartByUserId(userId: ID!): Cart
+    cartByUserId(userId: ID!): Cart!
 }
