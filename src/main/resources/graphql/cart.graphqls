@@ -1,8 +1,8 @@
 type Cart {
     id: ID!,
-    cartItems: [CartItem]
+    cartItems: [CartItem!]
 }
 
 type Query {
-    cartByUserId(userId: ID): Cart
+    cartByUserId(userId: ID!): Cart
 }
