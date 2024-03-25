@@ -1,0 +1,8 @@
+type Wishlist {
+    id: ID!,
+    items: [Item]
+}
+
+extend type Query {
+    wishlistByUserId(userId: ID!): Wishlist!
+}

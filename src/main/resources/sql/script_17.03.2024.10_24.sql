@@ -101,7 +101,7 @@ CREATE TABLE `shipping_option`
 (
     `id`    integer PRIMARY KEY AUTO_INCREMENT,
     `name`  varchar(100) NOT NULL,
-    `price` decimal NOT NULL
+    `price` decimal      NOT NULL
 );
 
 CREATE TABLE `shipping_info`
