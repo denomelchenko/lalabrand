@@ -1,5 +1,6 @@
 package com.lalabrand.ecommerce.user.wishlist;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class WishlistService {
     public Optional<WishlistDto> findWishlistByUserId(Integer userId) {
         try {
             Optional<Wishlist> wishlist = wishlistRepository.findWishlistByUserId(userId);
-            if (wishlist.isPresent() && wishlist.get().getItems() != null && !wishlist.get().getItems().isEmpty() ) {
+            if (wishlist.isPresent() && wishlist.get().getItems() != null && !wishlist.get().getItems().isEmpty()) {
                 logger.info("Wishlist found for user with ID: {}", userId);
                 return wishlist.map(WishlistDto::fromEntity);
             } else {
@@ -29,7 +30,7 @@ public class WishlistService {
             }
         } catch (Exception e) {
             logger.error("Failed to get wishlist for user with ID: {}", userId, e);
-            throw new RuntimeException("Failed to find wishlist for user with ID: " + userId, e);
+            throw new EntityNotFoundException("Failed to find wishlist for user with ID: " + userId, e);
         }
     }
 }
