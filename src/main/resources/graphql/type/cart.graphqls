@@ -1,4 +1,0 @@
-type Cart {
-    id: ID!,
-    cartItems: [CartItem]
-}
