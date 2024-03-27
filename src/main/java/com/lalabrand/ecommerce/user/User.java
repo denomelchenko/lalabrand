@@ -82,7 +82,6 @@ public class User {
     public void prePersist() {
         if (createdAt == null) {
             createdAt = Instant.now();
-            System.out.println(Instant.now());
         }
     }
 }
