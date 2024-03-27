@@ -7,7 +7,6 @@ import com.lalabrand.ecommerce.item.item_info.ItemInfo;
 import com.lalabrand.ecommerce.item.size.Size;
 import com.lalabrand.ecommerce.user.cart.Cart;
 import com.lalabrand.ecommerce.user.cart.CartDTO;
-import com.lalabrand.ecommerce.user.cart.CartDto;
 import com.lalabrand.ecommerce.user.cart.CartRepository;
 import com.lalabrand.ecommerce.user.cart.CartService;
 
