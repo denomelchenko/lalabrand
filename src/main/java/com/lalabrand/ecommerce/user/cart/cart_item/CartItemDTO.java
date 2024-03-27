@@ -1,8 +1,8 @@
 package com.lalabrand.ecommerce.user.cart.cart_item;
 
-import com.lalabrand.ecommerce.item.ItemDto;
-import com.lalabrand.ecommerce.item.item_info.ItemInfoDto;
-import com.lalabrand.ecommerce.item.size.SizeDto;
+import com.lalabrand.ecommerce.item.ItemDTO;
+import com.lalabrand.ecommerce.item.item_info.ItemInfoDTO;
+import com.lalabrand.ecommerce.item.size.SizeDTO;
 import lombok.Builder;
 import lombok.Value;
 
@@ -11,19 +11,19 @@ import lombok.Value;
  */
 @Value
 @Builder
-public class CartItemDto {
+public class CartItemDTO {
     Integer id;
-    ItemDto item;
-    ItemInfoDto itemInfo;
-    SizeDto size;
+    ItemDTO item;
+    ItemInfoDTO itemInfo;
+    SizeDTO size;
     Integer count;
 
-    public static CartItemDto fromEntity(CartItem cartItem) {
-        return CartItemDto.builder()
+    public static CartItemDTO fromEntity(CartItem cartItem) {
+        return CartItemDTO.builder()
                 .id(cartItem.getId())
-                .item(ItemDto.fromEntity(cartItem.getItem()))
-                .itemInfo(ItemInfoDto.fromEntity(cartItem.getItemInfo()))
-                .size(SizeDto.fromEntity(cartItem.getSize()))
+                .item(ItemDTO.fromEntity(cartItem.getItem()))
+                .itemInfo(ItemInfoDTO.fromEntity(cartItem.getItemInfo()))
+                .size(SizeDTO.fromEntity(cartItem.getSize()))
                 .count(cartItem.getCount())
                 .build();
     }
