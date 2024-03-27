@@ -4,5 +4,5 @@ type Wishlist {
 }
 
 extend type Query {
-    wishlistByUserId(userId: ID!): Wishlist!
+    wishlistByUserId(userId: ID!): Wishlist
 }

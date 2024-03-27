@@ -11,7 +11,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.Instant;
 import java.util.Optional;
 
 @Service
@@ -23,6 +22,10 @@ public class UserService {
     public UserService(UserRepository userRepository, UserRoleRepository userRoleRepository) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
+    }
+
+    public Optional<User> findByUserId(Integer userId) {
+        return userRepository.findById(userId);
     }
 
     @Transactional
