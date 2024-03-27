@@ -34,7 +34,7 @@ public class ItemServiceTest {
         items.add(new Item());
         when(itemRepository.findItemsByOrderBySoldCountDesc(PageRequest.of(0, 2))).thenReturn(items);
 
-        List<ItemDto> result = itemService.findBestSellersItems(Optional.of(2));
+        List<ItemDTO> result = itemService.findBestSellersItems(Optional.of(2));
 
         assertEquals(2, result.size());
     }

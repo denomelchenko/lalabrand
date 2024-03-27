@@ -46,9 +46,9 @@ public class LookServiceTest {
         when(lookRepository.findFirstByOrderByIdAsc()).thenReturn(Optional.of(look));
 
         look.setItems(items);
-        LookDto expectedLookDto = LookDto.fromEntity(look);
+        LookDTO expectedLookDto = LookDTO.fromEntity(look);
 
-        LookDto result = lookService.findLook(Optional.empty());
+        LookDTO result = lookService.findLook(Optional.empty());
 
         assertEquals(expectedLookDto.getId(), result.getId());
         assertEquals(expectedLookDto.getImage(), result.getImage());
@@ -71,9 +71,9 @@ public class LookServiceTest {
         when(lookRepository.findFirstByIdGreaterThan(1)).thenReturn(Optional.of(look));
 
         look.setItems(items);
-        LookDto expectedLookDto = LookDto.fromEntity(look);
+        LookDTO expectedLookDto = LookDTO.fromEntity(look);
 
-        LookDto result = lookService.findLook(Optional.of(1));
+        LookDTO result = lookService.findLook(Optional.of(1));
 
         assertEquals(expectedLookDto.getId(), result.getId());
         assertEquals(expectedLookDto.getImage(), result.getImage());
