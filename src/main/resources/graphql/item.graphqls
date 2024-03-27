@@ -10,3 +10,9 @@ type Item {
     image: String,
     soldCount: Int!
 }
+
+extend type Query {
+    bestSellers(limit: Int): [Item!]!,
+    itemsByTitle(title: String!): [Item!]!,
+    itemsByCategoryId(categoryId: Int!): [Item!]!
+}

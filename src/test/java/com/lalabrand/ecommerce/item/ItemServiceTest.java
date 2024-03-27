@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -38,10 +39,41 @@ public class ItemServiceTest {
         assertEquals(2, result.size());
     }
 
+    // Should return an empty list when findItemsByCategoryId is called with a null
+    @Test
+    public void test_return_empty_list_if_categoryId_is_null() {
+        List<ItemDTO> result = itemService.findItemsByCategoryId(null);
+
+        assertEquals(Collections.emptyList(), result);
+    }
+
+    @Test
+    public void test_return_list_of_ItemDto_if_categoryId_is_valid() {
+        List<Item> items = new ArrayList<>();
+        Item item = new Item();
+        item.setId(1);
+        items.add(item);
+        when(itemRepository.findAllByCategoryId(anyInt())).thenReturn(items);
+
+        List<ItemDTO> result = itemService.findItemsByCategoryId(1);
+
+        assertEquals(1, result.get(0).getId());
+    }
+
+    @Test
+    public void test_handle_and_return_empty_list_if_category_id_is_negative() {
+        ItemRepository itemRepository = mock(ItemRepository.class);
+        ItemService itemService = new ItemService(itemRepository);
+
+        List<ItemDTO> result = itemService.findItemsByCategoryId(-1);
+
+        assertEquals(Collections.emptyList(), result);
+    }
+
     // should return an empty list when findItemsByTitle is called with a null or empty title
     @Test
     public void test_findItemsByTitle_nullOrEmptyTitle() {
-        List<ItemDto> result = itemService.findItemsByTitle(null);
+        List<ItemDTO> result = itemService.findItemsByTitle(null);
 
         assertEquals(Collections.emptyList(), result);
 
@@ -58,7 +90,7 @@ public class ItemServiceTest {
         items.add(new Item());
         when(itemRepository.findByTitleContainingIgnoreCase("title")).thenReturn(items);
 
-        List<ItemDto> result = itemService.findItemsByTitle("title");
+        List<ItemDTO> result = itemService.findItemsByTitle("title");
 
         assertEquals(2, result.size());
     }
@@ -73,7 +105,7 @@ public class ItemServiceTest {
         items.add(new Item());
         when(itemRepository.findItemsByOrderBySoldCountDesc(PageRequest.of(0, 4))).thenReturn(items);
 
-        List<ItemDto> result = itemService.findBestSellersItems(Optional.empty());
+        List<ItemDTO> result = itemService.findBestSellersItems(Optional.empty());
 
         assertEquals(4, result.size());
     }
@@ -90,7 +122,7 @@ public class ItemServiceTest {
     public void test_findItemsByTitle_nonExistingTitle() {
         when(itemRepository.findByTitleContainingIgnoreCase("non-existing")).thenReturn(Collections.emptyList());
 
-        List<ItemDto> result = itemService.findItemsByTitle("non-existing");
+        List<ItemDTO> result = itemService.findItemsByTitle("non-existing");
 
         assertEquals(Collections.emptyList(), result);
     }
@@ -103,7 +135,7 @@ public class ItemServiceTest {
         items.add(new Item());
         when(itemRepository.findItemsByOrderBySoldCountDesc(PageRequest.of(0, 2))).thenReturn(items);
 
-        List<ItemDto> result = itemService.findBestSellersItems(Optional.of(2));
+        List<ItemDTO> result = itemService.findBestSellersItems(Optional.of(2));
 
         assertEquals(2, result.size());
     }
@@ -116,7 +148,7 @@ public class ItemServiceTest {
         items.add(new Item());
         when(itemRepository.findByTitleContainingIgnoreCase("title")).thenReturn(items);
 
-        List<ItemDto> result = itemService.findItemsByTitle("title");
+        List<ItemDTO> result = itemService.findItemsByTitle("title");
 
         assertEquals(2, result.size());
     }
@@ -129,9 +161,23 @@ public class ItemServiceTest {
         items.add(new Item());
         when(itemRepository.findItemsByOrderBySoldCountDesc(PageRequest.of(0, 3))).thenReturn(items);
 
-        List<ItemDto> result = itemService.findBestSellersItems(Optional.of(3));
+        List<ItemDTO> result = itemService.findBestSellersItems(Optional.of(3));
 
         assertEquals(2, result.size());
     }
+    @Test
+    public void test_findItemsByCategoryId(){
+        ItemRepository itemRepository = mock(ItemRepository.class);
+        ItemService itemService = new ItemService(itemRepository);
 
+        List<Item> items = new ArrayList<>();
+        Item item = new Item();
+        item.setId(1);
+        items.add(item);
+        when(itemRepository.findAllByCategoryId(anyInt())).thenReturn(items);
+
+        List<ItemDTO> result = itemService.findItemsByCategoryId(1);
+
+        assertEquals(1, result.get(0).getId());
+    }
 }

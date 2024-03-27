@@ -66,5 +66,4 @@ public class Order {
             createdAt = Instant.now();
         }
     }
-
 }

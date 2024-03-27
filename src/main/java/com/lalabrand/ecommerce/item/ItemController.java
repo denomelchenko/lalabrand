@@ -1,5 +1,6 @@
 package com.lalabrand.ecommerce.item;
 
+
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,11 @@ public class ItemController {
 
     public ItemController(ItemService itemService) {
         this.itemService = itemService;
+    }
+
+    @QueryMapping(name = "itemsByCategoryId")
+    public List<ItemDTO> findItemsByCategoryId(@Argument Integer categoryId) {
+        return itemService.findItemsByCategoryId(categoryId);
     }
 
     @QueryMapping(name = "bestSellers")

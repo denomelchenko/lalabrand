@@ -3,3 +3,7 @@ type Look {
     image: String!,
     items: [Item!]
 }
+
+extend type Query {
+    look(previousLookId: ID): Look!
+}
