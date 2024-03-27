@@ -18,8 +18,6 @@ public class UserAccessChecker {
     public boolean isCurrentUserEqualsId(Integer id) {
         Optional<User> user = userService.findByUserId(id);
         if (user.isPresent()) {
-            System.out.println(user.get().getEmail());
-            System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
             return user.get().getEmail().equals(SecurityContextHolder.getContext().getAuthentication().getName());
         }
         return false;

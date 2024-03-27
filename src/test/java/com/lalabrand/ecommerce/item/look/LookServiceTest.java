@@ -83,8 +83,6 @@ public class LookServiceTest {
     // should throw an EntityNotFoundException when the database is empty
     @Test
     public void test_throw_EntityNotFoundException_when_database_empty() {
-        System.out.println(lookRepository.findById(1));
-
         assertThrows(EntityNotFoundException.class, () -> {
             lookService.findLook(Optional.of(1));
         });
