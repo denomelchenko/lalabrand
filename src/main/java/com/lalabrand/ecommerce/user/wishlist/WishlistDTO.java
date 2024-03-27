@@ -1,6 +1,6 @@
 package com.lalabrand.ecommerce.user.wishlist;
 
-import com.lalabrand.ecommerce.item.ItemDto;
+import com.lalabrand.ecommerce.item.ItemDTO;
 import lombok.Builder;
 import lombok.Value;
 
@@ -12,14 +12,14 @@ import java.util.stream.Collectors;
  */
 @Builder
 @Value
-public class WishlistDto {
+public class WishlistDTO {
     Integer id;
-    Set<ItemDto> items;
+    Set<ItemDTO> items;
 
-    public static WishlistDto fromEntity(Wishlist wishlist) {
-        return WishlistDto.builder()
+    public static WishlistDTO fromEntity(Wishlist wishlist) {
+        return WishlistDTO.builder()
                 .id(wishlist.getId())
-                .items(wishlist.getItems().stream().map(ItemDto::fromEntity).collect(Collectors.toSet()))
+                .items(wishlist.getItems().stream().map(ItemDTO::fromEntity).collect(Collectors.toSet()))
                 .build();
     }
 }
