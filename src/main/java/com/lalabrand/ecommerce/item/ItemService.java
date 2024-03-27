@@ -1,5 +1,6 @@
 package com.lalabrand.ecommerce.item;
 
+import com.lalabrand.ecommerce.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -24,9 +25,17 @@ public class ItemService {
 
     public List<ItemDTO> findItemsByTitle(String title) {
         if (title == null || title.isEmpty()) {
-            return Collections.emptyList();
+            throw new IllegalArgumentException("Title can not be empty");
         }
         return convertToItemDtoList(itemRepository.findByTitleContainingIgnoreCase(title));
+    }
+
+    public List<ItemDTO> findItemsByCategoryId(Integer categoryId) {
+        if (CommonUtils.isIdValid(categoryId)) {
+            throw new IllegalArgumentException("CategoryId can not be null or less then 1");
+        }
+
+        return convertToItemDtoList(itemRepository.findAllByCategoryId(categoryId));
     }
 
     private List<ItemDTO> convertToItemDtoList(List<Item> items) {
