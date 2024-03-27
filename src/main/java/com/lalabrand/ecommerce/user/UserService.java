@@ -34,16 +34,16 @@ public class UserService {
 
     @Transactional
     public UserResponse saveUser(UserRequest userRequest) throws AccessDeniedException {
-        if (userRequest.email() == null || userRequest.password() == null) {
+        if (userRequest.getEmail() == null || userRequest.getPassword() == null) {
             throw new BadCredentialsException("Password or email can not be null");
         }
 
         User savedUser;
-        User user = new User(userRequest.id(), userRequest.email(), userRequest.password());
-        user.setPassword(new BCryptPasswordEncoder().encode(userRequest.password()));
-        if (userRequest.id() != null) {
-            if (userAccessChecker.isCurrentUserEqualsId(userRequest.id())) {
-                Optional<User> existedUser = userRepository.findById(userRequest.id());
+        User user = new User(userRequest.getId(), userRequest.getEmail(), userRequest.getPassword());
+        user.setPassword(new BCryptPasswordEncoder().encode(userRequest.getPassword()));
+        if (userRequest.getId() != null) {
+            if (userAccessChecker.isCurrentUserEqualsId(userRequest.getId())) {
+                Optional<User> existedUser = userRepository.findById(userRequest.getId());
                 if (existedUser.isPresent()) {
                     user.setId(user.getId());
                     user.setPassword(user.getPassword());
@@ -51,12 +51,12 @@ public class UserService {
 
                     savedUser = userRepository.save(existedUser.get());
                 } else {
-                    throw new IllegalArgumentException("Can not find user with id: " + userRequest.id());
+                    throw new IllegalArgumentException("Can not find user with id: " + userRequest.getId());
                 }
             } else {
                 throw new AccessDeniedException("You have not permission for this");
             }
-        } else if (userRepository.findByEmail(userRequest.email()).isPresent()) {
+        } else if (userRepository.findByEmail(userRequest.getEmail()).isPresent()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "User already exist");
         } else{
             userRoleRepository.save(new UserRole(Role.USER, user));
