@@ -3,6 +3,7 @@ package com.lalabrand.ecommerce.user;
 import com.lalabrand.ecommerce.user.enums.Role;
 import com.lalabrand.ecommerce.user.role.UserRole;
 import com.lalabrand.ecommerce.user.role.UserRoleRepository;
+import com.lalabrand.ecommerce.utils.UserAccessChecker;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -11,17 +12,20 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.nio.file.AccessDeniedException;
 import java.util.Optional;
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
+    private final UserAccessChecker userAccessChecker;
     private final ModelMapper modelMapper = new ModelMapper();
 
-    public UserService(UserRepository userRepository, UserRoleRepository userRoleRepository) {
+    public UserService(UserRepository userRepository, UserRoleRepository userRoleRepository, UserAccessChecker userAccessChecker) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
+        this.userAccessChecker = userAccessChecker;
     }
 
     public Optional<User> findByUserId(Integer userId) {
@@ -29,7 +33,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserResponse saveUser(UserRequest userRequest) {
+    public UserResponse saveUser(UserRequest userRequest) throws AccessDeniedException {
         if (userRequest.email() == null || userRequest.password() == null) {
             throw new BadCredentialsException("Password or email can not be null");
         }
@@ -38,15 +42,19 @@ public class UserService {
         User user = new User(userRequest.id(), userRequest.email(), userRequest.password());
         user.setPassword(new BCryptPasswordEncoder().encode(userRequest.password()));
         if (userRequest.id() != null) {
-            Optional<User> existedUser = userRepository.findById(userRequest.id());
-            if (existedUser.isPresent()) {
-                user.setId(user.getId());
-                user.setPassword(user.getPassword());
-                user.setEmail(user.getEmail());
+            if (userAccessChecker.isCurrentUserEqualsId(userRequest.id())) {
+                Optional<User> existedUser = userRepository.findById(userRequest.id());
+                if (existedUser.isPresent()) {
+                    user.setId(user.getId());
+                    user.setPassword(user.getPassword());
+                    user.setEmail(user.getEmail());
 
-                savedUser = userRepository.save(existedUser.get());
+                    savedUser = userRepository.save(existedUser.get());
+                } else {
+                    throw new IllegalArgumentException("Can not find user with id: " + userRequest.id());
+                }
             } else {
-                throw new IllegalArgumentException("Can not find user with id: " + userRequest.id());
+                throw new AccessDeniedException("You have not permission for this");
             }
         } else if (userRepository.findByEmail(userRequest.email()).isPresent()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "User already exist");
