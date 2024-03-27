@@ -1,8 +1,7 @@
 package com.lalabrand.ecommerce.item.item_info;
 
-import com.lalabrand.ecommerce.item.ItemDto;
+import com.lalabrand.ecommerce.item.ItemDTO;
 import com.lalabrand.ecommerce.item.enums.ColorEnum;
-import com.lalabrand.ecommerce.user.cart.cart_item.CartItem;
 import lombok.Builder;
 import lombok.Value;
 
@@ -13,17 +12,17 @@ import java.io.Serializable;
  */
 @Value
 @Builder
-public class ItemInfoDto implements Serializable {
+public class ItemInfoDTO implements Serializable {
     Integer id;
-    ItemDto item;
+    ItemDTO item;
     String image;
     ColorEnum color;
 
-    public static ItemInfoDto fromEntity(ItemInfo itemInfo) {
-        return ItemInfoDto.builder()
+    public static ItemInfoDTO fromEntity(ItemInfo itemInfo) {
+        return ItemInfoDTO.builder()
                 .id(itemInfo.getId())
                 .color(itemInfo.getColor())
-                .item(ItemDto.fromEntity(itemInfo.getItem()))
+                .item(ItemDTO.fromEntity(itemInfo.getItem()))
                 .image(itemInfo.getImage())
                 .build();
     }
