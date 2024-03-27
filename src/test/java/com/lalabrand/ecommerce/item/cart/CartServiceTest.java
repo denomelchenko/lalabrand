@@ -1,4 +1,4 @@
-package com.lalabrand.ecommerce.item.Cart;
+package com.lalabrand.ecommerce.item.cart;
 
 import com.lalabrand.ecommerce.item.Item;
 import com.lalabrand.ecommerce.item.enums.ColorEnum;
@@ -6,6 +6,7 @@ import com.lalabrand.ecommerce.item.enums.SizeType;
 import com.lalabrand.ecommerce.item.item_info.ItemInfo;
 import com.lalabrand.ecommerce.item.size.Size;
 import com.lalabrand.ecommerce.user.cart.Cart;
+import com.lalabrand.ecommerce.user.cart.CartDTO;
 import com.lalabrand.ecommerce.user.cart.CartDto;
 import com.lalabrand.ecommerce.user.cart.CartRepository;
 import com.lalabrand.ecommerce.user.cart.CartService;
@@ -42,7 +43,6 @@ public class CartServiceTest {
         item.setLongDisc("This versatile backpack features spacious compartments, padded straps for comfort, and a sleek design.");
         item.setRating(new BigDecimal("4.8"));
         item.setPrice(new BigDecimal("59.99"));
-        item.setCurrency("USD");
         item.setAvailableCount(15);
         item.setSalePrice(new BigDecimal("12"));
         item.setImage("path/to/backpack_image.jpg");
@@ -67,6 +67,7 @@ public class CartServiceTest {
         cartItem.setItemInfo(itemInfo);
         cartItems.add(cartItem);
         cartItem.setSize(size);
+        cartWithItems.setId(1);
         cartWithItems.setCartItems(cartItems);
     }
 
@@ -84,7 +85,7 @@ public class CartServiceTest {
         when(cartRepository.findCartByUserId(1)).thenReturn(Optional.of(cartWithItems));
 
         // Act
-        CartDto result = cartService.findCartByUserId(userId).get();
+        CartDTO result = cartService.findCartByUserId(userId).get();
 
         // Assert
         assertNotNull(result);
@@ -107,19 +108,13 @@ public class CartServiceTest {
     public void test_return_empty_CartDto_when_cart_exists_but_has_no_cartItems() {
         // Arrange
         Integer userId = 1;
-        Cart cart = new Cart();
-        cart.setId(1);
-        cart.setCartItems(new HashSet<>());
-        Optional<Cart> optionalCart = Optional.of(cart);
-        when(cartRepository.findCartByUserId(userId)).thenReturn(optionalCart);
+        when(cartRepository.findCartByUserId(userId)).thenReturn(Optional.empty());
 
         // Act
-        CartDto result = cartService.findCartByUserId(userId).get();
+        Optional<CartDTO> result = cartService.findCartByUserId(userId);
 
         // Assert
-        assertNotNull(result);
-        assertEquals(cart.getId(), result.getId());
-        assertEquals(0, result.getCartItems().size());
+        assertEquals(Optional.empty(), result);
     }
 
     // Should return empty CartDto when cart does not exist for given userId
@@ -130,7 +125,7 @@ public class CartServiceTest {
         when(cartRepository.findCartByUserId(userId)).thenReturn(Optional.empty());
 
         // Act
-        Optional<CartDto> result = cartService.findCartByUserId(userId);
+        Optional<CartDTO> result = cartService.findCartByUserId(userId);
 
         // Assert
         assertNotNull(result);

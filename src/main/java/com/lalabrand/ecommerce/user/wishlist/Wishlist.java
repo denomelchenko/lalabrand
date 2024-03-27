@@ -1,7 +1,7 @@
 package com.lalabrand.ecommerce.user.wishlist;
 
-import com.lalabrand.ecommerce.user.User;
 import com.lalabrand.ecommerce.item.Item;
+import com.lalabrand.ecommerce.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
