@@ -16,7 +16,7 @@ public class WishlistController {
     }
 
     @QueryMapping(name = "wishlistByUserId")
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAuthority('USER') and @userAccessChecker.isCurrentUserEqualsId(#userId)")
     public WishlistDTO findWishlistByUserId(@Argument Integer userId) {
         return wishlistService.findWishlistByUserId(userId).orElse(null);
     }
