@@ -127,11 +127,6 @@ public class UserServiceTest {
     // saveUser method saves a new user with valid email and password and assigns a default role
     @Test
     public void test_saveUser_savesNewUserWithValidEmailAndPasswordAndAssignsDefaultRole() {
-        // Arrange
-        UserRepository userRepository = mock(UserRepository.class);
-        UserRoleRepository userRoleRepository = mock(UserRoleRepository.class);
-        UserService userService = new UserService(userRepository, userRoleRepository);
-
         UserRequest userRequest = new UserRequest("password123", "test@example.com", null);
         User savedUser = new User(1, "test@example.com", "password123");
         when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.empty());
