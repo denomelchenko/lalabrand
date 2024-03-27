@@ -16,12 +16,12 @@ public class ItemController {
     }
 
     @QueryMapping(name = "bestSellers")
-    public List<ItemDto> findBestSellers(@Argument Optional<Integer> limit) {
+    public List<ItemDTO> findBestSellers(@Argument Optional<Integer> limit) {
         return itemService.findBestSellersItems(limit);
     }
 
     @QueryMapping(name = "itemsByTitle")
-    public List<ItemDto> findItemsByTitle(@Argument String title) {
+    public List<ItemDTO> findItemsByTitle(@Argument String title) {
         return itemService.findItemsByTitle(title);
     }
 }
