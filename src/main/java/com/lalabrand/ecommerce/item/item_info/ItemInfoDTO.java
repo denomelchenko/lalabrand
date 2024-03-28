@@ -14,7 +14,6 @@ import java.io.Serializable;
 @Builder
 public class ItemInfoDTO implements Serializable {
     Integer id;
-    ItemDTO item;
     String image;
     ColorEnum color;
 
@@ -22,7 +21,6 @@ public class ItemInfoDTO implements Serializable {
         return ItemInfoDTO.builder()
                 .id(itemInfo.getId())
                 .color(itemInfo.getColor())
-                .item(ItemDTO.fromEntity(itemInfo.getItem()))
                 .image(itemInfo.getImage())
                 .build();
     }

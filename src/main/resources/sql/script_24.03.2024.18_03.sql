@@ -31,7 +31,7 @@ CREATE TABLE `item`
     `long_disc`       VARCHAR(255),
     `rating`          DECIMAL,
     `price`           DECIMAL                             NOT NULL,
-    `sold_count`      INTEGER,
+    `sold_count`      INTEGER                             NOT NULL,
     `category_id`     INTEGER                             NOT NULL,
     `available_count` INTEGER                             NOT NULL,
     `sale_price`      DECIMAL,
@@ -211,10 +211,9 @@ CREATE TABLE `available_colors`
 
 CREATE TABLE `refresh_token`
 (
-    `id`          INTEGER PRIMARY KEY AUTO_INCREMENT,
-    `token`       VARCHAR(255) NOT NULL,
-    `expiry_date` timestamp    NOT NULL,
-    `user_id`     integer      NOT NULL,
+    `token`       VARCHAR(36) PRIMARY KEY NOT NULL,
+    `expires_at` TIMESTAMP               NOT NULL,
+    `user_id`     INTEGER                 NOT NULL,
     FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -226,7 +225,7 @@ CREATE EVENT delete_expired_tokens
     ON SCHEDULE EVERY 1 DAY
     DO
     BEGIN
-        DELETE FROM refresh_token WHERE expiry_date < utc_timestamp();
+        DELETE FROM refresh_token WHERE expires_at < utc_timestamp();
     END //
 
 DELIMITER ;

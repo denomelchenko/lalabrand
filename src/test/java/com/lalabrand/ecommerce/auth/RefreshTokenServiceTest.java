@@ -29,7 +29,7 @@ public class RefreshTokenServiceTest {
     @Test
     public void testVerifyExpiration_NotExpired() {
         RefreshToken token = new RefreshToken();
-        token.setExpiryDate(Instant.now().plusSeconds(3600)); // Токен не истек
+        token.setExpiresAt(Instant.now().plusSeconds(3600)); // Токен не истек
 
         RefreshToken verifiedToken = refreshTokenService.verifyExpiration(token);
 
@@ -40,10 +40,10 @@ public class RefreshTokenServiceTest {
     public void testVerifyExpiration_Expired() {
         RefreshToken token = new RefreshToken();
         token.setToken("expired_token");
-        token.setExpiryDate(Instant.now().minusSeconds(3600));
+        token.setExpiresAt(Instant.now().minusSeconds(3600));
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> refreshTokenService.verifyExpiration(token));
 
-        assertEquals("expired_token Refresh token is expired. Please make a new login..!", exception.getMessage());
+        assertEquals("expired_token Refresh token is expired. Please log in again.", exception.getMessage());
     }
 }

@@ -1,5 +1,6 @@
 package com.lalabrand.ecommerce.auth;
 
+import com.lalabrand.ecommerce.user.User;
 import com.lalabrand.ecommerce.user.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,11 +23,10 @@ public class RefreshTokenService {
     }
 
     @Transactional
-    public RefreshToken createRefreshToken(String email) {
+    public RefreshToken createRefreshToken(User user) {
         RefreshToken refreshToken = RefreshToken.builder()
-                .user(userRepository.findByEmail(email).get())
-                .token(UUID.randomUUID().toString())
-                .expiryDate(Instant.now().plusSeconds(refreshTokenExpirationSec))
+                .user(user)
+                .expiresAt(Instant.now().plusSeconds(refreshTokenExpirationSec))
                 .build();
         return refreshTokenRepository.save(refreshToken);
     }
@@ -38,12 +38,12 @@ public class RefreshTokenService {
     public RefreshToken verifyExpiration(RefreshToken token) {
         if (isTokenExpired(token)) {
             refreshTokenRepository.delete(token);
-            throw new RuntimeException(token.getToken() + " Refresh token is expired. Please make a new login..!");
+            throw new RuntimeException(token.getToken() + " Refresh token is expired. Please log in again.");
         }
         return token;
     }
 
     public boolean isTokenExpired(RefreshToken token) {
-        return token.getExpiryDate().compareTo(Instant.now()) < 0;
+        return token.getExpiresAt().compareTo(Instant.now()) < 0;
     }
 }

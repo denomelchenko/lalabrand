@@ -4,6 +4,7 @@ import com.lalabrand.ecommerce.user.User;
 import com.lalabrand.ecommerce.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,8 +24,8 @@ public class WishlistController {
     }
 
     @QueryMapping(name = "wishlist")
-    @PreAuthorize("hasAuthority('USER') and @userAccessChecker.isCurrentUserEqualsId(#userId)")
-    public WishlistDTO findWishlistByUserId(@Argument Integer userId) {
+    @PreAuthorize("hasAuthority('USER')")
+    public WishlistDTO findWishlistForCurrentUser() {
         Optional<User> user = commonUtils.getCurrentUser();
         if (user.isPresent()) {
             return wishlistService.findWishlistByUserId(user.get().getId()).orElse(null);

@@ -39,7 +39,9 @@ public class UserController {
                 new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword())
         );
         if (authentication.isAuthenticated()) {
-            RefreshToken refreshToken = refreshTokenService.createRefreshToken(authRequest.getEmail());
+            RefreshToken refreshToken = refreshTokenService.createRefreshToken(
+                    userService.findByEmail(authRequest.getEmail()).get()
+            );
             return JwtResponseDTO.builder()
                     .token(refreshToken.getToken())
                     .accessToken(jwtService.generateToken(authRequest.getEmail()))
