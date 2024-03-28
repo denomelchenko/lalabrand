@@ -16,9 +16,9 @@ import java.util.Set;
 @Table(name = "look")
 public class Look {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private String id;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "gender", nullable = false)

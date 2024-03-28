@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @Setter
 @Builder
 public class ItemDTO implements Serializable {
-    Integer id;
+    String id;
     String title;
     String shortDisc;
     String longDisc;

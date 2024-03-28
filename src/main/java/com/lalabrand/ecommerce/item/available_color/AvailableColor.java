@@ -14,8 +14,9 @@ import org.hibernate.annotations.OnDeleteAction;
 @Table(name = "available_colors")
 public class AvailableColor {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "item_id", nullable = false)
-    private Integer id;
+    private String id;
 
     @MapsId
     @OneToOne(fetch = FetchType.LAZY, optional = false)

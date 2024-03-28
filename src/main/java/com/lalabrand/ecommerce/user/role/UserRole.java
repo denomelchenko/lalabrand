@@ -14,9 +14,9 @@ import org.hibernate.annotations.OnDeleteAction;
 @Table(name = "user_roles")
 public class UserRole {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private String id;
 
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
