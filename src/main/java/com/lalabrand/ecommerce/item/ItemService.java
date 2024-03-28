@@ -27,12 +27,13 @@ public class ItemService {
         if (title == null || title.isEmpty()) {
             throw new IllegalArgumentException("Title can not be empty");
         }
+        System.err.println(itemRepository.findByTitleContainingIgnoreCase(title));
         return convertToItemDtoList(itemRepository.findByTitleContainingIgnoreCase(title));
     }
 
-    public List<ItemDTO> findItemsByCategoryId(Integer categoryId) {
+    public List<ItemDTO> findItemsByCategoryId(String categoryId) {
         if (CommonUtils.isIdValid(categoryId)) {
-            throw new IllegalArgumentException("CategoryId can not be null or less then 1");
+            throw new IllegalArgumentException("Id is invalid");
         }
 
         return convertToItemDtoList(itemRepository.findAllByCategoryId(categoryId));

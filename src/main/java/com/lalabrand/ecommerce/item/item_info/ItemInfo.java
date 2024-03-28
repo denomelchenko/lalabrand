@@ -12,11 +12,10 @@ import lombok.Setter;
 @Table(name = "item_info")
 public class ItemInfo {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "item_id", nullable = false)
-    private Integer id;
+    private String id;
 
-    @MapsId
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "item_id", nullable = false)
     private Item item;

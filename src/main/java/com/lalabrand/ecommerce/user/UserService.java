@@ -28,7 +28,7 @@ public class UserService {
         this.userAccessChecker = userAccessChecker;
     }
 
-    public Optional<User> findByUserId(Integer userId) {
+    public Optional<User> findByUserId(String userId) {
         return userRepository.findById(userId);
     }
 

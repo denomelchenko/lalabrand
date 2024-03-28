@@ -3,6 +3,7 @@ package com.lalabrand.ecommerce.item;
 import com.lalabrand.ecommerce.item.available_color.AvailableColor;
 import com.lalabrand.ecommerce.item.category.Category;
 import com.lalabrand.ecommerce.item.item_comment.ItemComment;
+import com.lalabrand.ecommerce.item.item_info.ItemInfo;
 import com.lalabrand.ecommerce.item.look.Look;
 import com.lalabrand.ecommerce.item.size.Size;
 import com.lalabrand.ecommerce.order.ordered_item.OrderedItem;
@@ -27,9 +28,9 @@ import java.util.Set;
 @Table(name = "item")
 public class Item {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private String id;
 
     @Column(name = "title", nullable = false, length = 40)
     private String title;
@@ -86,6 +87,9 @@ public class Item {
 
     @OneToOne(mappedBy = "item")
     private AvailableColor availableColors;
+
+    @OneToOne(mappedBy = "item")
+    private ItemInfo itemInfos;
 
     @PrePersist
     public void prePersist() {

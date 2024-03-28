@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Value
 @Builder
 public class ItemInfoDTO implements Serializable {
-    Integer id;
+    String id;
     String image;
     ColorEnum color;
 

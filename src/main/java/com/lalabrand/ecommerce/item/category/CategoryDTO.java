@@ -6,7 +6,7 @@ import lombok.Value;
 @Value
 @Builder
 public class CategoryDTO {
-    Integer id;
+    String id;
     String name;
 
     public static CategoryDTO fromEntity(Category category) {

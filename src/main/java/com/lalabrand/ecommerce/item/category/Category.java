@@ -14,8 +14,9 @@ import java.util.Set;
 @Table(name = "category")
 public class Category {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private String id;
 
     @Column(name = "name", length = 50)
     private String name;
