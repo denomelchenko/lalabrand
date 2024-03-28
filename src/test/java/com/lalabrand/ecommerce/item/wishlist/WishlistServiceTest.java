@@ -3,7 +3,7 @@ package com.lalabrand.ecommerce.item.wishlist;
 import com.lalabrand.ecommerce.item.Item;
 import com.lalabrand.ecommerce.user.User;
 import com.lalabrand.ecommerce.user.wishlist.Wishlist;
-import com.lalabrand.ecommerce.user.wishlist.WishlistDto;
+import com.lalabrand.ecommerce.user.wishlist.WishlistDTO;
 import com.lalabrand.ecommerce.user.wishlist.WishlistRepository;
 import com.lalabrand.ecommerce.user.wishlist.WishlistService;
 
@@ -54,7 +54,7 @@ public class WishlistServiceTest {
         WishlistService wishlistService = new WishlistService(wishlistRepository);
     
         // Invoke the method being tested
-        Optional<WishlistDto> result = wishlistService.findWishlistByUserId(userId);
+        Optional<WishlistDTO> result = wishlistService.findWishlistByUserId(userId);
     
         // Verify the result
         assertTrue(result.isPresent());
@@ -78,7 +78,7 @@ public class WishlistServiceTest {
         WishlistService wishlistService = new WishlistService(wishlistRepository);
     
         // Invoke the method being tested
-        Optional<WishlistDto> result = wishlistService.findWishlistByUserId(userId);
+        Optional<WishlistDTO> result = wishlistService.findWishlistByUserId(userId);
     
         // Verify the result
         assertFalse(result.isPresent());
@@ -113,7 +113,7 @@ public class WishlistServiceTest {
         WishlistService wishlistService = new WishlistService(wishlistRepository);
     
         // Invoke the method being tested
-        Optional<WishlistDto> result = wishlistService.findWishlistByUserId(userId);
+        Optional<WishlistDTO> result = wishlistService.findWishlistByUserId(userId);
     
         // Verify the result
         assertTrue(result.isPresent());
@@ -156,7 +156,7 @@ public class WishlistServiceTest {
         WishlistService wishlistService = new WishlistService(wishlistRepository);
     
         // Invoke the method being tested
-        Optional<WishlistDto> result = wishlistService.findWishlistByUserId(userId);
+        Optional<WishlistDTO> result = wishlistService.findWishlistByUserId(userId);
     
         // Verify the result
         assertFalse(result.isPresent());

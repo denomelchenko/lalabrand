@@ -18,12 +18,12 @@ public class WishlistService {
         this.wishlistRepository = wishlistRepository;
     }
 
-    public Optional<WishlistDto> findWishlistByUserId(Integer userId) {
+    public Optional<WishlistDTO> findWishlistByUserId(Integer userId) {
         try {
             Optional<Wishlist> wishlist = wishlistRepository.findWishlistByUserId(userId);
             if (wishlist.isPresent() && wishlist.get().getItems() != null && !wishlist.get().getItems().isEmpty()) {
                 logger.info("Wishlist found for user with ID: {}", userId);
-                return wishlist.map(WishlistDto::fromEntity);
+                return wishlist.map(WishlistDTO::fromEntity);
             } else {
                 logger.info("No wishlist with items found for user with ID: {}", userId);
                 return Optional.empty();

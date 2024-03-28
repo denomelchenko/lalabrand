@@ -1,0 +1,27 @@
+package com.lalabrand.ecommerce.auth;
+
+import com.lalabrand.ecommerce.user.User;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.Instant;
+
+@Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Table(name = "refresh_token")
+public class RefreshToken {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "token")
+    private String token;
+
+    @Column(name = "expires_at")
+    private Instant expiresAt;
+
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+}
