@@ -18,7 +18,7 @@ public class WishlistService {
         this.wishlistRepository = wishlistRepository;
     }
 
-    public Optional<WishlistDTO> findWishlistByUserId(Integer userId) {
+    public Optional<WishlistDTO> findWishlistByUserId(String userId) {
         try {
             Optional<Wishlist> wishlist = wishlistRepository.findWishlistByUserId(userId);
             if (wishlist.isPresent() && wishlist.get().getItems() != null && !wishlist.get().getItems().isEmpty()) {

@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @Builder
 @Value
 public class WishlistDTO {
-    Integer id;
+    String id;
     Set<ItemDTO> items;
 
     public static WishlistDTO fromEntity(Wishlist wishlist) {

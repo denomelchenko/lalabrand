@@ -25,9 +25,9 @@ import java.util.Set;
 @Table(name = "user")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private String id;
 
     @Column(name = "first_name", length = 50)
     private String firstName;
@@ -72,7 +72,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Language language;
 
-    public User(Integer id, String email, String password) {
+    public User(String id, String email, String password) {
         this.id = id;
         this.email = email;
         this.password = password;

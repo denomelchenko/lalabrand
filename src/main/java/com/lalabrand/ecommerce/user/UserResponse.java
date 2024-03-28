@@ -13,7 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 @ToString
 public class UserResponse {
-    Integer id;
+    String id;
     Set<UserRole> userRoles;
     String email;
     String password;

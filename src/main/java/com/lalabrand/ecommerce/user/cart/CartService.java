@@ -1,5 +1,6 @@
 package com.lalabrand.ecommerce.user.cart;
 
+import com.lalabrand.ecommerce.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +15,9 @@ public class CartService {
         this.cartRepository = cartRepository;
     }
 
-    public Optional<CartDTO> findCartByUserId(final Integer userId) {
-        if (userId == null) {
-            throw new IllegalArgumentException("UserId cannot be null");
+    public Optional<CartDTO> findCartByUserId(String userId) {
+        if (CommonUtils.isIdValid(userId)) {
+            throw new IllegalArgumentException("UserId is not valid");
         }
         Optional<Cart> cart = cartRepository.findCartByUserId(userId);
         if (cart.isEmpty() || cart.get().getCartItems().isEmpty()) {
