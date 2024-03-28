@@ -2,7 +2,7 @@ type Item {
     id: ID!
     title: String!,
     shortDisc: String!,
-    longDisc: String!,
+    longDisc: String,
     rating: String,
     price: Float!,
     availableCount: Int!,

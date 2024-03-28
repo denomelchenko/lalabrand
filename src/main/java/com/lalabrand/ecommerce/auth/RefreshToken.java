@@ -2,10 +2,7 @@ package com.lalabrand.ecommerce.auth;
 
 import com.lalabrand.ecommerce.user.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.Instant;
 
@@ -17,14 +14,12 @@ import java.time.Instant;
 @Table(name = "refresh_token")
 public class RefreshToken {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "token")
     private String token;
 
-    @Column(name = "expiry_date")
-    private Instant expiryDate;
+    @Column(name = "expires_at")
+    private Instant expiresAt;
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
