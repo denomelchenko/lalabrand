@@ -9,7 +9,9 @@ import org.springframework.data.domain.PageRequest;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -39,47 +41,30 @@ public class ItemServiceTest {
         assertEquals(2, result.size());
     }
 
-    // Should return an empty list when findItemsByCategoryId is called with a null
+    // Should throw an IllegalArgumentException when findItemsByCategoryId is called with a null
     @Test
     public void test_return_empty_list_if_categoryId_is_null() {
-        List<ItemDTO> result = itemService.findItemsByCategoryId(null);
-
-        assertEquals(Collections.emptyList(), result);
+        assertThrows(IllegalArgumentException.class, () -> itemService.findItemsByCategoryId(null));
     }
 
     @Test
     public void test_return_list_of_ItemDto_if_categoryId_is_valid() {
         List<Item> items = new ArrayList<>();
         Item item = new Item();
-        item.setId(1);
+        item.setId("1");
         items.add(item);
-        when(itemRepository.findAllByCategoryId(anyInt())).thenReturn(items);
+        when(itemRepository.findItemsByCategoryId(anyString())).thenReturn(items);
 
-        List<ItemDTO> result = itemService.findItemsByCategoryId(1);
+        List<ItemDTO> result = itemService.findItemsByCategoryId("1");
 
-        assertEquals(1, result.get(0).getId());
+        assertEquals("1", result.get(0).getId());
     }
 
-    @Test
-    public void test_handle_and_return_empty_list_if_category_id_is_negative() {
-        ItemRepository itemRepository = mock(ItemRepository.class);
-        ItemService itemService = new ItemService(itemRepository);
-
-        List<ItemDTO> result = itemService.findItemsByCategoryId(-1);
-
-        assertEquals(Collections.emptyList(), result);
-    }
-
-    // should return an empty list when findItemsByTitle is called with a null or empty title
+    // should throw an IllegalArgumentException when findItemsByTitle is called with a null or empty title
     @Test
     public void test_findItemsByTitle_nullOrEmptyTitle() {
-        List<ItemDTO> result = itemService.findItemsByTitle(null);
-
-        assertEquals(Collections.emptyList(), result);
-
-        result = itemService.findItemsByTitle("");
-
-        assertEquals(Collections.emptyList(), result);
+        assertThrows(IllegalArgumentException.class, () -> itemService.findItemsByTitle(null));
+        assertThrows(IllegalArgumentException.class, () -> itemService.findItemsByTitle(""));
     }
 
     // should return a list of ItemDto when findItemsByTitle is called with a valid title
@@ -172,12 +157,12 @@ public class ItemServiceTest {
 
         List<Item> items = new ArrayList<>();
         Item item = new Item();
-        item.setId(1);
+        item.setId("1");
         items.add(item);
-        when(itemRepository.findAllByCategoryId(anyInt())).thenReturn(items);
+        when(itemRepository.findItemsByCategoryId(anyString())).thenReturn(items);
 
-        List<ItemDTO> result = itemService.findItemsByCategoryId(1);
+        List<ItemDTO> result = itemService.findItemsByCategoryId("1");
 
-        assertEquals(1, result.get(0).getId());
+        assertEquals("1", result.get(0).getId());
     }
 }
