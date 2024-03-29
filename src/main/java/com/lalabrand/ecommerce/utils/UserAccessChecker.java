@@ -2,7 +2,6 @@ package com.lalabrand.ecommerce.utils;
 
 import com.lalabrand.ecommerce.user.User;
 import com.lalabrand.ecommerce.user.UserRepository;
-import com.lalabrand.ecommerce.user.UserService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
