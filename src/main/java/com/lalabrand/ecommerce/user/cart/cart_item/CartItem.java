@@ -5,6 +5,7 @@ import com.lalabrand.ecommerce.item.item_info.ItemInfo;
 import com.lalabrand.ecommerce.item.size.Size;
 import com.lalabrand.ecommerce.user.cart.Cart;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
@@ -37,5 +38,4 @@ public class CartItem {
 
     @Column(name = "count")
     private Integer count;
-
 }

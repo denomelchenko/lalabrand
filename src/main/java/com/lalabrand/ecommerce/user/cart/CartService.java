@@ -16,7 +16,7 @@ public class CartService {
     }
 
     public Optional<CartDTO> findCartByUserId(String userId) {
-        if (CommonUtils.isIdValid(userId)) {
+        if (CommonUtils.isIdInValid(userId)) {
             throw new IllegalArgumentException("UserId is not valid");
         }
         Optional<Cart> cart = cartRepository.findCartByUserId(userId);
