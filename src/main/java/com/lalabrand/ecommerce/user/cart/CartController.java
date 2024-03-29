@@ -1,12 +1,10 @@
 package com.lalabrand.ecommerce.user.cart;
 
 import com.lalabrand.ecommerce.user.User;
-import com.lalabrand.ecommerce.user.UserService;
 import com.lalabrand.ecommerce.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 

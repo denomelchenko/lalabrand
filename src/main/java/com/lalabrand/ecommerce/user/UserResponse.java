@@ -14,7 +14,5 @@ import java.util.Set;
 @ToString
 public class UserResponse {
     String id;
-    Set<UserRole> userRoles;
     String email;
-    String password;
 }
