@@ -16,7 +16,7 @@ public class CommonUtils {
     }
 
     public static boolean isIdInValid(String id) {
-        return id.isEmpty() || id.length() > 36;
+        return id == null || id.isEmpty() || id.length() > 36;
     }
 
     public Optional<User> getCurrentUser() {
