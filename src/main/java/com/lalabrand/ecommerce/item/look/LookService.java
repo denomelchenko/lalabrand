@@ -15,19 +15,14 @@ public class LookService {
 
     public LookDTO findLook(Optional<String> previousLookId) {
         if (previousLookId.isPresent()) {
-            Optional<Look> previousLook = lookRepository.findById(previousLookId.get());
-            if (previousLook.isPresent()) {
-                Optional<Look> nextLook = lookRepository.findFirstByCreatedAtAfterOrderByCreatedAt(previousLook.get().getCreatedAt());
-                if (nextLook.isPresent()) {
-                    return LookDTO.fromEntity(nextLook.get());
-                } else {
-                    throw new EntityNotFoundException("Look with ID: " + previousLookId.get() + " is at the end of the table");
-                }
+            Optional<Look> nextLook = lookRepository.findFirstByIdGreaterThan(previousLookId.get());
+            if (nextLook.isPresent()) {
+                return LookDTO.fromEntity(nextLook.get());
             } else {
-                throw new EntityNotFoundException("Look with ID: " + previousLookId.get() + " is not exist");
+                throw new EntityNotFoundException("Look with ID: " + previousLookId.get() + " is at the end of the table");
             }
         } else {
-            Optional<Look> firstLook = lookRepository.findFirstByOrderByCreatedAt();
+            Optional<Look> firstLook = lookRepository.findFirstByOrderByIdAsc();
             if (firstLook.isPresent()) {
                 return LookDTO.fromEntity(firstLook.get());
             } else {
