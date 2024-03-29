@@ -1,4 +1,4 @@
-package com.lalabrand.ecommerce.auth;
+package com.lalabrand.ecommerce.auth.jwt_token;
 
 import lombok.Getter;
 import lombok.Setter;

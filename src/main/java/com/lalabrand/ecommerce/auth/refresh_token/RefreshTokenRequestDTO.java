@@ -1,4 +1,4 @@
-package com.lalabrand.ecommerce.auth;
+package com.lalabrand.ecommerce.auth.refresh_token;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
