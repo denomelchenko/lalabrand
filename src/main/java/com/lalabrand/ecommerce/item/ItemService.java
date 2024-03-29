@@ -32,11 +32,10 @@ public class ItemService {
     }
 
     public List<ItemDTO> findItemsByCategoryId(String categoryId) {
-        if (CommonUtils.isIdValid(categoryId)) {
+        if (CommonUtils.isIdInValid(categoryId)) {
             throw new IllegalArgumentException("Id is invalid");
         }
-
-        return convertToItemDtoList(itemRepository.findAllByCategoryId(categoryId));
+        return convertToItemDtoList(itemRepository.findItemsByCategoryId(categoryId));
     }
 
     private List<ItemDTO> convertToItemDtoList(List<Item> items) {
