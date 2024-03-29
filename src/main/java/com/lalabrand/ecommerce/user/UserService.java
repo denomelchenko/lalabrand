@@ -58,7 +58,7 @@ public class UserService {
             }
         } else if (userRepository.findByEmail(userRequest.getEmail()).isPresent()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "User already exist");
-        } else{
+        } else {
             userRoleRepository.save(new UserRole(Role.USER, user));
             savedUser = userRepository.save(user);
         }

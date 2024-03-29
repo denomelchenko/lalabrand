@@ -38,4 +38,11 @@ public class CartItem {
 
     @Column(name = "count")
     private Integer count;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "cart_id", nullable = false)
+    private Cart cart;
+
 }

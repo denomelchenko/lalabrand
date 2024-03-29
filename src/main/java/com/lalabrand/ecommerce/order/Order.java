@@ -1,9 +1,9 @@
 package com.lalabrand.ecommerce.order;
 
 import com.lalabrand.ecommerce.item.enums.Currency;
+import com.lalabrand.ecommerce.order.ordered_item.OrderedItem;
 import com.lalabrand.ecommerce.order.shipping.ShippingInfo;
 import com.lalabrand.ecommerce.user.User;
-import com.lalabrand.ecommerce.order.ordered_item.OrderedItem;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

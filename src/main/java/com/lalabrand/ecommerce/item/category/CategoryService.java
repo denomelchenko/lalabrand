@@ -1,13 +1,11 @@
 package com.lalabrand.ecommerce.item.category;
 
-import com.lalabrand.ecommerce.user.wishlist.WishlistService;
 import com.lalabrand.ecommerce.utils.CommonUtils;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -41,7 +39,7 @@ public class CategoryService {
     }
 
     public Optional<CategoryDTO> findCategoryById(String id) {
-        if (!CommonUtils.isIdInValid(id)) {
+        if (CommonUtils.isIdInValid(id)) {
             throw new IllegalArgumentException("Id is invalid");
         }
         Optional<Category> categoryEntityOptional = categoryRepository.findById(id);

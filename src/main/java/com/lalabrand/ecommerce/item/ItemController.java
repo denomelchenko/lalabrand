@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Controller
 public class ItemController {
@@ -17,10 +16,10 @@ public class ItemController {
         this.itemService = itemService;
     }
 
-        @QueryMapping(name = "itemsByCategoryId")
-        public List<ItemDTO> findItemsByCategoryId(@Argument String categoryId) {
-            return itemService.findItemsByCategoryId(categoryId);
-        }
+    @QueryMapping(name = "itemsByCategoryId")
+    public List<ItemDTO> findItemsByCategoryId(@Argument String categoryId) {
+        return itemService.findItemsByCategoryId(categoryId);
+    }
 
     @QueryMapping(name = "bestSellers")
     public List<ItemDTO> findBestSellers(@Argument Optional<Integer> limit) {

@@ -3,7 +3,9 @@ package com.lalabrand.ecommerce.user.role;
 import com.lalabrand.ecommerce.user.User;
 import com.lalabrand.ecommerce.user.enums.Role;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
