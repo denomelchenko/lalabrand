@@ -12,8 +12,8 @@ import java.util.List;
 
 public class UserDetailsImpl extends User implements UserDetails {
     private final String password;
-    Collection<? extends GrantedAuthority> authorities;
     private final String username;
+    Collection<? extends GrantedAuthority> authorities;
 
     public UserDetailsImpl(User user) {
         this.username = user.getEmail();
