@@ -25,7 +25,7 @@ CREATE TABLE `category`
 
 CREATE TABLE `item`
 (
-    `id`              VARCHAR(36) PRIMARY KEY,
+    `id`              VARCHAR(36) PRIMARY KEY             NOT NULL,
     `title`           VARCHAR(255)                        NOT NULL,
     `short_disc`      VARCHAR(255)                        NOT NULL,
     `long_disc`       VARCHAR(255),
@@ -57,8 +57,10 @@ CREATE TABLE `user_roles`
     `id`      VARCHAR(36) PRIMARY KEY,
     `role`    ENUM ('ADMIN', 'USER') NOT NULL,
     `user_id` VARCHAR(36),
-    FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+    UNIQUE (`user_id`, `role`)
 );
+
 
 CREATE TABLE `cart`
 (
@@ -69,10 +71,11 @@ CREATE TABLE `cart`
 
 CREATE TABLE `item_info`
 (
-    `id`      VARCHAR(36) PRIMARY KEY,
-    `color`   ENUM ('WHITE', 'BLACK', 'GREY', 'YELLOW', 'RED', 'BLUE', 'GREEN', 'BROWN', 'PINK', 'ORANGE', 'PURPLE') NOT NULL,
-    `image`   VARCHAR(255)                                                                                           NOT NULL,
-    `item_id` VARCHAR(36),
+    `id`                 VARCHAR(36) PRIMARY KEY,
+    `color`              ENUM ('WHITE', 'BLACK', 'GREY', 'YELLOW', 'RED', 'BLUE', 'GREEN', 'BROWN', 'PINK', 'ORANGE', 'PURPLE') NOT NULL,
+    `image`              VARCHAR(255)                                                                                           NOT NULL,
+    `item_id`            VARCHAR(36)                                                                                            NOT NULL,
+    `is_color_available` BOOLEAN                                                                                                NOT NULL,
     FOREIGN KEY (`item_id`) REFERENCES `item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -199,14 +202,6 @@ CREATE TABLE `item_sizes`
     `item_id` VARCHAR(36),
     PRIMARY KEY (`size_id`, `item_id`),
     FOREIGN KEY (`size_id`) REFERENCES `size` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (`item_id`) REFERENCES `item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
-CREATE TABLE `available_colors`
-(
-    `id`      VARCHAR(36) PRIMARY KEY,
-    `color`   ENUM ('WHITE', 'BLACK', 'GREY', 'YELLOW', 'RED', 'BLUE', 'GREEN', 'BROWN', 'PINK', 'ORANGE', 'PURPLE') NOT NULL,
-    `item_id` VARCHAR(36),
     FOREIGN KEY (`item_id`) REFERENCES `item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
