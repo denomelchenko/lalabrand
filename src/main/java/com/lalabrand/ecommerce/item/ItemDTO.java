@@ -1,6 +1,11 @@
 package com.lalabrand.ecommerce.item;
 
-import lombok.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.Value;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -14,6 +19,8 @@ import java.math.BigDecimal;
 @Builder
 public class ItemDTO implements Serializable {
     String id;
+    @NotNull
+    @NotBlank
     String title;
     String shortDisc;
     String longDisc;
