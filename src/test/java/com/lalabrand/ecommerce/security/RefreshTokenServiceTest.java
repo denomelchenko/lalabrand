@@ -1,8 +1,8 @@
-package com.lalabrand.ecommerce.auth;
+package com.lalabrand.ecommerce.security;
 
-import com.lalabrand.ecommerce.auth.refresh_token.RefreshToken;
-import com.lalabrand.ecommerce.auth.refresh_token.RefreshTokenRepository;
-import com.lalabrand.ecommerce.auth.refresh_token.RefreshTokenService;
+import com.lalabrand.ecommerce.security.refresh_token.RefreshToken;
+import com.lalabrand.ecommerce.security.refresh_token.RefreshTokenRepository;
+import com.lalabrand.ecommerce.security.refresh_token.RefreshTokenService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
