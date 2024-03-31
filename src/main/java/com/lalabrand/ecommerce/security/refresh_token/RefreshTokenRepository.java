@@ -1,4 +1,4 @@
-package com.lalabrand.ecommerce.auth.refresh_token;
+package com.lalabrand.ecommerce.security.refresh_token;
 
 import com.lalabrand.ecommerce.user.User;
 import org.springframework.data.repository.CrudRepository;
