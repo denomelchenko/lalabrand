@@ -1,5 +1,6 @@
 package com.lalabrand.ecommerce.utils;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailSenderService {
     private final JavaMailSender javaMailSender;
+    @Value("${spring.mail.username}")
+    private String mailUsername;
 
     public EmailSenderService(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
@@ -20,7 +23,7 @@ public class EmailSenderService {
         SimpleMailMessage message = new SimpleMailMessage();
 
         message.setTo(to);
-        message.setFrom("lalabrand.info@gmail.com");
+        message.setFrom(mailUsername);
         message.setSubject(subject);
         message.setText(text);
 
