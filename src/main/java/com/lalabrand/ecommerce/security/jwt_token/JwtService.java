@@ -1,6 +1,5 @@
-package com.lalabrand.ecommerce.auth.jwt_token;
+package com.lalabrand.ecommerce.security.jwt_token;
 
-import com.lalabrand.ecommerce.auth.jwt_token.JwtToken;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

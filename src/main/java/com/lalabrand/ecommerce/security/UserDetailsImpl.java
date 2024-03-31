@@ -1,4 +1,4 @@
-package com.lalabrand.ecommerce.auth;
+package com.lalabrand.ecommerce.security;
 
 import com.lalabrand.ecommerce.user.User;
 import com.lalabrand.ecommerce.user.role.UserRole;

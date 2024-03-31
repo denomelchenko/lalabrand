@@ -1,4 +1,4 @@
-package com.lalabrand.ecommerce.auth;
+package com.lalabrand.ecommerce.security;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

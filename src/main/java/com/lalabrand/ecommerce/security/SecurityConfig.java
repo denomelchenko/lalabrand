@@ -1,4 +1,4 @@
-package com.lalabrand.ecommerce.auth;
+package com.lalabrand.ecommerce.security;
 
 import com.lalabrand.ecommerce.filter.CsrfCookieFilter;
 import com.lalabrand.ecommerce.filter.JwtAuthFilter;
