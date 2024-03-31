@@ -1,10 +1,11 @@
 package com.lalabrand.ecommerce.user;
 
-import com.lalabrand.ecommerce.auth.*;
-import com.lalabrand.ecommerce.auth.jwt_token.JwtService;
-import com.lalabrand.ecommerce.auth.refresh_token.RefreshToken;
-import com.lalabrand.ecommerce.auth.refresh_token.RefreshTokenRequestDTO;
-import com.lalabrand.ecommerce.auth.refresh_token.RefreshTokenService;
+import com.lalabrand.ecommerce.security.AuthRequestDTO;
+import com.lalabrand.ecommerce.security.JwtResponseDTO;
+import com.lalabrand.ecommerce.security.jwt_token.JwtService;
+import com.lalabrand.ecommerce.security.refresh_token.RefreshToken;
+import com.lalabrand.ecommerce.security.refresh_token.RefreshTokenRequestDTO;
+import com.lalabrand.ecommerce.security.refresh_token.RefreshTokenService;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,6 +14,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
+
+import java.nio.file.AccessDeniedException;
 
 @Controller
 public class UserController {
@@ -29,12 +32,8 @@ public class UserController {
     }
 
     @MutationMapping(name = "user")
-    public UserResponse saveUser(@Validated @Argument UserRequest userRequest) {
-        try {
-            return userService.saveUser(userRequest);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    public UserResponse saveUser(@Validated @Argument UserRequest userRequest) throws AccessDeniedException {
+        return userService.saveUser(userRequest);
     }
 
     @MutationMapping(name = "login")

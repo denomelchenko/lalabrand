@@ -1,8 +1,8 @@
 package com.lalabrand.ecommerce.filter;
 
-import com.lalabrand.ecommerce.auth.jwt_token.JwtService;
-import com.lalabrand.ecommerce.auth.jwt_token.JwtToken;
-import com.lalabrand.ecommerce.auth.UserDetailsServiceImpl;
+import com.lalabrand.ecommerce.security.jwt_token.JwtService;
+import com.lalabrand.ecommerce.security.jwt_token.JwtToken;
+import com.lalabrand.ecommerce.security.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
