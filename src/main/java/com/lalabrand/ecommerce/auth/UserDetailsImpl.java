@@ -13,10 +13,10 @@ import java.util.List;
 public class UserDetailsImpl extends User implements UserDetails {
     private final String password;
     Collection<? extends GrantedAuthority> authorities;
-    private final String username;
+    private final String email;
 
     public UserDetailsImpl(User user) {
-        this.username = user.getEmail();
+        this.email = user.getEmail();
         this.password = user.getPassword();
         List<GrantedAuthority> auths = new ArrayList<>();
 
@@ -38,7 +38,7 @@ public class UserDetailsImpl extends User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return email;
     }
 
     @Override

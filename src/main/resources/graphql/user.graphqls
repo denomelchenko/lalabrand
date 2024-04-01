@@ -17,7 +17,6 @@ input UserRequest  {
 
 type UserResponse {
     id: ID!
-    password: String!
     email: String!
     userRoles: [UserRole!]!
 }
@@ -29,7 +28,7 @@ type UserRole {
 
 type JwtResponse {
     accessToken: String!
-    token: String!
+    refreshToken: String!
 }
 
 input RefreshTokenRequest {
