@@ -21,6 +21,6 @@ public class UserRequest {
     @Email(message = "Invalid email address")
     String email;
 
-    Integer id;
+    String id;
 }
 

@@ -3,7 +3,9 @@ package com.lalabrand.ecommerce.user.role;
 import com.lalabrand.ecommerce.user.User;
 import com.lalabrand.ecommerce.user.enums.Role;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -14,9 +16,9 @@ import org.hibernate.annotations.OnDeleteAction;
 @Table(name = "user_roles")
 public class UserRole {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private String id;
 
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
