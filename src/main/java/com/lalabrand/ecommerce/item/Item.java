@@ -1,11 +1,11 @@
 package com.lalabrand.ecommerce.item;
 
 import com.lalabrand.ecommerce.item.available_color.AvailableColor;
+import com.lalabrand.ecommerce.item.category.Category;
 import com.lalabrand.ecommerce.item.item_comment.ItemComment;
 import com.lalabrand.ecommerce.item.look.Look;
 import com.lalabrand.ecommerce.item.size.Size;
 import com.lalabrand.ecommerce.order.ordered_item.OrderedItem;
-import com.lalabrand.ecommerce.item.category.Category;
 import com.lalabrand.ecommerce.user.wishlist.Wishlist;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -64,19 +64,13 @@ public class Item {
     private Integer soldCount;
 
     @Column(name = "created_at", nullable = false)
-    private Instant createdAt;
 
+    private Instant createdAt;
     @OneToMany(mappedBy = "item")
     private Set<ItemComment> itemComments;
 
     @OneToMany(mappedBy = "item")
     private Set<OrderedItem> orderedItems;
-
-    @ManyToMany
-    @JoinTable(name = "item_sizes",
-            joinColumns = @JoinColumn(name = "item_id"),
-            inverseJoinColumns = @JoinColumn(name = "size_id"))
-    Set<Size> sizes;
 
     @ManyToMany(mappedBy = "items")
     private Set<Wishlist> wishlists;
@@ -84,7 +78,19 @@ public class Item {
     @ManyToMany(mappedBy = "items")
     private Set<Look> looks;
 
+    @ManyToMany
+    @JoinTable(name = "item_sizes",
+            joinColumns = @JoinColumn(name = "item_id"),
+            inverseJoinColumns = @JoinColumn(name = "size_id"))
+    Set<Size> sizes;
+
     @OneToOne(mappedBy = "item")
     private AvailableColor availableColors;
 
+    @PrePersist
+    public void prePersist() {
+        if (createdAt == null) {
+            createdAt = Instant.now();
+        }
+    }
 }

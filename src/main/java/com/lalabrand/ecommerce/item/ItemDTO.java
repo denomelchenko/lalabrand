@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Builder
-public class ItemDto implements Serializable {
+public class ItemDTO implements Serializable {
     Integer id;
     String title;
     String shortDisc;
@@ -24,8 +24,8 @@ public class ItemDto implements Serializable {
     String image;
     Integer soldCount;
 
-    public static ItemDto fromEntity(Item item) {
-        return ItemDto.builder()
+    public static ItemDTO fromEntity(Item item) {
+        return ItemDTO.builder()
                 .id(item.getId())
                 .title(item.getTitle())
                 .shortDisc(item.getShortDisc())
