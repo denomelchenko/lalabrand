@@ -42,19 +42,19 @@ public class UserService {
         User user = new User(userRequest.getId(), userRequest.getEmail(), userRequest.getPassword());
         user.setPassword(new BCryptPasswordEncoder().encode(userRequest.getPassword()));
         if (userRequest.getId() != null) {
-            if (userAccessChecker.isCurrentUserEqualsId(userRequest.getId())) {
+            if (userAccessChecker.isCurrentUserOwnerOfId(userRequest.getId())) {
                 Optional<User> existedUser = userRepository.findById(userRequest.getId());
                 if (existedUser.isPresent()) {
                     user.setId(user.getId());
                     user.setPassword(user.getPassword());
                     user.setEmail(user.getEmail());
 
-                    savedUser = userRepository.save(existedUser.get());
+                    savedUser = userRepository.save(user);
                 } else {
                     throw new IllegalArgumentException("Can not find user with id: " + userRequest.getId());
                 }
             } else {
-                throw new AccessDeniedException("You have not permission for this");
+                throw new AccessDeniedException("You have not authorized for this action");
             }
         } else if (userRepository.findByEmail(userRequest.getEmail()).isPresent()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "User already exist");
