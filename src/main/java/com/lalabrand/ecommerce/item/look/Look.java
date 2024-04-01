@@ -3,39 +3,43 @@ package com.lalabrand.ecommerce.item.look;
 import com.lalabrand.ecommerce.item.Item;
 import com.lalabrand.ecommerce.item.enums.Gender;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @Entity
 @Table(name = "look")
 public class Look {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "gender", nullable = false)
     @Enumerated(EnumType.STRING)
+    @Column(name = "gender", nullable = false)
     private Gender gender;
 
     @Column(name = "image", nullable = false)
     private String image;
 
+    @Column(name = "created_at")
+    private Instant createdAt;
+
     @ManyToMany
     @JoinTable(name = "look_item",
             joinColumns = @JoinColumn(name = "look_id"),
             inverseJoinColumns = @JoinColumn(name = "item_id"))
-    private Set<Item> items;
+    private Set<Item> items = new LinkedHashSet<>();
 
-    @Column(name = "created_at", nullable = false)
-    private Instant createdAt;
-
+    @PrePersist
+    public void prePersist() {
+        if (createdAt == null) {
+            createdAt = Instant.now();
+        }
+    }
 }

@@ -9,13 +9,13 @@ import lombok.Value;
  */
 @Value
 @Builder
-public class SizeDto {
+public class SizeDTO {
     Integer id;
     SizeType sizeType;
     String value;
 
-    public static SizeDto fromEntity(Size size) {
-        return SizeDto.builder()
+    public static SizeDTO fromEntity(Size size) {
+        return SizeDTO.builder()
                 .id(size.getId())
                 .sizeType(size.getSizeType())
                 .value(size.getValue())
