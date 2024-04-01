@@ -1,7 +1,7 @@
 package com.lalabrand.ecommerce.filter;
 
+import com.lalabrand.ecommerce.auth.JwtPayload;
 import com.lalabrand.ecommerce.auth.JwtService;
-import com.lalabrand.ecommerce.auth.JwtToken;
 import com.lalabrand.ecommerce.auth.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -34,16 +34,16 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
-        JwtToken jwtToken = null;
+        JwtPayload jwtPayload = null;
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            jwtToken = jwtService.parseToken(authHeader.substring(7));
+            jwtPayload = jwtService.parseToken(authHeader.substring(7));
         }
 
-        if (jwtToken != null && jwtToken.getSubject() != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(jwtToken.getSubject());
-            if (jwtService.validateToken(jwtToken, userDetails)) {
+        if (jwtPayload != null && jwtPayload.getEmail() != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = userDetailsService.loadUserByUsername(jwtPayload.getEmail());
+            if (jwtService.validateToken(jwtPayload, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        jwtToken.getSubject(),
+                        jwtPayload.getEmail(),
                         null,
                         userDetails.getAuthorities()
                 );

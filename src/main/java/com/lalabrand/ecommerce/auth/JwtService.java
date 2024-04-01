@@ -1,9 +1,7 @@
 package com.lalabrand.ecommerce.auth;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,27 +12,31 @@ import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 @Component
 public class JwtService {
+    private static final Integer MILLIS_IN_SECOND = 1000;
     @Value("${secret}")
     private String key;
+
+    private byte[] decodedKey;
 
     @Value("${access.token.expiration.seconds}")
     private Long accessTokenExpirationSec;
 
-    public boolean validateToken(JwtToken jwtToken, UserDetails userDetails) {
-        return (!isNotExpired(jwtToken) && jwtToken.getSubject().equals(userDetails.getUsername()));
+    public boolean validateToken(JwtPayload jwtPayload, UserDetails userDetails) {
+        return (!isNotExpired(jwtPayload) && jwtPayload.getEmail().equals(userDetails.getUsername()));
     }
 
-    private boolean isNotExpired(JwtToken token) {
+    private boolean isNotExpired(JwtPayload token) {
         return token.getExpirationDate().before(new Date());
     }
 
     private SecretKey getKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(key);
-        return Keys.hmacShaKeyFor(keyBytes);
+        if (decodedKey == null) {
+            decodedKey = Decoders.BASE64.decode(key);
+        }
+        return Keys.hmacShaKeyFor(decodedKey);
     }
 
     public String generateToken(String email) {
@@ -43,16 +45,17 @@ public class JwtService {
     }
 
     private String createToken(Map<String, Object> claims, String email) {
+        Date currentDate = new Date();
         return Jwts.builder()
                 .claims(claims)
                 .subject(email)
-                .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + accessTokenExpirationSec * 1000))
-                .signWith(getKey(), SignatureAlgorithm.HS256)
+                .issuedAt(currentDate)
+                .expiration(new Date(currentDate.getTime() + accessTokenExpirationSec * MILLIS_IN_SECOND))
+                .signWith(getKey(), Jwts.SIG.HS256)
                 .compact();
     }
 
-    public JwtToken parseToken(String token) {
+    public JwtPayload parseToken(String token) {
         Claims claims = Jwts.parser()
                 .verifyWith(getKey())
                 .build()
@@ -62,6 +65,6 @@ public class JwtService {
         String subject = claims.getSubject();
         Date expirationDate = claims.getExpiration();
 
-        return new JwtToken(subject, expirationDate, token);
+        return new JwtPayload(subject, expirationDate);
     }
 }
