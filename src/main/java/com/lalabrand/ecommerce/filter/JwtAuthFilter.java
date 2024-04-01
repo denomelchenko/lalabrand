@@ -2,6 +2,7 @@ package com.lalabrand.ecommerce.filter;
 
 import com.lalabrand.ecommerce.auth.JwtPayload;
 import com.lalabrand.ecommerce.auth.JwtService;
+import com.lalabrand.ecommerce.auth.UserDetailsImpl;
 import com.lalabrand.ecommerce.auth.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -10,7 +11,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -40,7 +40,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         if (jwtPayload != null && jwtPayload.getEmail() != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(jwtPayload.getEmail());
+            UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsService.loadUserByUsername(jwtPayload.getEmail());
+
             if (jwtService.validateToken(jwtPayload, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         jwtPayload.getEmail(),
