@@ -16,5 +16,4 @@ public class UserResponse {
     Integer id;
     Set<UserRole> userRoles;
     String email;
-    String password;
 }

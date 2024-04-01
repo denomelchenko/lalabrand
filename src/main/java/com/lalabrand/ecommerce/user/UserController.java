@@ -3,7 +3,6 @@ package com.lalabrand.ecommerce.user;
 import com.lalabrand.ecommerce.auth.*;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -44,7 +43,7 @@ public class UserController {
                     userService.findByEmail(authRequest.getEmail()).get()
             );
             return JwtResponseDTO.builder()
-                    .token(refreshToken.getToken())
+                    .refreshToken(refreshToken.getToken())
                     .accessToken(jwtService.generateToken(authRequest.getEmail()))
                     .build();
         } else {
@@ -61,7 +60,7 @@ public class UserController {
                     String accessToken = jwtService.generateToken(user.getEmail());
                     return JwtResponseDTO.builder()
                             .accessToken(accessToken)
-                            .token(refreshTokenRequest.getToken()).build();
+                            .refreshToken(refreshTokenRequest.getToken()).build();
                 }).orElseThrow(() -> new RuntimeException("Refresh token is not valid"));
     }
 }
