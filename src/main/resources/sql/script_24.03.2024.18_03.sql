@@ -4,7 +4,7 @@ CREATE DATABASE lalabrand;
 
 USE lalabrand;
 
-CREATE TABLE your_table_name
+CREATE TABLE user
 (
     `id`         INTEGER PRIMARY KEY AUTO_INCREMENT,
     `first_name` VARCHAR(255),
