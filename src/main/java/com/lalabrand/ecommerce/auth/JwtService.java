@@ -5,7 +5,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -24,8 +23,8 @@ public class JwtService {
     @Value("${access.token.expiration.seconds}")
     private Long accessTokenExpirationSec;
 
-    public boolean validateToken(JwtPayload jwtPayload, UserDetails userDetails) {
-        return (!isNotExpired(jwtPayload) && jwtPayload.getEmail().equals(userDetails.getUsername()));
+    public boolean validateToken(JwtPayload jwtPayload, UserDetailsImpl userDetails) {
+        return (!isNotExpired(jwtPayload) && jwtPayload.getId().equals(userDetails.getId()) && jwtPayload.getEmail().equals(userDetails.getUsername()));
     }
 
     private boolean isNotExpired(JwtPayload token) {
@@ -39,8 +38,9 @@ public class JwtService {
         return Keys.hmacShaKeyFor(decodedKey);
     }
 
-    public String generateToken(String email) {
+    public String generateToken(String email, Integer id) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("id", id);
         return createToken(claims, email);
     }
 
@@ -62,9 +62,10 @@ public class JwtService {
                 .parseSignedClaims(token)
                 .getPayload();
 
+        Integer id = (Integer) claims.get("id");
         String subject = claims.getSubject();
         Date expirationDate = claims.getExpiration();
 
-        return new JwtPayload(subject, expirationDate);
+        return new JwtPayload(id, subject, expirationDate);
     }
 }
