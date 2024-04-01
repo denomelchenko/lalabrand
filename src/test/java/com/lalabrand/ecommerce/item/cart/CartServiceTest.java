@@ -36,7 +36,7 @@ public class CartServiceTest {
         Item item = new Item();
 
         cartWithItems = new Cart();
-        item.setId(1);
+        item.setId("1");
         item.setTitle("Stylish Backpack");
         item.setShortDisc("Perfect for everyday adventures.");
         item.setLongDisc("This versatile backpack features spacious compartments, padded straps for comfort, and a sleek design.");
@@ -48,7 +48,7 @@ public class CartServiceTest {
         item.setSoldCount(2);
         item.setCreatedAt(Instant.now());
         Cart cart = new Cart();
-        cart.setId(1);
+        cart.setId("1");
         Set<CartItem> cartItems = new HashSet<>();
 
         ItemInfo itemInfo = new ItemInfo();
@@ -57,7 +57,7 @@ public class CartServiceTest {
         itemInfo.setImage("path/to/blue_item_image.jpg");
 
         Size size = new Size();
-        size.setId(1);
+        size.setId("1");
         size.setValue("XL");
         size.setSizeType(SizeType.CLOTHES);
 
@@ -66,7 +66,7 @@ public class CartServiceTest {
         cartItem.setItemInfo(itemInfo);
         cartItems.add(cartItem);
         cartItem.setSize(size);
-        cartWithItems.setId(1);
+        cartWithItems.setId("1");
         cartWithItems.setCartItems(cartItems);
     }
 
@@ -79,9 +79,9 @@ public class CartServiceTest {
     // Should return CartDto when userId is valid and cart exists
     @Test
     public void test_return_cartDto_when_userId_valid_and_cart_exists() {
-        Integer userId = 1;
+        String userId = "1";
 
-        when(cartRepository.findCartByUserId(1)).thenReturn(Optional.of(cartWithItems));
+        when(cartRepository.findCartByUserId("1")).thenReturn(Optional.of(cartWithItems));
 
         // Act
         CartDTO result = cartService.findCartByUserId(userId).get();
@@ -96,7 +96,7 @@ public class CartServiceTest {
     @Test
     public void test_throw_IllegalArgumentException_when_userId_null() {
         // Arrange
-        Integer userId = null;
+        String userId = null;
 
         // Act & Assert
         assertThrows(IllegalArgumentException.class, () -> cartService.findCartByUserId(userId));
@@ -106,7 +106,7 @@ public class CartServiceTest {
     @Test
     public void test_return_empty_CartDto_when_cart_exists_but_has_no_cartItems() {
         // Arrange
-        Integer userId = 1;
+        String userId = "1";
         when(cartRepository.findCartByUserId(userId)).thenReturn(Optional.empty());
 
         // Act
@@ -120,7 +120,7 @@ public class CartServiceTest {
     @Test
     public void test_return_empty_CartDto_when_cart_not_exist_for_userId() {
         // Arrange
-        Integer userId = 1;
+        String userId = "1";
         when(cartRepository.findCartByUserId(userId)).thenReturn(Optional.empty());
 
         // Act
@@ -136,7 +136,7 @@ public class CartServiceTest {
     @Test
     public void test_handle_case_when_CartRepository_returns_null_instead_of_Optional_empty() {
         // Arrange
-        Integer userId = 1;
+        String userId = "1";
         when(cartRepository.findCartByUserId(userId)).thenReturn(null);
 
         // Act & Assert
@@ -147,7 +147,7 @@ public class CartServiceTest {
     @Test
     public void test_handle_case_when_CartRepository_throws_exception() {
         // Arrange
-        Integer userId = 1;
+        String userId = "1";
         when(cartRepository.findCartByUserId(userId)).thenThrow(new RuntimeException());
 
         // Act & Assert

@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ItemRepository extends JpaRepository<Item, Integer> {
-    List<Item> findAllByCategoryId(Integer categoryId);
+public interface ItemRepository extends JpaRepository<Item, String> {
+    List<Item> findItemsByCategoryId(String categoryId);
 
     List<Item> findItemsByOrderBySoldCountDesc(Pageable pageable);
 

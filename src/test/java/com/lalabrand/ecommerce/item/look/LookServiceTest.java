@@ -34,11 +34,11 @@ public class LookServiceTest {
     @Test
     public void test_return_first_LookDto_when_no_previousLookId_provided() {
         Look look = new Look();
-        look.setId(1);
+        look.setId("1");
         look.setImage("image");
         Set<Item> items = new HashSet<>();
         Item item = new Item();
-        item.setId(1);
+        item.setId("1");
         item.setTitle("item");
         items.add(item);
         look.setItems(items);
@@ -59,21 +59,21 @@ public class LookServiceTest {
     @Test
     public void test_return_next_LookDto_when_previousLookId_provided() {
         Look look = new Look();
-        look.setId(1);
+        look.setId("1");
         look.setImage("image");
         Set<Item> items = new HashSet<>();
         Item item = new Item();
-        item.setId(1);
+        item.setId("1");
         item.setTitle("item");
         items.add(item);
         look.setItems(items);
 
-        when(lookRepository.findFirstByIdGreaterThan(1)).thenReturn(Optional.of(look));
+        when(lookRepository.findFirstByIdGreaterThan("1")).thenReturn(Optional.of(look));
 
         look.setItems(items);
         LookDTO expectedLookDto = LookDTO.fromEntity(look);
 
-        LookDTO result = lookService.findLook(Optional.of(1));
+        LookDTO result = lookService.findLook(Optional.of("1"));
 
         assertEquals(expectedLookDto.getId(), result.getId());
         assertEquals(expectedLookDto.getImage(), result.getImage());
@@ -84,7 +84,7 @@ public class LookServiceTest {
     @Test
     public void test_throw_EntityNotFoundException_when_database_empty() {
         assertThrows(EntityNotFoundException.class, () -> {
-            lookService.findLook(Optional.of(1));
+            lookService.findLook(Optional.of("1"));
         });
     }
 }

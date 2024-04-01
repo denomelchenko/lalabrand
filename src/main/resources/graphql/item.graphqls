@@ -14,5 +14,5 @@ type Item {
 extend type Query {
     bestSellers(limit: Int): [Item!]!,
     itemsByTitle(title: String!): [Item!]!,
-    itemsByCategoryId(categoryId: Int!): [Item!]!
+    itemsByCategoryId(categoryId: ID!): [Item!]!
 }

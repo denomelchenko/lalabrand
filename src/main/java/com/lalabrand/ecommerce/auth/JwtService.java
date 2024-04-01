@@ -38,7 +38,7 @@ public class JwtService {
         return Keys.hmacShaKeyFor(decodedKey);
     }
 
-    public String generateToken(String email, Integer id) {
+    public String generateToken(String email, String id) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", id);
         return createToken(claims, email);
@@ -62,7 +62,7 @@ public class JwtService {
                 .parseSignedClaims(token)
                 .getPayload();
 
-        Integer id = (Integer) claims.get("id");
+        String id = (String) claims.get("id");
         String subject = claims.getSubject();
         Date expirationDate = claims.getExpiration();
 

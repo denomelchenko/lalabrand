@@ -33,8 +33,8 @@ public class CategoryServiceTest {
     public void test_findAllCategory_validData() {
         // Arrange
         List<Category> categories = new LinkedList<>();
-        categories.add(new Category(1, "Category 1", null));
-        categories.add(new Category(2, "Category 2", null));
+        categories.add(new Category("1", "Category 1", null));
+        categories.add(new Category("2", "Category 2", null));
         when(categoryRepository.findAll()).thenReturn(categories);
 
         // Act
@@ -42,9 +42,9 @@ public class CategoryServiceTest {
 
         // Assert
         assertEquals(2, result.size());
-        assertEquals(1, result.get(0).getId());
+        assertEquals("1", result.get(0).getId());
         assertEquals("Category 1", result.get(0).getName());
-        assertEquals(2, result.get(1).getId());
+        assertEquals("2", result.get(1).getId());
         assertEquals("Category 2", result.get(1).getName());
     }
 
@@ -82,15 +82,15 @@ public class CategoryServiceTest {
     @Test
     public void test_findCategoryById() {
         // Arrange
-        Category category = new Category(1, "Category 1", null);
-        when(categoryRepository.findById(1)).thenReturn(Optional.of(category));
+        Category category = new Category("1", "Category 1", null);
+        when(categoryRepository.findById("1")).thenReturn(Optional.of(category));
 
         // Act
-        Optional<CategoryDTO> result = categoryService.findCategoryById(1);
+        Optional<CategoryDTO> result = categoryService.findCategoryById("1");
 
         // Assert
         assertTrue(result.isPresent());
-        assertEquals(1, result.get().getId());
+        assertEquals("1", result.get().getId());
         assertEquals("Category 1", result.get().getName());
     }
 
@@ -99,8 +99,8 @@ public class CategoryServiceTest {
     public void test_findAllCategory_duplicateData() {
         // Arrange
         List<Category> categories = new LinkedList<>();
-        categories.add(new Category(1, "Category 1", null));
-        categories.add(new Category(1, "Category 1", null));
+        categories.add(new Category("1", "Category 1", null));
+        categories.add(new Category("1", "Category 1", null));
         when(categoryRepository.findAll()).thenReturn(categories);
 
         // Act
@@ -108,9 +108,9 @@ public class CategoryServiceTest {
 
         // Assert
         assertEquals(2, result.size());
-        assertEquals(1, result.get(0).getId());
+        assertEquals("1", result.get(0).getId());
         assertEquals("Category 1", result.get(0).getName());
-        assertEquals(1, result.get(1).getId());
+        assertEquals("1", result.get(1).getId());
         assertEquals("Category 1", result.get(1).getName());
     }
 

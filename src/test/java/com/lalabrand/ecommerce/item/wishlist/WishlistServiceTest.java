@@ -20,6 +20,7 @@ import static org.mockito.Mockito.*;
 public class WishlistServiceTest {
 
     private static WishlistRepository wishlistRepository;
+    private final String userId = "1";
 
     @BeforeAll
     public static void beforeAll() {
@@ -32,17 +33,16 @@ public class WishlistServiceTest {
         // Mock WishlistRepository
 
         // Create test data
-        Integer userId = 1;
         Wishlist wishlist = new Wishlist();
-        wishlist.setId(1);
+        wishlist.setId("1");
         User user = new User();
         user.setId(userId);
         wishlist.setUser(user);
         Set<Item> items = new HashSet<>();
         Item item1 = new Item();
-        item1.setId(1);
+        item1.setId("1");
         Item item2 = new Item();
-        item2.setId(2);
+        item2.setId("2");
         items.add(item1);
         items.add(item2);
         wishlist.setItems(items);
@@ -68,9 +68,6 @@ public class WishlistServiceTest {
         // Mock WishlistRepository
         WishlistRepository wishlistRepository = mock(WishlistRepository.class);
     
-        // Create test data
-        Integer userId = 1;
-    
         // Set up mock behavior
         when(wishlistRepository.findWishlistByUserId(userId)).thenReturn(Optional.empty());
     
@@ -91,17 +88,16 @@ public class WishlistServiceTest {
         WishlistRepository wishlistRepository = mock(WishlistRepository.class);
     
         // Create test data
-        Integer userId = 1;
         Wishlist wishlist = new Wishlist();
-        wishlist.setId(1);
+        wishlist.setId("1");
         User user = new User();
         user.setId(userId);
         wishlist.setUser(user);
         Set<Item> items = new HashSet<>();
         Item item1 = new Item();
-        item1.setId(1);
+        item1.setId("1");
         Item item2 = new Item();
-        item2.setId(2);
+        item2.setId("2");
         items.add(item1);
         items.add(item2);
         wishlist.setItems(items);
@@ -126,10 +122,7 @@ public class WishlistServiceTest {
     public void test_throw_runtime_exception_if_exception_caught() {
         // Mock WishlistRepository
         WishlistRepository wishlistRepository = mock(WishlistRepository.class);
-    
-        // Create test data
-        Integer userId = 1;
-    
+
         // Set up mock behavior to throw an exception
         when(wishlistRepository.findWishlistByUserId(userId)).thenThrow(new RuntimeException());
     
@@ -145,10 +138,6 @@ public class WishlistServiceTest {
     public void test_handle_gracefully_when_repository_returns_null() {
         // Mock WishlistRepository
         WishlistRepository wishlistRepository = mock(WishlistRepository.class);
-    
-        // Create test data
-        Integer userId = 1;
-    
         // Set up mock behavior to return null
         when(wishlistRepository.findWishlistByUserId(userId)).thenReturn(Optional.empty());
     
