@@ -6,7 +6,7 @@ import com.lalabrand.ecommerce.item.enums.SizeType;
 import com.lalabrand.ecommerce.item.item_info.ItemInfo;
 import com.lalabrand.ecommerce.item.size.Size;
 import com.lalabrand.ecommerce.user.cart.Cart;
-import com.lalabrand.ecommerce.user.cart.CartDto;
+import com.lalabrand.ecommerce.user.cart.CartDTO;
 import com.lalabrand.ecommerce.user.cart.CartRepository;
 import com.lalabrand.ecommerce.user.cart.CartService;
 
@@ -84,7 +84,7 @@ public class CartServiceTest {
         when(cartRepository.findCartByUserId(1)).thenReturn(Optional.of(cartWithItems));
 
         // Act
-        CartDto result = cartService.findCartByUserId(userId).get();
+        CartDTO result = cartService.findCartByUserId(userId).get();
 
         // Assert
         assertNotNull(result);
@@ -110,7 +110,7 @@ public class CartServiceTest {
         when(cartRepository.findCartByUserId(userId)).thenReturn(Optional.empty());
 
         // Act
-        Optional<CartDto> result = cartService.findCartByUserId(userId);
+        Optional<CartDTO> result = cartService.findCartByUserId(userId);
 
         // Assert
         assertEquals(Optional.empty(), result);
@@ -124,7 +124,7 @@ public class CartServiceTest {
         when(cartRepository.findCartByUserId(userId)).thenReturn(Optional.empty());
 
         // Act
-        Optional<CartDto> result = cartService.findCartByUserId(userId);
+        Optional<CartDTO> result = cartService.findCartByUserId(userId);
 
         // Assert
         assertNotNull(result);

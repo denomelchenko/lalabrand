@@ -1,0 +1,20 @@
+package com.lalabrand.ecommerce.auth;
+
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.Date;
+
+@Getter
+@Setter
+public class JwtPayload {
+    private String email;
+    private Date expirationDate;
+    private Integer id;
+
+    public JwtPayload(Integer id, String email, Date expirationDate) {
+        this.id = id;
+        this.email = email;
+        this.expirationDate = expirationDate;
+    }
+}

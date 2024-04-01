@@ -14,7 +14,7 @@ public class CartService {
         this.cartRepository = cartRepository;
     }
 
-    public Optional<CartDto> findCartByUserId(final Integer userId) {
+    public Optional<CartDTO> findCartByUserId(final Integer userId) {
         if (userId == null) {
             throw new IllegalArgumentException("UserId cannot be null");
         }
@@ -22,6 +22,6 @@ public class CartService {
         if (cart.isEmpty() || cart.get().getCartItems().isEmpty()) {
             return Optional.empty();
         }
-        return Optional.of(CartDto.fromEntity(cart.get()));
+        return Optional.of(CartDTO.fromEntity(cart.get()));
     }
 }

@@ -60,4 +60,10 @@ public class Order {
     @JoinColumn(name = "shipping_id")
     private ShippingInfo shipping;
 
+    @PrePersist
+    public void prePersist() {
+        if (createdAt == null) {
+            createdAt = Instant.now();
+        }
+    }
 }

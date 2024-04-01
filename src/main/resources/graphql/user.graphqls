@@ -1,0 +1,36 @@
+type Mutation {
+    user(userRequest: UserRequest!): UserResponse!
+    login(authRequest: AuthRequest!): JwtResponse!
+    refreshToken(refreshTokenRequest: RefreshTokenRequest!): JwtResponse!
+}
+
+input AuthRequest {
+    email: String!
+    password: String!
+}
+
+input UserRequest  {
+    password: String!
+    email: String!
+    id: ID
+}
+
+type UserResponse {
+    id: ID!
+    email: String!
+    userRoles: [UserRole!]!
+}
+
+type UserRole {
+    id: ID!
+    role: Role!
+}
+
+type JwtResponse {
+    accessToken: String!
+    refreshToken: String!
+}
+
+input RefreshTokenRequest {
+    token: String!
+}

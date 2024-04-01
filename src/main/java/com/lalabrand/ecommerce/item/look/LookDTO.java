@@ -1,6 +1,6 @@
 package com.lalabrand.ecommerce.item.look;
 
-import com.lalabrand.ecommerce.item.ItemDto;
+import com.lalabrand.ecommerce.item.ItemDTO;
 import lombok.*;
 
 import java.io.Serializable;
@@ -15,16 +15,16 @@ import java.util.stream.Collectors;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class LookDto implements Serializable {
+public class LookDTO implements Serializable {
     Integer id;
     String image;
-    Set<ItemDto> items;
+    Set<ItemDTO> items;
 
-    public static LookDto fromEntity(Look look) {
-        return LookDto.builder()
+    public static LookDTO fromEntity(Look look) {
+        return LookDTO.builder()
                 .id(look.getId())
                 .image(look.getImage())
-                .items(look.getItems().stream().map(ItemDto::fromEntity).collect(Collectors.toSet()))
+                .items(look.getItems().stream().map(ItemDTO::fromEntity).collect(Collectors.toSet()))
                 .build();
     }
 }

@@ -17,17 +17,17 @@ public class ItemController {
     }
 
     @QueryMapping(name = "itemsByCategoryId")
-    public List<ItemDto> findItemsByCategoryId(@Argument Integer categoryId) {
+    public List<ItemDTO> findItemsByCategoryId(@Argument Integer categoryId) {
         return itemService.findItemsByCategoryId(categoryId);
     }
 
     @QueryMapping(name = "bestSellers")
-    public List<ItemDto> findBestSellers(@Argument Optional<Integer> limit) {
+    public List<ItemDTO> findBestSellers(@Argument Optional<Integer> limit) {
         return itemService.findBestSellersItems(limit);
     }
 
     @QueryMapping(name = "itemsByTitle")
-    public List<ItemDto> findItemsByTitle(@Argument String title) {
+    public List<ItemDTO> findItemsByTitle(@Argument String title) {
         return itemService.findItemsByTitle(title);
     }
 }
