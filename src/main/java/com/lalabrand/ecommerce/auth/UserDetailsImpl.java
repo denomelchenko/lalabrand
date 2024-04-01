@@ -15,7 +15,7 @@ public class UserDetailsImpl extends User implements UserDetails {
     private final String password;
     private final String email;
     @Getter
-    private final Integer id;
+    private final String id;
     Collection<? extends GrantedAuthority> authorities;
 
     public UserDetailsImpl(User user) {

@@ -21,12 +21,12 @@ import java.math.BigDecimal;
 @Table(name = "ordered_item")
 public class OrderedItem {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private String id;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "item_id", nullable = false)
     private Item item;
 

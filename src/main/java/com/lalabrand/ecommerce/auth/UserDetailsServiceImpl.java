@@ -13,8 +13,8 @@ import java.util.Optional;
 
 @Component
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private final UserService userService;
     private static final Logger logger = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
+    private final UserService userService;
 
     public UserDetailsServiceImpl(UserService userService) {
         this.userService = userService;

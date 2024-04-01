@@ -28,7 +28,7 @@ public class UserService {
         this.userAccessChecker = userAccessChecker;
     }
 
-    public Optional<User> findByUserId(Integer userId) {
+    public Optional<User> findByUserId(String userId) {
         return userRepository.findById(userId);
     }
 
@@ -58,7 +58,7 @@ public class UserService {
             }
         } else if (userRepository.findByEmail(userRequest.getEmail()).isPresent()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "User already exist");
-        } else{
+        } else {
             userRoleRepository.save(new UserRole(Role.USER, user));
             savedUser = userRepository.save(user);
         }

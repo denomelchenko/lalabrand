@@ -15,7 +15,7 @@ public class LookController {
     }
 
     @QueryMapping(name = "look")
-    public LookDTO findLook(@Argument Optional<Integer> previousLookId) {
+    public LookDTO findLook(@Argument Optional<String> previousLookId) {
         return lookService.findLook(previousLookId);
     }
 }

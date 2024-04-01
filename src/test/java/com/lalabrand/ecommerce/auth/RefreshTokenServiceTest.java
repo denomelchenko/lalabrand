@@ -15,14 +15,11 @@ public class RefreshTokenServiceTest {
     private RefreshTokenRepository refreshTokenRepository;
 
     private RefreshTokenService refreshTokenService;
-    @Mock
-    private UserRepository userRepository;
 
     @BeforeEach
     public void setUp() {
         refreshTokenRepository = mock(RefreshTokenRepository.class);
-        userRepository = mock(UserRepository.class);
-        refreshTokenService = new RefreshTokenService(refreshTokenRepository, userRepository);
+        refreshTokenService = new RefreshTokenService(refreshTokenRepository);
     }
 
 

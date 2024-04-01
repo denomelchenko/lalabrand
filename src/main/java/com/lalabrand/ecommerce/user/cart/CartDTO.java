@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @Value
 @Builder
 public class CartDTO implements Serializable {
-    Integer id;
+    String id;
     Set<CartItemDTO> cartItems;
 
     public static CartDTO fromEntity(Cart cart) {

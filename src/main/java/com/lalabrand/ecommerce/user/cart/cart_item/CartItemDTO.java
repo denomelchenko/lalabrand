@@ -12,7 +12,7 @@ import lombok.Value;
 @Value
 @Builder
 public class CartItemDTO {
-    Integer id;
+    String id;
     ItemDTO item;
     ItemInfoDTO itemInfo;
     SizeDTO size;
