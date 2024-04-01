@@ -2,7 +2,7 @@ package com.lalabrand.ecommerce.utils;
 
 import com.lalabrand.ecommerce.user.User;
 import com.lalabrand.ecommerce.user.UserRepository;
-import com.lalabrand.ecommerce.user.UserService;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
@@ -16,11 +16,19 @@ public class UserAccessChecker {
         this.userRepository = userRepository;
     }
 
-    public boolean isCurrentUserEqualsId(Integer id) {
-        Optional<User> user = userRepository.findById(id);
-        if (user.isPresent() && SecurityContextHolder.getContext().getAuthentication().getName() != null) {
-            return user.get().getEmail().equals(SecurityContextHolder.getContext().getAuthentication().getName());
+    public boolean isCurrentUserOwnerOfId(Integer id) {
+        if (id == null) {
+            return false;
         }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            Optional<User> user = userRepository.findById(id);
+            if (user.isPresent()) {
+                return user.get().getEmail().equals(authentication.getName());
+            }
+        }
+
         return false;
     }
 }
