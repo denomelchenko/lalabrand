@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
 import java.time.Instant;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -26,10 +26,15 @@ public class PasswordResetService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmailSenderService emailSenderService;
+    @Value("${password.reset.token.symbols}")
+    private String passwordResetTokenSymbols;
     @Value("${reset.password.token.expiration.seconds}")
     private Integer resetPasswordExpiration;
 
-    public PasswordResetService(PasswordResetTokenRepository passwordResetTokenRepository, UserService userService, UserRepository userRepository, PasswordEncoder passwordEncoder, EmailSenderService emailSenderService) {
+
+    public PasswordResetService(PasswordResetTokenRepository passwordResetTokenRepository, UserService userService,
+                                UserRepository userRepository, PasswordEncoder passwordEncoder,
+                                EmailSenderService emailSenderService) {
         this.passwordResetTokenRepository = passwordResetTokenRepository;
         this.userService = userService;
         this.userRepository = userRepository;
@@ -37,19 +42,18 @@ public class PasswordResetService {
         this.emailSenderService = emailSenderService;
     }
 
-    public boolean isTokenValidForUser(String token, String email) {
-        return userService.findByEmail(email).flatMap(user -> passwordResetTokenRepository.findByTokenAndUser(token, user)).map(passwordResetToken -> {
-            logger.info("Token is valid for user with email: {}", email);
-            return Objects.equals(passwordResetToken.getToken(), token);
-        }).orElse(false);
-    }
-
     public boolean resetPasswordForUser(PasswordResetRequest passwordResetInput) throws AccessDeniedException {
-        if (isTokenValidForUser(passwordResetInput.getToken(), passwordResetInput.getEmail())) {
-            User user = userService.findByEmail(passwordResetInput.getEmail()).get();
-            updateUserPassword(new UserRequest(passwordResetInput.getPassword(), passwordResetInput.getEmail(), user.getId()));
-            logger.info("Password reset successfully for user with email: {}", passwordResetInput.getEmail());
-            return true;
+        Optional<User> user = userService.findByEmail(passwordResetInput.getEmail());
+        if (user.isPresent()) {
+            Optional<PasswordResetToken> resetToken = passwordResetTokenRepository
+                    .findByTokenAndUser(passwordResetInput.getToken(), user.get());
+            if (resetToken.isPresent()) {
+                updateUserPassword(new UserRequest(passwordResetInput.getPassword(),
+                        passwordResetInput.getEmail(),
+                        user.get().getId()));
+                logger.info("Password reset successfully for user with email: {}", passwordResetInput.getEmail());
+                return true;
+            }
         }
         logger.error("Token is not valid for user with email: {}", passwordResetInput.getEmail());
         throw new AccessDeniedException("Token is not valid");
@@ -70,7 +74,8 @@ public class PasswordResetService {
         PasswordResetToken passwordResetToken = createPasswordResetToken(user);
 
         String subject = "Password reset for lalabrand";
-        String message = "To reset your password, please write this code on your lalabrand reset password page:\n" + passwordResetToken.getToken();
+        String message = "To reset your password, please write this code on your lalabrand reset password page:\n"
+                + passwordResetToken.getToken();
 
         emailSenderService.sendEmail(email, subject, message);
         logger.info("Password reset token sent successfully to user with email: {}", email);
@@ -78,16 +83,19 @@ public class PasswordResetService {
     }
 
     private PasswordResetToken createPasswordResetToken(User user) {
-        return passwordResetTokenRepository.save(PasswordResetToken.builder().token(generatePasswordResetToken()).user(user).expiresAt(Instant.now().plusSeconds(resetPasswordExpiration)).build());
+        return passwordResetTokenRepository.save(PasswordResetToken.builder()
+                .token(generatePasswordResetToken())
+                .user(user)
+                .expiresAt(Instant.now().plusSeconds(resetPasswordExpiration))
+                .build());
     }
 
     private String generatePasswordResetToken() {
         int length = 6;
-        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         Random random = new Random();
         StringBuilder tokenBuilder = new StringBuilder(length);
         for (int i = 0; i < length; i++) {
-            tokenBuilder.append(characters.charAt(random.nextInt(characters.length())));
+            tokenBuilder.append(passwordResetTokenSymbols.charAt(random.nextInt(passwordResetTokenSymbols.length())));
         }
         return tokenBuilder.toString();
     }
