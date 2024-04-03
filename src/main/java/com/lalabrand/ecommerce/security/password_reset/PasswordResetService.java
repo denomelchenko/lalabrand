@@ -56,10 +56,10 @@ public class PasswordResetService {
                 }
                 updateUserPassword(new UserRequest(
                                 passwordResetInput.getPassword(),
-                                passwordResetInput.getEmail(),
-                                user.get().getId()
+                                passwordResetInput.getEmail()
                         ),
-                        user.get().getPasswordVersion() + 1);
+                        user.get().getPasswordVersion() + 1,
+                        user.get().getId());
                 logger.info("Password reset successfully for user with email: {}", passwordResetInput.getEmail());
                 passwordResetTokenRepository.deleteById(resetToken.get().getId());
                 refreshTokenService.deleteTokenByUserId(user.get().getId());
@@ -73,9 +73,9 @@ public class PasswordResetService {
     }
 
     @Transactional
-    protected void updateUserPassword(UserRequest userRequest, Integer passwordVersion) throws AccessDeniedException {
+    protected void updateUserPassword(UserRequest userRequest, Integer passwordVersion, String userId) throws AccessDeniedException {
         String password = passwordEncoder.encode(userRequest.getPassword());
-        userService.updatePasswordForUser(new User(userRequest.getId(), userRequest.getEmail(), password, passwordVersion), password);
+        userService.updatePasswordForUser(new User(userRequest.getEmail(), password, passwordVersion), password, userId);
     }
 
     @Transactional
