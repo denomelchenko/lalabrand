@@ -15,8 +15,8 @@ public class CommonUtils {
         this.userService = userService;
     }
 
-    public static boolean isIdValid(Integer id) {
-        return id != null && id > 0;
+    public static boolean isIdInValid(String id) {
+        return id == null || id.isEmpty() || id.length() > 36;
     }
 
     public Optional<User> getCurrentUser() {

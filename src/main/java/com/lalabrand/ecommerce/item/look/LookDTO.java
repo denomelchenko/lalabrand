@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LookDTO implements Serializable {
-    Integer id;
+    String id;
     String image;
     Set<ItemDTO> items;
 

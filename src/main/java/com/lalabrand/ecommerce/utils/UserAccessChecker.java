@@ -16,19 +16,17 @@ public class UserAccessChecker {
         this.userRepository = userRepository;
     }
 
-    public boolean isCurrentUserOwnerOfId(Integer id) {
-        if (id == null) {
-            return false;
-        }
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated()) {
-            Optional<User> user = userRepository.findById(id);
-            if (user.isPresent()) {
-                return user.get().getEmail().equals(authentication.getName());
+    public boolean isCurrentUserOwnerOfId(String id) {
+        if (id != null) {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication != null && authentication.isAuthenticated()) {
+                Optional<User> user = userRepository.findById(id);
+                if (user.isPresent()) {
+                    return user.get().getEmail().equals(authentication.getName());
+                }
             }
         }
-
         return false;
+
     }
 }

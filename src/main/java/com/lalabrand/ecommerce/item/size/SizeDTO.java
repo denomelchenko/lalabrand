@@ -10,7 +10,7 @@ import lombok.Value;
 @Value
 @Builder
 public class SizeDTO {
-    Integer id;
+    String id;
     SizeType sizeType;
     String value;
 

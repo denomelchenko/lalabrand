@@ -1,7 +1,7 @@
 package com.lalabrand.ecommerce.item.item_comment;
 
-import com.lalabrand.ecommerce.user.User;
 import com.lalabrand.ecommerce.item.Item;
+import com.lalabrand.ecommerce.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,9 +19,9 @@ import java.time.Instant;
 @Table(name = "item_comment")
 public class ItemComment {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private String id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -40,6 +40,7 @@ public class ItemComment {
 
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
+
     @PrePersist
     public void prePersist() {
         if (createdAt == null) {
