@@ -1,12 +1,13 @@
 package com.lalabrand.ecommerce.security.password_reset;
 
+import com.lalabrand.ecommerce.security.refresh_token.RefreshTokenService;
 import com.lalabrand.ecommerce.user.User;
-import com.lalabrand.ecommerce.user.UserRepository;
 import com.lalabrand.ecommerce.user.UserRequest;
 import com.lalabrand.ecommerce.user.UserService;
 import com.lalabrand.ecommerce.utils.EmailSenderService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.apache.coyote.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,31 +24,36 @@ public class PasswordResetService {
     private final Logger logger = LoggerFactory.getLogger(PasswordResetService.class);
     private final PasswordResetTokenRepository passwordResetTokenRepository;
     private final UserService userService;
-    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmailSenderService emailSenderService;
+    private final RefreshTokenService refreshTokenService;
     @Value("${password.reset.token.symbols}")
     private String passwordResetTokenSymbols;
     @Value("${reset.password.token.expiration.seconds}")
     private Integer resetPasswordExpiration;
 
 
-    public PasswordResetService(PasswordResetTokenRepository passwordResetTokenRepository, UserService userService,
-                                UserRepository userRepository, PasswordEncoder passwordEncoder,
-                                EmailSenderService emailSenderService) {
+    public PasswordResetService(PasswordResetTokenRepository passwordResetTokenRepository,
+                                UserService userService, PasswordEncoder passwordEncoder,
+                                EmailSenderService emailSenderService, RefreshTokenService refreshTokenService) {
         this.passwordResetTokenRepository = passwordResetTokenRepository;
         this.userService = userService;
-        this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.emailSenderService = emailSenderService;
+        this.refreshTokenService = refreshTokenService;
     }
 
-    public boolean resetPasswordForUser(PasswordResetRequest passwordResetInput) throws AccessDeniedException {
+    @Transactional
+    public boolean resetPasswordForUser(PasswordResetRequest passwordResetInput) throws AccessDeniedException, BadRequestException {
         Optional<User> user = userService.findByEmail(passwordResetInput.getEmail());
         if (user.isPresent()) {
             Optional<PasswordResetToken> resetToken = passwordResetTokenRepository
                     .findByTokenAndUser(passwordResetInput.getToken(), user.get());
             if (resetToken.isPresent()) {
+                if (passwordEncoder.matches(passwordResetInput.getPassword(), user.get().getPassword())) {
+                    logger.error("Password the same with exist password for this user");
+                    throw new BadRequestException("User does not exist");
+                }
                 updateUserPassword(new UserRequest(
                                 passwordResetInput.getPassword(),
                                 passwordResetInput.getEmail(),
@@ -56,16 +62,20 @@ public class PasswordResetService {
                         user.get().getPasswordVersion() + 1);
                 logger.info("Password reset successfully for user with email: {}", passwordResetInput.getEmail());
                 passwordResetTokenRepository.deleteById(resetToken.get().getId());
+                refreshTokenService.deleteTokenByUserId(user.get().getId());
                 return true;
             }
+            logger.error("Token is not valid for user with email: {}", passwordResetInput.getEmail());
+            throw new AccessDeniedException("Token is not valid");
         }
-        logger.error("Token is not valid for user with email: {}", passwordResetInput.getEmail());
-        throw new AccessDeniedException("Token is not valid");
+        logger.error("User with email: {} does not exist", passwordResetInput.getEmail());
+        throw new BadRequestException("User does not exist");
     }
 
-    private void updateUserPassword(UserRequest userRequest, Integer passwordVersion) {
+    @Transactional
+    protected void updateUserPassword(UserRequest userRequest, Integer passwordVersion) throws AccessDeniedException {
         String password = passwordEncoder.encode(userRequest.getPassword());
-        userRepository.save(new User(userRequest.getId(), userRequest.getEmail(), password, passwordVersion));
+        userService.updatePasswordForUser(new User(userRequest.getId(), userRequest.getEmail(), password, passwordVersion), password);
     }
 
     @Transactional
