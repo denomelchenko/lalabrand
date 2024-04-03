@@ -87,11 +87,12 @@ public class PasswordResetService {
     }
 
     private PasswordResetToken createPasswordResetToken(User user) {
-        return passwordResetTokenRepository.save(PasswordResetToken.builder()
-                .token(generatePasswordResetToken())
-                .user(user)
-                .expiresAt(Instant.now().plusSeconds(resetPasswordExpiration))
-                .build());
+        return passwordResetTokenRepository.save(
+                PasswordResetToken.builder()
+                        .token(generatePasswordResetToken())
+                        .user(user)
+                        .expiresAt(Instant.now().plusSeconds(resetPasswordExpiration))
+                        .build());
     }
 
     private String generatePasswordResetToken() {
