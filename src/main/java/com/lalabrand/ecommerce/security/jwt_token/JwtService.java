@@ -12,6 +12,7 @@ import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Component
 public class JwtService {
@@ -25,7 +26,10 @@ public class JwtService {
     private Long accessTokenExpirationSec;
 
     public boolean validateToken(JwtPayload jwtPayload, UserDetailsImpl userDetails) {
-        return (!isNotExpired(jwtPayload) && jwtPayload.getId().equals(userDetails.getId()) && jwtPayload.getEmail().equals(userDetails.getUsername()));
+        return !isNotExpired(jwtPayload)
+                && jwtPayload.getId().equals(userDetails.getId())
+                && jwtPayload.getEmail().equals(userDetails.getUsername())
+                && Objects.equals(jwtPayload.getPasswordVersion(), userDetails.getPasswordVersion());
     }
 
     private boolean isNotExpired(JwtPayload token) {
@@ -39,9 +43,10 @@ public class JwtService {
         return Keys.hmacShaKeyFor(decodedKey);
     }
 
-    public String generateToken(String email, String id) {
+    public String generateToken(String email, String id, Integer passwordVersion) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", id);
+        claims.put("passwordVersion", passwordVersion);
         return createToken(claims, email);
     }
 
@@ -57,6 +62,7 @@ public class JwtService {
     }
 
     public JwtPayload parseToken(String token) {
+        System.out.println(token);
         Claims claims = Jwts.parser()
                 .verifyWith(getKey())
                 .build()
@@ -64,9 +70,10 @@ public class JwtService {
                 .getPayload();
 
         String id = (String) claims.get("id");
-        String subject = claims.getSubject();
+        Integer passwordVersion = (Integer) claims.get("passwordVersion");
+        String email = claims.getSubject();
         Date expirationDate = claims.getExpiration();
 
-        return new JwtPayload(id, subject, expirationDate);
+        return new JwtPayload(id, email, passwordVersion, expirationDate);
     }
 }
