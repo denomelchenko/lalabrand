@@ -11,10 +11,12 @@ public class JwtPayload {
     private String email;
     private Date expirationDate;
     private String id;
+    private Integer passwordVersion;
 
-    public JwtPayload(String id, String email, Date expirationDate) {
+    public JwtPayload(String id, String email, Integer passwordVersion, Date expirationDate) {
         this.id = id;
         this.email = email;
+        this.passwordVersion = passwordVersion;
         this.expirationDate = expirationDate;
     }
 }

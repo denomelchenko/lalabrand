@@ -1,7 +1,7 @@
 package com.lalabrand.ecommerce.security;
 
-import com.lalabrand.ecommerce.filter.CsrfCookieFilter;
-import com.lalabrand.ecommerce.filter.JwtAuthFilter;
+import com.lalabrand.ecommerce.security.filter.CsrfCookieFilter;
+import com.lalabrand.ecommerce.security.filter.JwtAuthFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

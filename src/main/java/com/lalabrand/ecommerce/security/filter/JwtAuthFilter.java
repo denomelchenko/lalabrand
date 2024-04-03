@@ -1,4 +1,4 @@
-package com.lalabrand.ecommerce.filter;
+package com.lalabrand.ecommerce.security.filter;
 
 import com.lalabrand.ecommerce.security.UserDetailsImpl;
 import com.lalabrand.ecommerce.security.jwt_token.JwtPayload;
