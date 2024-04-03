@@ -31,7 +31,7 @@ public class UserServiceTest {
     @Test
     public void test_saveUser_savesNewUserWithValidEmailAndPassword() throws AccessDeniedException {
         UserRequest userRequest = new UserRequest("password123", "test@example.com", null);
-        User savedUser = new User("1", "test@example.com", "password123");
+        User savedUser = new User("1", "test@example.com", "password123", 1);
         when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.empty());
         when(userRepository.save(any(User.class))).thenReturn(savedUser);
 
@@ -48,7 +48,7 @@ public class UserServiceTest {
     // findByUserId method returns an optional user when given a valid user id
     @Test
     public void test_findByUserId_returnsOptionalUserWithValidUserId() {
-        User user = new User("1", "test@example.com", "password123");
+        User user = new User("1", "test@example.com", "password123", 1);
         when(userRepository.findById("1")).thenReturn(Optional.of(user));
 
         // Act
@@ -61,7 +61,7 @@ public class UserServiceTest {
 
     // findByEmail method returns an optional user when given a valid email
     @Test public void test_findByEmail_returnsOptionalUserWithValidEmail() {
-        User user = new User("1", "test@example.com", "password123");
+        User user = new User("1", "test@example.com", "password123", 1);
         when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.of(user));
 
         // Act
@@ -129,7 +129,7 @@ public class UserServiceTest {
     @Test
     public void test_saveUser_savesNewUserWithValidEmailAndPasswordAndAssignsDefaultRole() throws AccessDeniedException {
         UserRequest userRequest = new UserRequest("password123", "test@example.com", null);
-        User savedUser = new User("1", "test@example.com", "password123");
+        User savedUser = new User("1", "test@example.com", "password123", 1);
         when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.empty());
         when(userRepository.save(any(User.class))).thenReturn(savedUser);
 
