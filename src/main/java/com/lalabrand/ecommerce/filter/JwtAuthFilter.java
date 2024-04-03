@@ -1,7 +1,8 @@
 package com.lalabrand.ecommerce.filter;
 
+import com.lalabrand.ecommerce.security.UserDetailsImpl;
+import com.lalabrand.ecommerce.security.jwt_token.JwtPayload;
 import com.lalabrand.ecommerce.security.jwt_token.JwtService;
-import com.lalabrand.ecommerce.security.jwt_token.JwtToken;
 import com.lalabrand.ecommerce.security.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -10,7 +11,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -34,16 +34,17 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
-        JwtToken jwtToken = null;
+        JwtPayload jwtPayload = null;
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            jwtToken = jwtService.parseToken(authHeader.substring(7));
+            jwtPayload = jwtService.parseToken(authHeader.substring(7));
         }
 
-        if (jwtToken != null && jwtToken.getSubject() != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(jwtToken.getSubject());
-            if (jwtService.validateToken(jwtToken, userDetails)) {
+        if (jwtPayload != null && jwtPayload.getEmail() != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsService.loadUserByUsername(jwtPayload.getEmail());
+
+            if (jwtService.validateToken(jwtPayload, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        jwtToken.getSubject(),
+                        jwtPayload.getEmail(),
                         null,
                         userDetails.getAuthorities()
                 );

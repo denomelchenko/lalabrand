@@ -27,7 +27,7 @@ type UserRole {
 
 type JwtResponse {
     accessToken: String!
-    token: String!
+    refreshToken: String!
 }
 
 input RefreshTokenRequest {

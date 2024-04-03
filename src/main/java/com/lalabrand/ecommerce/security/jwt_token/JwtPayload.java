@@ -7,15 +7,14 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class JwtToken {
-
-    private String subject;
+public class JwtPayload {
+    private String email;
     private Date expirationDate;
-    private String token;
+    private String id;
 
-    public JwtToken(String subject, Date expirationDate, String token) {
-        this.subject = subject;
+    public JwtPayload(String id, String email, Date expirationDate) {
+        this.id = id;
+        this.email = email;
         this.expirationDate = expirationDate;
-        this.token = token;
     }
 }
