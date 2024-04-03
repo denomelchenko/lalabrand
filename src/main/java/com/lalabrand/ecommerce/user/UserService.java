@@ -39,7 +39,7 @@ public class UserService {
         }
 
         User savedUser;
-        User user = new User(userRequest.getId(), userRequest.getEmail(), userRequest.getPassword());
+        User user = new User(userRequest.getId(), userRequest.getEmail(), userRequest.getPassword(), 1);
         user.setPassword(new BCryptPasswordEncoder().encode(userRequest.getPassword()));
         if (userRequest.getId() != null) {
             if (userAccessChecker.isCurrentUserOwnerOfId(userRequest.getId())) {

@@ -8,6 +8,7 @@ import com.lalabrand.ecommerce.user.enums.Language;
 import com.lalabrand.ecommerce.user.role.UserRole;
 import com.lalabrand.ecommerce.user.wishlist.Wishlist;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -72,10 +73,15 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Language language;
 
-    public User(String id, String email, String password) {
+    @NotNull
+    @Column(name = "password_version", nullable = false)
+    private Integer passwordVersion;
+
+    public User(String id, String email, String password, Integer passwordVersion) {
         this.id = id;
         this.email = email;
         this.password = password;
+        this.passwordVersion = passwordVersion;
     }
 
     @PrePersist
