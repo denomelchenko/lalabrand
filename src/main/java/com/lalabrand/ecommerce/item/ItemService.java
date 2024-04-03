@@ -29,7 +29,6 @@ public class ItemService {
         if (title == null || title.isEmpty()) {
             throw new IllegalArgumentException("Title can not be empty");
         }
-        System.err.println(itemRepository.findByTitleContainingIgnoreCase(title));
         return convertToItemDtoList(itemRepository.findByTitleContainingIgnoreCase(title));
     }
 
