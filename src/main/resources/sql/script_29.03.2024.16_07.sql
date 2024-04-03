@@ -6,19 +6,19 @@ USE lalabrand;
 
 SET time_zone = '+00:00';
 
-
 CREATE TABLE `user`
 (
-    `id`         VARCHAR(36) PRIMARY KEY,
-    `first_name` VARCHAR(255),
-    `last_name`  VARCHAR(255),
-    `bonus`      INTEGER,
-    `email`      VARCHAR(255) UNIQUE NOT NULL,
-    `phone`      VARCHAR(255),
-    `language`   ENUM ('UA', 'EN'),
-    `password`   VARCHAR(255)        NOT NULL,
+    `id`               VARCHAR(36) PRIMARY KEY,
+    `first_name`       VARCHAR(255),
+    `last_name`        VARCHAR(255),
+    `bonus`            INTEGER,
+    `email`            VARCHAR(255) UNIQUE NOT NULL,
+    `phone`            VARCHAR(255),
+    `language`         ENUM ('UA', 'EN'),
+    `password`         VARCHAR(255)        NOT NULL,
+    `password_version` INTEGER             NOT NULL,
     INDEX `email_index` (email),
-    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    `created_at`       TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE `category`
