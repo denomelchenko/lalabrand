@@ -1,5 +1,6 @@
 package com.lalabrand.ecommerce.user.wishlist;
 
+import com.lalabrand.ecommerce.security.UserDetailsImpl;
 import com.lalabrand.ecommerce.user.User;
 import com.lalabrand.ecommerce.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +25,9 @@ public class WishlistController {
     @QueryMapping(name = "wishlist")
     @PreAuthorize("hasAuthority('USER')")
     public WishlistDTO findWishlistForCurrentUser() {
-        Optional<User> user = commonUtils.getCurrentUser();
-        if (user.isPresent()) {
-            return wishlistService.findWishlistByUserId(user.get().getId()).orElse(null);
+        UserDetailsImpl user = commonUtils.getCurrentUser();
+        if (user != null) {
+            return wishlistService.findWishlistByUserId(user.getId()).orElse(null);
         }
         throw new UsernameNotFoundException("User not found!");
     }
