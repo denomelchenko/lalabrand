@@ -18,7 +18,6 @@ input UserRequest  {
 type UserResponse {
     id: ID!
     email: String!
-    userRoles: [UserRole!]!
 }
 
 type UserRole {

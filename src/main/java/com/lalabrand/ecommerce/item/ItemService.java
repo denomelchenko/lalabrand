@@ -5,7 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ItemService {
@@ -27,15 +29,15 @@ public class ItemService {
         if (title == null || title.isEmpty()) {
             throw new IllegalArgumentException("Title can not be empty");
         }
+        System.err.println(itemRepository.findByTitleContainingIgnoreCase(title));
         return convertToItemDtoList(itemRepository.findByTitleContainingIgnoreCase(title));
     }
 
-    public List<ItemDTO> findItemsByCategoryId(Integer categoryId) {
-        if (CommonUtils.isIdValid(categoryId)) {
-            throw new IllegalArgumentException("CategoryId can not be null or less then 1");
+    public List<ItemDTO> findItemsByCategoryId(String categoryId) {
+        if (CommonUtils.isIdInValid(categoryId)) {
+            throw new IllegalArgumentException("Id is invalid");
         }
-
-        return convertToItemDtoList(itemRepository.findAllByCategoryId(categoryId));
+        return convertToItemDtoList(itemRepository.findItemsByCategoryId(categoryId));
     }
 
     private List<ItemDTO> convertToItemDtoList(List<Item> items) {

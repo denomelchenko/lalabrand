@@ -13,13 +13,13 @@ public class LookService {
         this.lookRepository = lookRepository;
     }
 
-    public LookDTO findLook(Optional<Integer> previousLookId) {
+    public LookDTO findLook(Optional<String> previousLookId) {
         if (previousLookId.isPresent()) {
             Optional<Look> nextLook = lookRepository.findFirstByIdGreaterThan(previousLookId.get());
             if (nextLook.isPresent()) {
                 return LookDTO.fromEntity(nextLook.get());
             } else {
-                throw new EntityNotFoundException("Look with ID: " + previousLookId + " is at the end of the table");
+                throw new EntityNotFoundException("Look with ID: " + previousLookId.get() + " is at the end of the table");
             }
         } else {
             Optional<Look> firstLook = lookRepository.findFirstByOrderByIdAsc();

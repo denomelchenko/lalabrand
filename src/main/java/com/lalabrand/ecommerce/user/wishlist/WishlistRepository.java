@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface WishlistRepository extends JpaRepository<Wishlist, Integer> {
-    Optional<Wishlist> findWishlistByUserId(Integer userId);
+public interface WishlistRepository extends JpaRepository<Wishlist, String> {
+    Optional<Wishlist> findWishlistByUserId(String userId);
 }
