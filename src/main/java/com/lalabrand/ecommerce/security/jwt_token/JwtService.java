@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.time.Clock;
+import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +18,6 @@ import java.util.Objects;
 
 @Component
 public class JwtService {
-    private static final Integer MILLIS_IN_SECOND = 1000;
     @Value("${secret}")
     private String key;
 
@@ -51,12 +52,12 @@ public class JwtService {
     }
 
     private String createToken(Map<String, Object> claims, String email) {
-        Date currentDate = new Date();
+        Instant currentDate = Clock.systemUTC().instant();
         return Jwts.builder()
                 .claims(claims)
                 .subject(email)
-                .issuedAt(currentDate)
-                .expiration(new Date(currentDate.getTime() + accessTokenExpirationSec * MILLIS_IN_SECOND))
+                .issuedAt(Date.from(currentDate))
+                .expiration(Date.from(currentDate.plusSeconds(accessTokenExpirationSec)))
                 .signWith(getKey(), Jwts.SIG.HS256)
                 .compact();
     }
