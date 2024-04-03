@@ -43,6 +43,6 @@ public class RefreshTokenServiceTest {
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> refreshTokenService.verifyExpiration(token));
 
-        assertEquals("expired_token Refresh token is expired. Please log in again.", exception.getMessage());
+        assertEquals("Refresh token expired_token is expired. Please log in again.", exception.getMessage());
     }
 }
