@@ -6,6 +6,7 @@ import com.lalabrand.ecommerce.security.jwt_token.JwtService;
 import com.lalabrand.ecommerce.security.refresh_token.RefreshToken;
 import com.lalabrand.ecommerce.security.refresh_token.RefreshTokenRequestDTO;
 import com.lalabrand.ecommerce.security.refresh_token.RefreshTokenService;
+import jakarta.validation.Valid;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -37,7 +38,7 @@ public class UserController {
     }
 
     @MutationMapping(name = "login")
-    public JwtResponseDTO loginUserAndGetTokens(@Argument AuthRequestDTO authRequest) {
+    public JwtResponseDTO loginUserAndGetTokens(@Argument @Valid AuthRequestDTO authRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword())
         );
@@ -60,7 +61,7 @@ public class UserController {
     }
 
     @MutationMapping(name = "refreshToken")
-    public JwtResponseDTO refreshAccessToken(@Argument RefreshTokenRequestDTO refreshTokenRequest) {
+    public JwtResponseDTO refreshAccessToken(@Argument @Valid RefreshTokenRequestDTO refreshTokenRequest) {
         return refreshTokenService.findByToken(refreshTokenRequest.getToken())
                 .map(refreshTokenService::verifyExpiration)
                 .map(RefreshToken::getUser)

@@ -41,23 +41,8 @@ public class UserService {
         User savedUser;
         User user = new User(userRequest.getId(), userRequest.getEmail(), userRequest.getPassword(), 1);
         user.setPassword(new BCryptPasswordEncoder().encode(userRequest.getPassword()));
-        if (userRequest.getId() != null) {
-            if (userAccessChecker.isCurrentUserOwnerOfId(userRequest.getId())) {
-                Optional<User> existedUser = userRepository.findById(userRequest.getId());
-                if (existedUser.isPresent()) {
-                    user.setId(user.getId());
-                    user.setPassword(user.getPassword());
-                    user.setEmail(user.getEmail());
-
-                    savedUser = userRepository.save(user);
-                } else {
-                    throw new IllegalArgumentException("Can not find user with id: " + userRequest.getId());
-                }
-            } else {
-                throw new AccessDeniedException("You have not authorized for this action");
-            }
-        } else if (userRepository.findByEmail(userRequest.getEmail()).isPresent()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "User already exist");
+        if (userRepository.findByEmail(userRequest.getEmail()).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "User with this email already exist");
         } else {
             userRoleRepository.save(new UserRole(Role.USER, user));
             savedUser = userRepository.save(user);
@@ -67,5 +52,12 @@ public class UserService {
 
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    @Transactional
+    public User updatePasswordForUser(User user, String password) throws AccessDeniedException {
+        user.setPassword(password);
+        user.setPasswordVersion(user.getPasswordVersion() + 1);
+        return userRepository.save(user);
     }
 }

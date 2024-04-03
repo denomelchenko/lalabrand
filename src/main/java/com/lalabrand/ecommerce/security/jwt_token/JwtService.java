@@ -63,7 +63,6 @@ public class JwtService {
     }
 
     public JwtPayload parseToken(String token) {
-        System.out.println(token);
         Claims claims = Jwts.parser()
                 .verifyWith(getKey())
                 .build()

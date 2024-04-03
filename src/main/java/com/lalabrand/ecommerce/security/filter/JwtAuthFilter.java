@@ -42,7 +42,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         if (jwtPayload != null && jwtPayload.getEmail() != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsService.loadUserByUsername(jwtPayload.getEmail());
+            UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(jwtPayload.getEmail());
 
             if (jwtService.validateToken(jwtPayload, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
