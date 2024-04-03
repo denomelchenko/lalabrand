@@ -42,15 +42,17 @@ public class UserController {
                 new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword())
         );
         if (authentication.isAuthenticated()) {
+            User user = userService.findByEmail(authRequest.getEmail()).get();
             RefreshToken refreshToken = refreshTokenService.createRefreshToken(
-                    userService.findByEmail(authRequest.getEmail()).get()
+                    user
             );
             return JwtResponseDTO.builder()
                     .refreshToken(refreshToken.getToken())
                     .accessToken(jwtService.generateToken(
                             authRequest.getEmail(),
-                            refreshToken.getUser().getId())
-                    )
+                            refreshToken.getUser().getId(),
+                            user.getPasswordVersion()
+                    ))
                     .build();
         } else {
             throw new UsernameNotFoundException("Invalid request");
@@ -63,7 +65,11 @@ public class UserController {
                 .map(refreshTokenService::verifyExpiration)
                 .map(RefreshToken::getUser)
                 .map(user -> {
-                    String accessToken = jwtService.generateToken(user.getEmail(), user.getId());
+                    String accessToken = jwtService.generateToken(
+                            user.getEmail(),
+                            user.getId(),
+                            user.getPasswordVersion()
+                    );
                     return JwtResponseDTO.builder()
                             .accessToken(accessToken)
                             .refreshToken(refreshTokenRequest.getToken()).build();
