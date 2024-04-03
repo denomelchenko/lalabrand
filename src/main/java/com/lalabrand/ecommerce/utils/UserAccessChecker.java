@@ -4,6 +4,7 @@ import com.lalabrand.ecommerce.security.UserDetailsImpl;
 import com.lalabrand.ecommerce.user.UserRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,8 +18,8 @@ public class UserAccessChecker {
     public boolean isCurrentUserOwnerOfId(String id) {
         if (id != null) {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            if (authentication != null && authentication.isAuthenticated()) {
-                return ((UserDetailsImpl) authentication.getPrincipal()).getEmail().equals(authentication.getName());
+            if (authentication != null && authentication.getPrincipal() != null && authentication.getPrincipal() instanceof UserDetails) {
+                return ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getEmail().equals(authentication.getName());
             }
         }
         return false;
