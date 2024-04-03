@@ -48,10 +48,14 @@ public class PasswordResetService {
             Optional<PasswordResetToken> resetToken = passwordResetTokenRepository
                     .findByTokenAndUser(passwordResetInput.getToken(), user.get());
             if (resetToken.isPresent()) {
-                updateUserPassword(new UserRequest(passwordResetInput.getPassword(),
-                        passwordResetInput.getEmail(),
-                        user.get().getId()));
+                updateUserPassword(new UserRequest(
+                                passwordResetInput.getPassword(),
+                                passwordResetInput.getEmail(),
+                                user.get().getId()
+                        ),
+                        user.get().getPasswordVersion() + 1);
                 logger.info("Password reset successfully for user with email: {}", passwordResetInput.getEmail());
+                passwordResetTokenRepository.deleteById(resetToken.get().getId());
                 return true;
             }
         }
@@ -59,9 +63,9 @@ public class PasswordResetService {
         throw new AccessDeniedException("Token is not valid");
     }
 
-    private void updateUserPassword(UserRequest userRequest) {
+    private void updateUserPassword(UserRequest userRequest, Integer passwordVersion) {
         String password = passwordEncoder.encode(userRequest.getPassword());
-        userRepository.save(new User(userRequest.getId(), userRequest.getEmail(), password));
+        userRepository.save(new User(userRequest.getId(), userRequest.getEmail(), password, passwordVersion));
     }
 
     @Transactional
