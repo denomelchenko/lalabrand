@@ -77,8 +77,7 @@ public class User {
     @Column(name = "password_version", nullable = false)
     private Integer passwordVersion;
 
-    public User(String id, String email, String password, Integer passwordVersion) {
-        this.id = id;
+    public User(String email, String password, Integer passwordVersion) {
         this.email = email;
         this.password = password;
         this.passwordVersion = passwordVersion;

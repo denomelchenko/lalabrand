@@ -39,7 +39,7 @@ public class UserService {
         }
 
         User savedUser;
-        User user = new User(userRequest.getId(), userRequest.getEmail(), userRequest.getPassword(), 1);
+        User user = new User(userRequest.getEmail(), userRequest.getPassword(), 1);
         user.setPassword(new BCryptPasswordEncoder().encode(userRequest.getPassword()));
         if (userRepository.findByEmail(userRequest.getEmail()).isPresent()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "User with this email already exist");
@@ -55,9 +55,10 @@ public class UserService {
     }
 
     @Transactional
-    public User updatePasswordForUser(User user, String password) throws AccessDeniedException {
+    public User updatePasswordForUser(User user, String password, String userId) throws AccessDeniedException {
         user.setPassword(password);
         user.setPasswordVersion(user.getPasswordVersion() + 1);
+        user.setId(userId);
         return userRepository.save(user);
     }
 }
