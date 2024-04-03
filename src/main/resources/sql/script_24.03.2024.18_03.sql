@@ -4,7 +4,7 @@ CREATE DATABASE lalabrand;
 
 USE lalabrand;
 
-CREATE TABLE `user`
+CREATE TABLE user
 (
     `id`         INTEGER PRIMARY KEY AUTO_INCREMENT,
     `first_name` VARCHAR(255),
@@ -14,8 +14,10 @@ CREATE TABLE `user`
     `phone`      VARCHAR(255),
     `language`   ENUM ('UA', 'EN'),
     `password`   VARCHAR(255)        NOT NULL,
-    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX `email_index` (email)
 );
+
 
 CREATE TABLE `category`
 (
@@ -211,9 +213,9 @@ CREATE TABLE `available_colors`
 
 CREATE TABLE `refresh_token`
 (
-    `token`       VARCHAR(36) PRIMARY KEY NOT NULL,
+    `token`      VARCHAR(36) PRIMARY KEY NOT NULL,
     `expires_at` TIMESTAMP               NOT NULL,
-    `user_id`     INTEGER                 NOT NULL,
+    `user_id`    INTEGER                 NOT NULL,
     FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 

@@ -46,8 +46,11 @@ public class UserController {
                     userService.findByEmail(authRequest.getEmail()).get()
             );
             return JwtResponseDTO.builder()
-                    .token(refreshToken.getToken())
-                    .accessToken(jwtService.generateToken(authRequest.getEmail()))
+                    .refreshToken(refreshToken.getToken())
+                    .accessToken(jwtService.generateToken(
+                            authRequest.getEmail(),
+                            refreshToken.getUser().getId())
+                    )
                     .build();
         } else {
             throw new UsernameNotFoundException("Invalid request");
@@ -60,10 +63,10 @@ public class UserController {
                 .map(refreshTokenService::verifyExpiration)
                 .map(RefreshToken::getUser)
                 .map(user -> {
-                    String accessToken = jwtService.generateToken(user.getEmail());
+                    String accessToken = jwtService.generateToken(user.getEmail(), user.getId());
                     return JwtResponseDTO.builder()
                             .accessToken(accessToken)
-                            .token(refreshTokenRequest.getToken()).build();
+                            .refreshToken(refreshTokenRequest.getToken()).build();
                 }).orElseThrow(() -> new RuntimeException("Refresh token is not valid"));
     }
 }
