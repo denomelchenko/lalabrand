@@ -15,7 +15,7 @@ input UserRequest  {
 }
 
 type UserResponse {
-    id: ID!
+    userId: ID!
     email: String!
 }
 

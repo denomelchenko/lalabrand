@@ -10,11 +10,11 @@ import java.util.Date;
 public class JwtPayload {
     private String email;
     private Date expirationDate;
-    private String id;
+    private String userId;
     private Integer passwordVersion;
 
-    public JwtPayload(String id, String email, Integer passwordVersion, Date expirationDate) {
-        this.id = id;
+    public JwtPayload(String userId, String email, Integer passwordVersion, Date expirationDate) {
+        this.userId = userId;
         this.email = email;
         this.passwordVersion = passwordVersion;
         this.expirationDate = expirationDate;

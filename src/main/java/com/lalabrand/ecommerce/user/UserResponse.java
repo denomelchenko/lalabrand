@@ -10,6 +10,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class UserResponse {
-    String id;
+    String userId;
     String email;
 }
