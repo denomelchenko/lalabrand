@@ -28,7 +28,7 @@ public class JwtService {
 
     public boolean validateToken(JwtPayload jwtPayload, UserDetailsImpl userDetails) {
         return !isNotExpired(jwtPayload)
-                && jwtPayload.getId().equals(userDetails.getId())
+                && jwtPayload.getUserId().equals(userDetails.getId())
                 && jwtPayload.getEmail().equals(userDetails.getUsername())
                 && Objects.equals(jwtPayload.getPasswordVersion(), userDetails.getPasswordVersion());
     }
