@@ -1,5 +1,6 @@
 package com.lalabrand.ecommerce.security.refresh_token;
 
+import com.lalabrand.ecommerce.exception.TokenExpiredException;
 import com.lalabrand.ecommerce.user.User;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
@@ -41,7 +42,7 @@ public class RefreshTokenService {
             refreshTokenRepository.delete(token);
             String message = String.format("Refresh token %s is expired. Please log in again.", token.getToken());
             logger.error(message);
-            throw new RuntimeException(message);
+            throw new TokenExpiredException("Refresh token " + token.getToken() + " is expired. Please log in again.");
         }
         return token;
     }

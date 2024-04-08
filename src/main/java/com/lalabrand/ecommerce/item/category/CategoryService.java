@@ -34,7 +34,7 @@ public class CategoryService {
             throw ex;
         } catch (Exception ex) {
             logger.info("Error occurred while fetching categories: " + ex.getMessage());
-            throw new RuntimeException("Error occurred while fetching categories", ex);
+            throw ex;
         }
     }
 
