@@ -35,6 +35,6 @@ public class WishlistController {
     @MutationMapping(name = "itemToWishlist")
     @PreAuthorize("hasAuthority('USER')")
     public WishlistDTO addItemToWishlist(@Argument String itemId) {
-        return wishlistService.addItemToWishlist(itemId, commonUtils.getCurrentUser().get().getId());
+        return wishlistService.addItemToWishlist(itemId, commonUtils.getCurrentUser().getId());
     }
 }
