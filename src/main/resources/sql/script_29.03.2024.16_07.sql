@@ -4,18 +4,21 @@ CREATE DATABASE lalabrand;
 
 USE lalabrand;
 
+SET time_zone = '+00:00';
+
 CREATE TABLE `user`
 (
-    `id`         VARCHAR(36) PRIMARY KEY,
-    `first_name` VARCHAR(255),
-    `last_name`  VARCHAR(255),
-    `bonus`      INTEGER,
-    `email`      VARCHAR(255) UNIQUE NOT NULL,
-    `phone`      VARCHAR(255),
-    `language`   ENUM ('UA', 'EN'),
-    `password`   VARCHAR(255)        NOT NULL,
+    `id`               VARCHAR(36) PRIMARY KEY,
+    `first_name`       VARCHAR(255),
+    `last_name`        VARCHAR(255),
+    `bonus`            INTEGER,
+    `email`            VARCHAR(255) UNIQUE NOT NULL,
+    `phone`            VARCHAR(255),
+    `language`         ENUM ('UA', 'EN'),
+    `password`         VARCHAR(255)        NOT NULL,
+    `password_version` INTEGER             NOT NULL,
     INDEX `email_index` (email),
-    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    `created_at`       TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE `category`
@@ -214,6 +217,15 @@ CREATE TABLE `refresh_token`
     FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+CREATE TABLE `password_reset_token`
+(
+    `id`         VARCHAR(36) PRIMARY KEY NOT NULL,
+    `token`      VARCHAR(8)              NOT NULL,
+    `expires_at` TIMESTAMP               NOT NULL,
+    `user_id`    VARCHAR(36)             NOT NULL,
+    FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
 DROP EVENT IF EXISTS delete_expired_tokens;
 
 DELIMITER //
@@ -222,7 +234,8 @@ CREATE EVENT delete_expired_tokens
     ON SCHEDULE EVERY 1 DAY
     DO
     BEGIN
-        DELETE FROM refresh_token WHERE expires_at < utc_timestamp();
+        DELETE FROM password_reset_token WHERE expires_at < UTC_TIMESTAMP();
+        DELETE FROM refresh_token WHERE expires_at < UTC_TIMESTAMP();
     END //
 
 DELIMITER ;
