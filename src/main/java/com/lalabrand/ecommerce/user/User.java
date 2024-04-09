@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Instant;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -56,17 +55,17 @@ public class User {
     @OneToMany(mappedBy = "user")
     private Set<Order> orders;
 
-    @OneToMany(mappedBy = "user")
-    private Set<Wishlist> wishlists;
-
     @Column(name = "bonus")
     private Integer bonus;
 
     @Column(name = "password")
     private String password;
 
+    @OneToOne(mappedBy = "user")
+    private Wishlist wishlist;
+
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private Set<UserRole> userRoles = new LinkedHashSet<>();
+    private Set<UserRole> userRoles;
 
     @Column(name = "language")
     @Enumerated(EnumType.STRING)
