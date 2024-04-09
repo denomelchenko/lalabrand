@@ -1,0 +1,4 @@
+type CommonResponse {
+    success: String!
+    message: String!
+}

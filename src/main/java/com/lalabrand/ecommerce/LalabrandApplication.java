@@ -8,5 +8,4 @@ public class LalabrandApplication {
     public static void main(String[] args) {
         SpringApplication.run(LalabrandApplication.class, args);
     }
-
 }

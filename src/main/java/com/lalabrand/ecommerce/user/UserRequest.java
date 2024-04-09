@@ -20,7 +20,5 @@ public class UserRequest {
     @NotBlank(message = "Email can not be blank")
     @Email(message = "Invalid email address")
     String email;
-
-    String id;
 }
 

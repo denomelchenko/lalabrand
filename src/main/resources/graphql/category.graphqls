@@ -5,5 +5,5 @@ type Category{
 
 extend type Query {
     allCategories: [Category!]!
-    categoryById(id: ID!): Category!
+    categoryById(categoryId: ID!): Category!
 }

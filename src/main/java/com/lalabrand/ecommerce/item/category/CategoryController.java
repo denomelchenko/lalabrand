@@ -20,8 +20,8 @@ public class CategoryController {
     }
 
     @QueryMapping(name = "categoryById")
-    public CategoryDTO findCategoryById(@Argument String id) {
-        return categoryService.findCategoryById(id).orElse(null);
+    public CategoryDTO findCategoryById(@Argument String categoryId) {
+        return categoryService.findCategoryById(categoryId).orElse(null);
     }
 }
 

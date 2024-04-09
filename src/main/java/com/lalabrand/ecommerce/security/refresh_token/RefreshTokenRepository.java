@@ -1,4 +1,4 @@
-package com.lalabrand.ecommerce.auth;
+package com.lalabrand.ecommerce.security.refresh_token;
 
 import com.lalabrand.ecommerce.user.User;
 import org.springframework.data.repository.CrudRepository;
@@ -9,5 +9,7 @@ import java.util.Optional;
 @Repository
 public interface RefreshTokenRepository extends CrudRepository<RefreshToken, String> {
     Optional<RefreshToken> findByToken(String token);
+
+    void deleteByUserId(String userId);
 }
 
