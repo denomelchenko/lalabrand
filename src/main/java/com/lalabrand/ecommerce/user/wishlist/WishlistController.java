@@ -1,6 +1,6 @@
 package com.lalabrand.ecommerce.user.wishlist;
 
-import com.lalabrand.ecommerce.user.User;
+import com.lalabrand.ecommerce.security.UserDetailsImpl;
 import com.lalabrand.ecommerce.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -9,8 +9,6 @@ import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
-
-import java.util.Optional;
 
 @Controller
 public class WishlistController {
@@ -26,11 +24,12 @@ public class WishlistController {
     @QueryMapping(name = "wishlist")
     @PreAuthorize("hasAuthority('USER')")
     public WishlistDTO findWishlistForCurrentUser() {
-        Optional<User> user = commonUtils.getCurrentUser();
-        if (user.isPresent()) {
-            return wishlistService.findWishlistByUserId(user.get().getId()).orElse(null);
+        UserDetailsImpl user = commonUtils.getCurrentUser();
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found!");
         }
-        throw new UsernameNotFoundException("User not found!");
+        return wishlistService.findWishlistByUserId(user.getId()).orElse(null);
+
     }
 
     @MutationMapping(name = "itemToWishlist")

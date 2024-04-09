@@ -1,4 +1,4 @@
-package com.lalabrand.ecommerce.auth;
+package com.lalabrand.ecommerce.security;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AuthRequestDTO {
+public class JwtResponseDTO {
 
-    private String email;
-    private String password;
+    private String accessToken;
+    private String refreshToken;
 }

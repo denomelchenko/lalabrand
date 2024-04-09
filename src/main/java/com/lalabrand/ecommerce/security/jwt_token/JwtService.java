@@ -1,5 +1,6 @@
-package com.lalabrand.ecommerce.auth;
+package com.lalabrand.ecommerce.security.jwt_token;
 
+import com.lalabrand.ecommerce.security.UserDetailsImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -8,13 +9,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.time.Clock;
+import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Component
 public class JwtService {
-    private static final Integer MILLIS_IN_SECOND = 1000;
     @Value("${secret}")
     private String key;
 
@@ -24,7 +27,10 @@ public class JwtService {
     private Long accessTokenExpirationSec;
 
     public boolean validateToken(JwtPayload jwtPayload, UserDetailsImpl userDetails) {
-        return (!isNotExpired(jwtPayload) && jwtPayload.getId().equals(userDetails.getId()) && jwtPayload.getEmail().equals(userDetails.getUsername()));
+        return !isNotExpired(jwtPayload)
+                && jwtPayload.getUserId().equals(userDetails.getId())
+                && jwtPayload.getEmail().equals(userDetails.getUsername())
+                && Objects.equals(jwtPayload.getPasswordVersion(), userDetails.getPasswordVersion());
     }
 
     private boolean isNotExpired(JwtPayload token) {
@@ -38,19 +44,20 @@ public class JwtService {
         return Keys.hmacShaKeyFor(decodedKey);
     }
 
-    public String generateToken(String email, String id) {
+    public String generateToken(String email, String userId, Integer passwordVersion) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("id", id);
+        claims.put("id", userId);
+        claims.put("passwordVersion", passwordVersion);
         return createToken(claims, email);
     }
 
     private String createToken(Map<String, Object> claims, String email) {
-        Date currentDate = new Date();
+        Instant currentDate = Clock.systemUTC().instant();
         return Jwts.builder()
                 .claims(claims)
                 .subject(email)
-                .issuedAt(currentDate)
-                .expiration(new Date(currentDate.getTime() + accessTokenExpirationSec * MILLIS_IN_SECOND))
+                .issuedAt(Date.from(currentDate))
+                .expiration(Date.from(currentDate.plusSeconds(accessTokenExpirationSec)))
                 .signWith(getKey(), Jwts.SIG.HS256)
                 .compact();
     }
@@ -63,9 +70,10 @@ public class JwtService {
                 .getPayload();
 
         String id = (String) claims.get("id");
-        String subject = claims.getSubject();
+        Integer passwordVersion = (Integer) claims.get("passwordVersion");
+        String email = claims.getSubject();
         Date expirationDate = claims.getExpiration();
 
-        return new JwtPayload(id, subject, expirationDate);
+        return new JwtPayload(id, email, passwordVersion, expirationDate);
     }
 }

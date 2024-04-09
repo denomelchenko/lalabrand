@@ -1,4 +1,4 @@
-package com.lalabrand.ecommerce.auth;
+package com.lalabrand.ecommerce.security;
 
 import com.lalabrand.ecommerce.user.User;
 import com.lalabrand.ecommerce.user.role.UserRole;
@@ -16,12 +16,15 @@ public class UserDetailsImpl extends User implements UserDetails {
     private final String email;
     @Getter
     private final String id;
+    @Getter
+    private final Integer passwordVersion;
     Collection<? extends GrantedAuthority> authorities;
 
     public UserDetailsImpl(User user) {
         this.email = user.getEmail();
         this.password = user.getPassword();
         this.id = user.getId();
+        this.passwordVersion = user.getPasswordVersion();
         List<GrantedAuthority> auths = new ArrayList<>();
 
         for (UserRole role : user.getUserRoles()) {

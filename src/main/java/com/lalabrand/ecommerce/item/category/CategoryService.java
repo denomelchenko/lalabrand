@@ -38,13 +38,13 @@ public class CategoryService {
         }
     }
 
-    public Optional<CategoryDTO> findCategoryById(String id) {
-        if (CommonUtils.isIdInValid(id)) {
+    public Optional<CategoryDTO> findCategoryById(String categoryId) {
+        if (CommonUtils.isIdInValid(categoryId)) {
             throw new IllegalArgumentException("Id is invalid");
         }
-        Optional<Category> categoryEntityOptional = categoryRepository.findById(id);
+        Optional<Category> categoryEntityOptional = categoryRepository.findById(categoryId);
         if (categoryEntityOptional.isEmpty()) {
-            throw new EntityNotFoundException("Category not found for id: " + id);
+            throw new EntityNotFoundException("Category not found for id: " + categoryId);
         }
         return categoryEntityOptional.map(CategoryDTO::fromEntity);
     }

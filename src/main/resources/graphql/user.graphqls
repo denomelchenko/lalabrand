@@ -12,11 +12,10 @@ input AuthRequest {
 input UserRequest  {
     password: String!
     email: String!
-    id: ID
 }
 
 type UserResponse {
-    id: ID!
+    userId: ID!
     email: String!
 }
 

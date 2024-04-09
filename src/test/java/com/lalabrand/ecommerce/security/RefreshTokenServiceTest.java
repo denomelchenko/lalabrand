@@ -1,6 +1,8 @@
-package com.lalabrand.ecommerce.auth;
+package com.lalabrand.ecommerce.security;
 
-import com.lalabrand.ecommerce.user.UserRepository;
+import com.lalabrand.ecommerce.security.refresh_token.RefreshToken;
+import com.lalabrand.ecommerce.security.refresh_token.RefreshTokenRepository;
+import com.lalabrand.ecommerce.security.refresh_token.RefreshTokenService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -41,6 +43,6 @@ public class RefreshTokenServiceTest {
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> refreshTokenService.verifyExpiration(token));
 
-        assertEquals("expired_token Refresh token is expired. Please log in again.", exception.getMessage());
+        assertEquals("Refresh token expired_token is expired. Please log in again.", exception.getMessage());
     }
 }

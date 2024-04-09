@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = {})
 @ReportAsSingleViolation
-@Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,20}$", message = "Password must contain at least one digit, one lowercase letter, one uppercase letter, one special character and no whitespace")
+@Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+*`(){}|~<>,.;:/\\\\\\-_=!?])(?=\\S+$).{8,255}$", message = "Password must contain at least one digit, one lowercase letter, one uppercase letter, one special character and no whitespace")
 public @interface Password {
 
     String message() default "Invalid password";
