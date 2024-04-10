@@ -39,7 +39,7 @@ public class WishlistService {
     }
 
     public WishlistDTO addItemToWishlist(String itemId, String userId) {
-        if (CommonUtils.isIdInValid(itemId) || CommonUtils.isIdInValid(userId)) {
+        if (CommonUtils.isIdInvalid(itemId) || CommonUtils.isIdInvalid(userId)) {
             throw new IllegalArgumentException("itemId or userId is invalid");
         }
         Optional<Wishlist> existWishlist = wishlistRepository.findWishlistByUserId(userId);
@@ -54,7 +54,7 @@ public class WishlistService {
     }
 
     public WishlistDTO addItemsToWishlist(Set<String> itemsIds, String userId) {
-        if (CommonUtils.isIdsInValid(itemsIds) || CommonUtils.isIdInValid(userId)) {
+        if (CommonUtils.isIdsInvalid(itemsIds) || CommonUtils.isIdInvalid(userId)) {
             throw new IllegalArgumentException("One of itemsIds or userId is invalid");
         }
         Optional<Wishlist> existWishlist = wishlistRepository.findWishlistByUserId(userId);
