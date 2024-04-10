@@ -25,4 +25,11 @@ public class CartService {
         }
         return Optional.of(CartDTO.fromEntity(cart.get()));
     }
+
+    public CartDTO addItemToCart(String itemId, String itemInfoId, String sizeId, String userId) {
+        if (CommonUtils.isIdInvalid(itemId) || CommonUtils.isIdInvalid(itemInfoId)
+                || CommonUtils.isIdInvalid(sizeId) || CommonUtils.isIdInvalid(userId)) {
+            throw new IllegalArgumentException("Id gis not valid");
+        }
+    }
 }
