@@ -8,5 +8,6 @@ extend type Query {
 }
 
 extend type Mutation {
-    itemToWishlist(itemId: String): Wishlist
+    itemToWishlist(itemId: ID): Wishlist
+    itemsToWishlist(itemsIds: [ID]): Wishlist
 }
