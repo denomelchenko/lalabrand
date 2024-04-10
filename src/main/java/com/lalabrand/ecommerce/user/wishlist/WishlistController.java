@@ -10,6 +10,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 
+import java.util.Set;
+
 @Controller
 public class WishlistController {
     private final WishlistService wishlistService;
@@ -36,5 +38,11 @@ public class WishlistController {
     @PreAuthorize("hasAuthority('USER')")
     public WishlistDTO addItemToWishlist(@Argument String itemId) {
         return wishlistService.addItemToWishlist(itemId, commonUtils.getCurrentUser().getId());
+    }
+
+    @MutationMapping(name = "itemsToWishlist")
+    @PreAuthorize("hasAuthority('USER')")
+    public WishlistDTO addItemsToWishlist(@Argument Set<String> itemsIds) {
+        return wishlistService.addItemsToWishlist(itemsIds, commonUtils.getCurrentUser().getId());
     }
 }
