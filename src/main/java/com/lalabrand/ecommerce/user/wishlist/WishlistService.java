@@ -40,6 +40,7 @@ public class WishlistService {
 
     public WishlistDTO addItemToWishlist(String itemId, String userId) {
         if (CommonUtils.isIdInvalid(itemId) || CommonUtils.isIdInvalid(userId)) {
+            logger.error("ItemID: " + itemId + " or userId: " + userId + "is invalid");
             throw new IllegalArgumentException("itemId or userId is invalid");
         }
         Optional<Wishlist> existWishlist = wishlistRepository.findWishlistByUserId(userId);
@@ -47,14 +48,18 @@ public class WishlistService {
             return WishlistDTO.fromEntity(wishlistRepository.save(new Wishlist(userId, Collections.singleton(itemId))));
         }
         if (existWishlist.get().getItems().stream().anyMatch(item -> item.getId().equals(itemId))) {
+            logger.error("Item with id: " + itemId + " already exist" + " in user cart ( user id:" + userId + " )");
             throw new IllegalArgumentException("An item with this ID is already in the wishlist");
         }
         existWishlist.get().getItems().add(new Item(itemId));
-        return WishlistDTO.fromEntity(wishlistRepository.save(existWishlist.get()));
+        WishlistDTO wishlist = WishlistDTO.fromEntity(wishlistRepository.save(existWishlist.get()));
+        logger.debug("Item with id: " + itemId + "successfully added to wishlist");
+        return wishlist;
     }
 
     public WishlistDTO addItemsToWishlist(Set<String> itemsIds, String userId) {
         if (CommonUtils.isIdsInvalid(itemsIds) || CommonUtils.isIdInvalid(userId)) {
+            logger.error("One of item ids " + itemsIds + " is not valid");
             throw new IllegalArgumentException("One of itemsIds or userId is invalid");
         }
         Optional<Wishlist> existWishlist = wishlistRepository.findWishlistByUserId(userId);
@@ -63,9 +68,11 @@ public class WishlistService {
         }
         if (existWishlist.get().getItems().stream()
                 .anyMatch(item -> itemsIds.contains(item.getId()))) {
-            throw new IllegalArgumentException("One of the items with this ID is already in the wishlist.");
+            logger.error("One of item ids " + itemsIds + " is already in the wishlist");
+            throw new IllegalArgumentException("One of the items with this ID is already in the wishlist");
         }
         existWishlist.get().getItems().addAll(itemsIds.stream().map(Item::new).toList());
+        logger.debug("Items with ids: " + itemsIds + "successfully added to wishlist");
         return WishlistDTO.fromEntity(wishlistRepository.save(existWishlist.get()));
     }
 }
