@@ -1,7 +1,6 @@
 package com.lalabrand.ecommerce.user.wishlist;
 
 import com.lalabrand.ecommerce.item.Item;
-import com.lalabrand.ecommerce.user.User;
 import com.lalabrand.ecommerce.utils.CommonUtils;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
@@ -11,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class WishlistService {
@@ -50,6 +50,22 @@ public class WishlistService {
             throw new IllegalArgumentException("An item with this ID is already in the wishlist");
         }
         existWishlist.get().getItems().add(new Item(itemId));
+        return WishlistDTO.fromEntity(wishlistRepository.save(existWishlist.get()));
+    }
+
+    public WishlistDTO addItemsToWishlist(Set<String> itemsIds, String userId) {
+        if (CommonUtils.isIdsInValid(itemsIds) || CommonUtils.isIdInValid(userId)) {
+            throw new IllegalArgumentException("One of itemsIds or userId is invalid");
+        }
+        Optional<Wishlist> existWishlist = wishlistRepository.findWishlistByUserId(userId);
+        if (existWishlist.isEmpty() || existWishlist.get().getItems() == null) {
+            return WishlistDTO.fromEntity(wishlistRepository.save(new Wishlist(userId, itemsIds)));
+        }
+        if (existWishlist.get().getItems().stream()
+                .anyMatch(item -> itemsIds.contains(item.getId()))) {
+            throw new IllegalArgumentException("One of the items with this ID is already in the wishlist.");
+        }
+        existWishlist.get().getItems().addAll(itemsIds.stream().map(Item::new).toList());
         return WishlistDTO.fromEntity(wishlistRepository.save(existWishlist.get()));
     }
 }
