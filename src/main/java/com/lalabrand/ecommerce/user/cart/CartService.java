@@ -1,5 +1,7 @@
 package com.lalabrand.ecommerce.user.cart;
 
+import com.lalabrand.ecommerce.item.Item;
+import com.lalabrand.ecommerce.item.ItemRepository;
 import com.lalabrand.ecommerce.item.item_info.ItemInfo;
 import com.lalabrand.ecommerce.item.item_info.ItemInfoRepository;
 import com.lalabrand.ecommerce.item.size.Size;
@@ -7,7 +9,9 @@ import com.lalabrand.ecommerce.item.size.SizeRepository;
 import com.lalabrand.ecommerce.user.cart.cart_item.CartItem;
 import com.lalabrand.ecommerce.user.cart.cart_item.CartItemDTO;
 import com.lalabrand.ecommerce.user.cart.cart_item.CartItemRepository;
+import com.lalabrand.ecommerce.utils.CommonResponse;
 import com.lalabrand.ecommerce.utils.CommonUtils;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +40,7 @@ public class CartService {
 
     public Optional<CartDTO> findCartByUserId(String userId) {
         if (CommonUtils.isIdInvalid(userId)) {
-            logger.error("UserId: " + userId + "is not valid");
+            logger.error("UserId: {}is not valid", userId);
             throw new IllegalArgumentException("UserId is not valid");
         }
         Optional<Cart> cart = cartRepository.findCartByUserId(userId);
@@ -46,9 +50,10 @@ public class CartService {
         return Optional.of(CartDTO.fromEntity(cart.get()));
     }
 
-    public CartDTO addItemToCart(String itemId, String itemInfoId, String sizeId, Integer count, String userId) {
+    @Transactional
+    public CommonResponse addItemToCart(String itemId, String itemInfoId, String sizeId, Integer count, String userId) {
         if (count == 0) {
-            return null;
+            throw new IllegalArgumentException("Count must be greater than zero");
         }
 
         if (CommonUtils.isIdInvalid(itemId) || CommonUtils.isIdInvalid(itemInfoId)
@@ -57,35 +62,54 @@ public class CartService {
                     itemId, itemInfoId, sizeId, userId);
             throw new IllegalArgumentException("Id is not valid");
         }
+
         Optional<ItemInfo> itemInfo = itemInfoRepository.findById(itemInfoId);
-        if (itemInfo.isEmpty()) {
+        itemInfo.orElseThrow(() -> {
             logger.error("ItemInfo with id: {} does not exist", itemInfoId);
-            throw new IllegalArgumentException("Item info with id: " + itemInfoId + " does not exist");
-        }
-        if (!Objects.equals(itemInfo.get().getItem_id(), itemId)) {
+            return new IllegalArgumentException("Item info with id: " + itemInfoId + " does not exist");
+        });
+        if (!itemInfo.get().getItem_id().equals(itemId)) {
             logger.error("ItemInfo with id: {} is not for item with id: {}", itemInfoId, itemId);
             throw new IllegalArgumentException("ItemInfo with id: " + itemInfoId + " is not for item with id: " + itemId);
         }
 
+        Optional<Cart> existCart = cartRepository.findCartByUserId(userId);
+
         Optional<Size> size = sizeRepository.findById(sizeId);
-        if (size.isEmpty()) {
+        size.orElseThrow(() -> {
             logger.error("Size with id: {} does not exist", sizeId);
-            throw new IllegalArgumentException("Size with id: " + sizeId + " does not exist");
-        }
+            return new IllegalArgumentException("Size with id: " + sizeId + " does not exist");
+        });
         if (size.get().getItems().stream().noneMatch(item -> item.getId().equals(itemId))) {
             logger.error("Size with id: {} is not for item with id: {}", sizeId, itemId);
             throw new IllegalArgumentException("Size with id: " + sizeId + " is not for item with id: " + itemId);
         }
 
-        Optional<Cart> existCart = cartRepository.findCartByUserId(userId);
-        if (existCart.isEmpty()) {
-            CartDTO cart = CartDTO.fromEntity(cartRepository.save(new Cart(userId)));
-            CartItem cartItem = cartItemRepository.save(new CartItem(itemId, itemInfoId, sizeId, count, cart.getId()));
-            cart.getCartItems().add(CartItemDTO.fromEntity(cartItem));
-            return cart;
-        }
-        CartItem cartItem = cartItemRepository.save(new CartItem(itemId, itemInfoId, sizeId, count, existCart.get().getId()));
-        existCart.get().setCartItems(cartItemRepository.findCartItemsByCartId(existCart.get().getId()));
-        return CartDTO.fromEntity(existCart.get());
+        existCart.ifPresentOrElse(
+                cart -> {
+                    boolean cartItemAlreadyExist = false;
+                    for (CartItem cartItem : cart.getCartItems()) {
+                        if (cartItem.getItemId().equals(itemId)
+                                && cartItem.getItemInfoId().equals(itemInfoId)
+                                && cartItem.getSizeId().equals(sizeId)) {
+                            cartItem.setCount(cartItem.getCount() + count);
+                            cartItemRepository.save(cartItem);
+                            cartItemAlreadyExist = true;
+                            break;
+                        }
+                    }
+                    if (!cartItemAlreadyExist) {
+                        cartItemRepository.save(new CartItem(itemId, itemInfoId, sizeId, count, cart.getId()));
+                    }
+                },
+                () -> {
+                    Cart newCart = cartRepository.save(new Cart(userId));
+                    cartItemRepository.save(new CartItem(itemId, itemInfoId, sizeId, count, newCart.getId()));
+                }
+        );
+        return CommonResponse.builder()
+                .success(true)
+                .message("Item added to cart successfully")
+                .build();
     }
 }
