@@ -45,4 +45,20 @@ public class ItemDTO implements Serializable {
                 .soldCount(item.getSoldCount())
                 .build();
     }
+
+    public Item toEntity() {
+        Item item = Item.builder()
+                .id(this.id)
+                .title(this.title)
+                .shortDisc(this.shortDisc)
+                .longDisc(this.longDisc)
+                .rating(this.rating)
+                .price(this.price)
+                .availableCount(this.availableCount)
+                .salePrice(this.salePrice)
+                .image(this.image)
+                .soldCount(this.soldCount)
+                .build();
+        return item;
+    }
 }
