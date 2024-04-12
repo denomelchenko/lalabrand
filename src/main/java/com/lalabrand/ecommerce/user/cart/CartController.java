@@ -1,6 +1,8 @@
 package com.lalabrand.ecommerce.user.cart;
 
 import com.lalabrand.ecommerce.security.UserDetailsImpl;
+import com.lalabrand.ecommerce.user.cart.cart_item.CartItemDTO;
+import com.lalabrand.ecommerce.utils.CommonResponse;
 import com.lalabrand.ecommerce.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -35,7 +37,7 @@ public class CartController {
 
     @MutationMapping(name = "itemToCart")
     @PreAuthorize("hasAuthority('USER')")
-    public CartDTO addItemToWishlist(@Argument String itemInfoId, @Argument String sizeId,
+    public CommonResponse addItemToCart(@Argument String itemInfoId, @Argument String sizeId,
                                      @Argument String itemId, @Argument Integer count) {
         return cartService.addItemToCart(itemId, itemInfoId, sizeId, count, commonUtils.getCurrentUser().getId());
     }
