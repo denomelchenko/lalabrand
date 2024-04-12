@@ -44,7 +44,7 @@ public class CartItem {
     private Size size;
 
     @Column(name = "size_id")
-    private String size_id;
+    private String sizeId;
 
     @Column(name = "count")
     private Integer count;
@@ -57,10 +57,10 @@ public class CartItem {
     @Column(name = "cart_id")
     private String cartId;
 
-    public CartItem(String itemId, String itemInfoId, String size_id, Integer count, String cartId) {
+    public CartItem(String itemId, String itemInfoId, String sizeId, Integer count, String cartId) {
         this.itemId = itemId;
         this.itemInfoId = itemInfoId;
-        this.size_id = size_id;
+        this.sizeId = sizeId;
         this.count = count;
         this.cartId = cartId;
     }
