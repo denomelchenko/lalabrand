@@ -1,6 +1,10 @@
 type Cart {
-    cart: ID!,
+    id: ID!,
     cartItems: [CartItem!]
+}
+
+extend type Mutation {
+    itemToCart(itemInfoId: ID, sizeId: ID, itemId: ID, count: Int): Cart!
 }
 
 type Query {
