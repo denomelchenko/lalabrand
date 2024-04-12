@@ -30,7 +30,8 @@ public class Size {
     @Column(name = "value", nullable = false, length = 40)
     private String value;
 
-    @ManyToMany(mappedBy = "sizes")
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "item_sizes", joinColumns = @JoinColumn(name = "item_id"), inverseJoinColumns = @JoinColumn(name = "size_id"))
     private Set<Item> items = new LinkedHashSet<>();
 
 }
