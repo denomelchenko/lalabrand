@@ -7,7 +7,6 @@ import com.lalabrand.ecommerce.user.role.UserRoleRepository;
 import com.lalabrand.ecommerce.utils.UserAccessChecker;
 import jakarta.transaction.Transactional;
 import lombok.SneakyThrows;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,13 +20,10 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
-    private final UserAccessChecker userAccessChecker;
-    private final ModelMapper modelMapper = new ModelMapper();
 
-    public UserService(UserRepository userRepository, UserRoleRepository userRoleRepository, UserAccessChecker userAccessChecker) {
+    public UserService(UserRepository userRepository, UserRoleRepository userRoleRepository) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
-        this.userAccessChecker = userAccessChecker;
     }
 
     public Optional<User> findByUserId(String userId) {
@@ -50,7 +46,7 @@ public class UserService {
             userRoleRepository.save(new UserRole(Role.USER, user));
             savedUser = userRepository.save(user);
         }
-        return modelMapper.map(savedUser, UserResponse.class);
+        return UserResponse.fromEntity(savedUser);
     }
 
     public Optional<User> findByEmail(String email) {
