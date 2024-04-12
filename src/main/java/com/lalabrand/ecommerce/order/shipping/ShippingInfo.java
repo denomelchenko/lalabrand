@@ -1,17 +1,16 @@
 package com.lalabrand.ecommerce.order.shipping;
 
 import com.lalabrand.ecommerce.order.Order;
-import com.lalabrand.ecommerce.order.shipping.shipping_option.ShippingOption;
 import com.lalabrand.ecommerce.user.enums.Country;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import lombok.*;
 
 @Getter
 @Setter
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "shipping_info")
 public class ShippingInfo {
     @Id
@@ -40,10 +39,4 @@ public class ShippingInfo {
 
     @Column(name = "phone")
     private String phone;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.SET_NULL)
-    @JoinColumn(name = "shipping_option_id")
-    private ShippingOption shippingOption;
-
 }

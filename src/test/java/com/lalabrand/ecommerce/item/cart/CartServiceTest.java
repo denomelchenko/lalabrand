@@ -11,6 +11,7 @@ import com.lalabrand.ecommerce.user.cart.CartRepository;
 import com.lalabrand.ecommerce.user.cart.CartService;
 
 import com.lalabrand.ecommerce.user.cart.cart_item.CartItem;
+import com.lalabrand.ecommerce.user.cart.cart_item.CartItemRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,6 +31,7 @@ public class CartServiceTest {
     private CartService cartService;
 
     private static Cart cartWithItems;
+    private CartItemRepository cartItemRepository;
 
     @BeforeAll
     public static void beforeAll() {
@@ -73,7 +75,7 @@ public class CartServiceTest {
     @BeforeEach
     public void beforeEach() {
         cartRepository = mock(CartRepository.class);
-        cartService = new CartService(cartRepository);
+        cartService = new CartService(cartRepository, cartItemRepository);
     }
 
     // Should return CartDto when userId is valid and cart exists

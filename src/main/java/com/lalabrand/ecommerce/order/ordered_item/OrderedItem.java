@@ -2,12 +2,10 @@ package com.lalabrand.ecommerce.order.ordered_item;
 
 import com.lalabrand.ecommerce.item.Item;
 import com.lalabrand.ecommerce.item.enums.SizeType;
+import com.lalabrand.ecommerce.item.size.Size;
 import com.lalabrand.ecommerce.order.Order;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -18,6 +16,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Entity
+@Builder
 @Table(name = "ordered_item")
 public class OrderedItem {
     @Id
@@ -38,8 +37,9 @@ public class OrderedItem {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "size", nullable = false)
-    private SizeType size;
+    @Column(name = "size_type", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private SizeType sizeType;
 
     @Column(name = "color", nullable = false)
     private String color;

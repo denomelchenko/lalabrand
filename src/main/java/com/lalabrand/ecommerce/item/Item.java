@@ -7,10 +7,7 @@ import com.lalabrand.ecommerce.item.look.Look;
 import com.lalabrand.ecommerce.item.size.Size;
 import com.lalabrand.ecommerce.order.ordered_item.OrderedItem;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -23,6 +20,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+@Builder
 @Table(name = "item")
 public class Item {
     @ManyToMany

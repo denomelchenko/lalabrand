@@ -1,14 +1,13 @@
 package com.lalabrand.ecommerce.order;
 
 import com.lalabrand.ecommerce.item.enums.Currency;
+import com.lalabrand.ecommerce.order.enums.Status;
 import com.lalabrand.ecommerce.order.ordered_item.OrderedItem;
 import com.lalabrand.ecommerce.order.shipping.ShippingInfo;
 import com.lalabrand.ecommerce.user.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -21,6 +20,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+@Builder
 @Table(name = "order")
 public class Order {
     @Id
@@ -34,6 +34,7 @@ public class Order {
     private User user;
 
     @Column(name = "created_at", nullable = false)
+    @CreationTimestamp
     private Instant createdAt;
 
     @OneToMany(mappedBy = "order")
@@ -41,6 +42,9 @@ public class Order {
 
     @Column(name = "total_price", precision = 10)
     private BigDecimal totalPrice;
+
+    @Column(name = "status")
+    private Status status;
 
     @Column(name = "shipping_fee", precision = 10)
     private BigDecimal shippingFee;

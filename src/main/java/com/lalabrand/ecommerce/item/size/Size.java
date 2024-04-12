@@ -3,10 +3,7 @@ package com.lalabrand.ecommerce.item.size;
 import com.lalabrand.ecommerce.item.Item;
 import com.lalabrand.ecommerce.item.enums.SizeType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -16,6 +13,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+@Builder
 @Table(name = "size")
 public class Size {
     @Id
