@@ -10,7 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 
-import java.util.Set;
+import java.util.Optional;
 
 @Controller
 public class CartController {
@@ -33,9 +33,10 @@ public class CartController {
         return cartService.findCartByUserId(user.getId()).orElse(null);
     }
 
-    @MutationMapping(name = "itemToWishlist")
+    @MutationMapping(name = "itemToCart")
     @PreAuthorize("hasAuthority('USER')")
-    public CartDTO addItemToWishlist(@Argument String itemInfoId, @Argument String sizeId, @Argument String itemId) {
-        return cartService.addItemToCart(itemId, itemInfoId, sizeId, commonUtils.getCurrentUser().getId());
+    public CartDTO addItemToWishlist(@Argument String itemInfoId, @Argument String sizeId,
+                                     @Argument String itemId, @Argument Integer count) {
+        return cartService.addItemToCart(itemId, itemInfoId, sizeId, count, commonUtils.getCurrentUser().getId());
     }
 }
