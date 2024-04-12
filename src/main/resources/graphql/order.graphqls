@@ -1,0 +1,30 @@
+type Order {
+    id: ID!
+    createdAt: String!
+    orderedItems: [OrderedItem!]!
+    totalPrice: Float!
+    shippingFee: Float
+    discount: Float
+    tax: Float
+    currency: Currency!
+    shipping: ShippingInfo!
+}
+
+
+extend type Query {
+    ordersByUserId: [Order!]!
+}
+
+input ShippingInfoInput {
+    country: Country!
+    zip: String!
+    city: String!
+    address1: String!
+    address2: String!
+    phone: String!
+}
+
+extend type Mutation {
+    placeOrder(shipping: ShippingInfoInput!): String!
+    deleteOrderById(orderId: ID!): String!
+}
