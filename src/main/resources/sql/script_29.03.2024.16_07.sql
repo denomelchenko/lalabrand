@@ -68,10 +68,12 @@ CREATE TABLE `user_roles`
 
 CREATE TABLE `cart`
 (
-    `id`      VARCHAR(36) PRIMARY KEY,
-    `user_id` VARCHAR(36) NOT NULL,
+    `id`         VARCHAR(36) PRIMARY KEY,
+    `user_id`    VARCHAR(36) NOT NULL,
+    `total_cost` DECIMAL(19, 2),
     FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
 
 CREATE TABLE `item_info`
 (
@@ -104,13 +106,6 @@ CREATE TABLE `cart_item`
     FOREIGN KEY (`size_id`) REFERENCES `size` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
-CREATE TABLE `shipping_option`
-(
-    `id`    VARCHAR(36) PRIMARY KEY,
-    `name`  VARCHAR(100) NOT NULL,
-    `price` DECIMAL      NOT NULL
-);
-
 CREATE TABLE `shipping_info`
 (
     `id`                 VARCHAR(36) PRIMARY KEY,
@@ -120,8 +115,7 @@ CREATE TABLE `shipping_info`
     `address1`           VARCHAR(255) NOT NULL,
     `address2`           VARCHAR(255) NOT NULL,
     `phone`              VARCHAR(255) NOT NULL,
-    `shipping_option_id` VARCHAR(36),
-    FOREIGN KEY (`shipping_option_id`) REFERENCES `shipping_option` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+    `shipping_option_id` VARCHAR(36)
 );
 
 
