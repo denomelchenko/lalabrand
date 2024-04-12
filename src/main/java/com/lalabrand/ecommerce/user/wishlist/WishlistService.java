@@ -3,6 +3,7 @@ package com.lalabrand.ecommerce.user.wishlist;
 import com.lalabrand.ecommerce.item.Item;
 import com.lalabrand.ecommerce.utils.CommonUtils;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,7 @@ public class WishlistService {
         }
     }
 
+    @Transactional
     public WishlistDTO addItemToWishlist(String itemId, String userId) {
         if (CommonUtils.isIdInvalid(itemId) || CommonUtils.isIdInvalid(userId)) {
             logger.error("ItemID: {} or userId: {}is invalid", itemId, userId);
@@ -57,9 +59,10 @@ public class WishlistService {
         return wishlist;
     }
 
+    @Transactional
     public WishlistDTO addItemsToWishlist(Set<String> itemsIds, String userId) {
         if (CommonUtils.isIdsInvalid(itemsIds) || CommonUtils.isIdInvalid(userId)) {
-            logger.error("One of item ids " + itemsIds + " is not valid");
+            logger.error("One of item ids {} is not valid", itemsIds);
             throw new IllegalArgumentException("One of itemsIds or userId is invalid");
         }
         Optional<Wishlist> existWishlist = wishlistRepository.findWishlistByUserId(userId);
