@@ -52,7 +52,7 @@ public class CartService {
 
     @Transactional
     public CommonResponse addItemToCart(String itemId, String itemInfoId, String sizeId, Integer count, String userId) {
-        if (count == 0) {
+        if (count <= 0) {
             throw new IllegalArgumentException("Count must be greater than zero");
         }
 
