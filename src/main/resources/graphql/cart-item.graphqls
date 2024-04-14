@@ -5,3 +5,10 @@ type CartItem {
     size: Size!
     count: Int!
 }
+
+input CartItemRequest {
+    itemId: String
+    itemInfoId: String
+    sizeId: String
+    count: Int
+}
