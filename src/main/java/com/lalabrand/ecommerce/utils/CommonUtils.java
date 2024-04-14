@@ -1,23 +1,19 @@
 package com.lalabrand.ecommerce.utils;
 
 import com.lalabrand.ecommerce.security.UserDetailsImpl;
-import com.lalabrand.ecommerce.user.User;
-import com.lalabrand.ecommerce.user.UserService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
+import java.util.Collection;
 
 @Component
 public class CommonUtils {
-    private final UserService userService;
-
-    public CommonUtils(UserService userService) {
-        this.userService = userService;
+    public static boolean isIdInvalid(String id) {
+        return id == null || id.isEmpty() || id.length() > 36;
     }
 
-    public static boolean isIdInValid(String id) {
-        return id == null || id.isEmpty() || id.length() > 36;
+    public static boolean isIdsInvalid(Collection<String> ids) {
+        return ids.stream().allMatch(id -> id == null || id.isEmpty() || id.length() > 36);
     }
 
     public UserDetailsImpl getCurrentUser() {

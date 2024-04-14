@@ -6,3 +6,8 @@ type Wishlist {
 extend type Query {
     wishlist: Wishlist
 }
+
+extend type Mutation {
+    itemToWishlist(itemId: ID): Wishlist
+    itemsToWishlist(itemsIds: [ID]): Wishlist
+}

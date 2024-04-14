@@ -1,5 +1,6 @@
 package com.lalabrand.ecommerce.user;
 
+import com.lalabrand.ecommerce.exception.UserAlreadyExistException;
 import com.lalabrand.ecommerce.user.role.UserRole;
 import com.lalabrand.ecommerce.user.role.UserRoleRepository;
 import com.lalabrand.ecommerce.utils.UserAccessChecker;
@@ -29,7 +30,7 @@ public class UserServiceTest {
 
     // saveUser method saves a new user with valid email and password
     @Test
-    public void test_saveUser_savesNewUserWithValidEmailAndPassword() throws AccessDeniedException {
+    public void test_saveUser_savesNewUserWithValidEmailAndPassword() throws AccessDeniedException, UserAlreadyExistException {
         UserRequest userRequest = new UserRequest("password123", "test@example.com", null);
         User savedUser = new User("1", "test@example.com", "password123", 1);
         when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.empty());

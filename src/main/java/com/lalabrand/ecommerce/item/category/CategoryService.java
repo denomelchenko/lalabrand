@@ -34,12 +34,12 @@ public class CategoryService {
             throw ex;
         } catch (Exception ex) {
             logger.info("Error occurred while fetching categories: " + ex.getMessage());
-            throw new RuntimeException("Error occurred while fetching categories", ex);
+            throw ex;
         }
     }
 
     public Optional<CategoryDTO> findCategoryById(String categoryId) {
-        if (CommonUtils.isIdInValid(categoryId)) {
+        if (CommonUtils.isIdInvalid(categoryId)) {
             throw new IllegalArgumentException("Id is invalid");
         }
         Optional<Category> categoryEntityOptional = categoryRepository.findById(categoryId);

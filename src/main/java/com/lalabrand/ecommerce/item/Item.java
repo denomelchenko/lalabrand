@@ -65,6 +65,10 @@ public class Item {
     @OneToMany(mappedBy = "item")
     private Set<ItemInfo> itemInfos;
 
+    public Item(String id) {
+        this.id = id;
+    }
+
     @PrePersist
     public void prePersist() {
         if (createdAt == null) {
