@@ -1,6 +1,7 @@
 package com.lalabrand.ecommerce.user.wishlist;
 
 import com.lalabrand.ecommerce.item.Item;
+import com.lalabrand.ecommerce.item.ItemRepository;
 import com.lalabrand.ecommerce.utils.CommonUtils;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -17,10 +18,12 @@ import java.util.Set;
 public class WishlistService {
     private final WishlistRepository wishlistRepository;
     private final Logger logger = LoggerFactory.getLogger(WishlistService.class);
+    private final ItemRepository itemRepository;
 
     @Autowired
-    public WishlistService(WishlistRepository wishlistRepository) {
+    public WishlistService(WishlistRepository wishlistRepository, ItemRepository itemRepository) {
         this.wishlistRepository = wishlistRepository;
+        this.itemRepository = itemRepository;
     }
 
     public Optional<WishlistDTO> findWishlistByUserId(String userId) {
@@ -53,6 +56,11 @@ public class WishlistService {
             logger.error("Item with id: {} already exist in user cart ( user id:{} )", itemId, userId);
             throw new IllegalArgumentException("An item with this ID is already in the wishlist");
         }
+
+        if (itemRepository.findById(itemId).isEmpty()) {
+            logger.error("Item with id: {} does not exist", itemId);
+            throw new IllegalArgumentException("Item with this id does not exist");
+        }
         existWishlist.get().getItems().add(new Item(itemId));
         WishlistDTO wishlist = WishlistDTO.fromEntity(wishlistRepository.save(existWishlist.get()));
         logger.debug("Item with id: {}successfully added to wishlist", itemId);
@@ -68,6 +76,10 @@ public class WishlistService {
         Optional<Wishlist> existWishlist = wishlistRepository.findWishlistByUserId(userId);
         if (existWishlist.isEmpty() || existWishlist.get().getItems() == null) {
             return WishlistDTO.fromEntity(wishlistRepository.save(new Wishlist(userId, itemsIds)));
+        }
+        if (itemRepository.findAll(itemsId).isEmpty()) {
+            logger.error("Item with id: {} does not exist", itemId);
+            throw new IllegalArgumentException("Item with this id does not exist");
         }
         if (existWishlist.get().getItems().stream()
                 .anyMatch(item -> itemsIds.contains(item.getId()))) {
