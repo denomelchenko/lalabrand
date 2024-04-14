@@ -7,5 +7,5 @@ import java.util.Set;
 
 @Repository
 public interface CartItemRepository extends JpaRepository<CartItem, String> {
-    Set<CartItem> findCartItemsByCartId(String cartId);
+    CartItem findCartItemByCartIdAndItemIdAndItemInfoIdAndSizeId(String cartId, String itemId, String itemInfoId, String sizeId);
 }
