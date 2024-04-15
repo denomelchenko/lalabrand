@@ -4,7 +4,6 @@ import com.lalabrand.ecommerce.user.User;
 import com.lalabrand.ecommerce.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
@@ -26,10 +25,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         Optional<User> user = userService.findByEmail(username);
         if (user.isEmpty()) {
-            logger.error("Username with email " + username + " not found");
+            logger.error("Username with email {} not found", username);
             throw new UsernameNotFoundException("Could not found user:" + username);
         }
-        logger.info("User Authenticated successfully");
+        logger.info("User with email {} Authenticated successfully", username);
         return new UserDetailsImpl(user.get());
     }
 }
