@@ -1,16 +1,13 @@
 package com.lalabrand.ecommerce.user.cart;
 
-import com.lalabrand.ecommerce.item.Item;
-import com.lalabrand.ecommerce.item.ItemRepository;
 import com.lalabrand.ecommerce.item.item_info.ItemInfo;
 import com.lalabrand.ecommerce.item.item_info.ItemInfoRepository;
 import com.lalabrand.ecommerce.item.size.Size;
 import com.lalabrand.ecommerce.item.size.SizeRepository;
 import com.lalabrand.ecommerce.user.cart.cart_item.CartItem;
-import com.lalabrand.ecommerce.user.cart.cart_item.CartItemDTO;
 import com.lalabrand.ecommerce.user.cart.cart_item.CartItemRepository;
+import com.lalabrand.ecommerce.user.cart.cart_item.CartItemRequest;
 import com.lalabrand.ecommerce.utils.CommonResponse;
-import com.lalabrand.ecommerce.utils.CommonUtils;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,10 +36,6 @@ public class CartService {
     }
 
     public Optional<CartDTO> findCartByUserId(String userId) {
-        if (CommonUtils.isIdInvalid(userId)) {
-            logger.error("UserId: {}is not valid", userId);
-            throw new IllegalArgumentException("UserId is not valid");
-        }
         Optional<Cart> cart = cartRepository.findCartByUserId(userId);
         if (cart.isEmpty() || cart.get().getCartItems().isEmpty()) {
             return Optional.empty();
@@ -51,60 +44,59 @@ public class CartService {
     }
 
     @Transactional
-    public CommonResponse addItemToCart(String itemId, String itemInfoId, String sizeId, Integer count, String userId) {
-        if (count <= 0) {
+    public CommonResponse addItemToCart(CartItemRequest cartItemRequest, String userId) {
+        if (cartItemRequest.getCount() <= 0) {
             throw new IllegalArgumentException("Count must be greater than zero");
         }
 
-        if (CommonUtils.isIdInvalid(itemId) || CommonUtils.isIdInvalid(itemInfoId)
-                || CommonUtils.isIdInvalid(sizeId) || CommonUtils.isIdInvalid(userId)) {
-            logger.error("One of ids is not valid (itemId: {}, itemInfoId: {}, sizeId: {}, userId: {})",
-                    itemId, itemInfoId, sizeId, userId);
-            throw new IllegalArgumentException("Id is not valid");
-        }
-
-        Optional<ItemInfo> itemInfo = itemInfoRepository.findById(itemInfoId);
+        Optional<ItemInfo> itemInfo = itemInfoRepository.findById(cartItemRequest.getItemInfoId());
         itemInfo.orElseThrow(() -> {
-            logger.error("ItemInfo with id: {} does not exist", itemInfoId);
-            return new IllegalArgumentException("Item info with id: " + itemInfoId + " does not exist");
+            logger.error("ItemInfo with id: {} does not exist", cartItemRequest.getItemInfoId());
+            return new IllegalArgumentException("Item info with id: " + cartItemRequest.getItemInfoId() + " does not exist");
         });
-        if (!itemInfo.get().getItem_id().equals(itemId)) {
-            logger.error("ItemInfo with id: {} is not for item with id: {}", itemInfoId, itemId);
-            throw new IllegalArgumentException("ItemInfo with id: " + itemInfoId + " is not for item with id: " + itemId);
+        if (!itemInfo.get().getItem_id().equals(cartItemRequest.getItemId())) {
+            logger.error("ItemInfo with id: {} is not for item with id: {}", cartItemRequest.getItemInfoId(), cartItemRequest.getItemId());
+            throw new IllegalArgumentException("ItemInfo with id: " + cartItemRequest.getItemInfoId() + " is not for item with id: " + cartItemRequest.getItemId());
         }
 
         Optional<Cart> existCart = cartRepository.findCartByUserId(userId);
 
-        Optional<Size> size = sizeRepository.findById(sizeId);
+        Optional<Size> size = sizeRepository.findById(cartItemRequest.getSizeId());
         size.orElseThrow(() -> {
-            logger.error("Size with id: {} does not exist", sizeId);
-            return new IllegalArgumentException("Size with id: " + sizeId + " does not exist");
+            logger.error("Size with id: {} does not exist", cartItemRequest.getSizeId());
+            return new IllegalArgumentException("Size with id: " + cartItemRequest.getSizeId() + " does not exist");
         });
-        if (size.get().getItems().stream().noneMatch(item -> item.getId().equals(itemId))) {
-            logger.error("Size with id: {} is not for item with id: {}", sizeId, itemId);
-            throw new IllegalArgumentException("Size with id: " + sizeId + " is not for item with id: " + itemId);
+        if (size.get().getItems().stream().noneMatch(item -> item.getId().equals(cartItemRequest.getItemId()))) {
+            logger.error("Size with id: {} is not for item with id: {}", cartItemRequest.getSizeId(), cartItemRequest.getItemId());
+            throw new IllegalArgumentException("Size with id: " + cartItemRequest.getSizeId() + " is not for item with id: " + cartItemRequest.getItemId());
         }
 
         existCart.ifPresentOrElse(
                 cart -> {
                     boolean cartItemAlreadyExist = false;
                     for (CartItem cartItem : cart.getCartItems()) {
-                        if (cartItem.getItemId().equals(itemId)
-                                && cartItem.getItemInfoId().equals(itemInfoId)
-                                && cartItem.getSizeId().equals(sizeId)) {
-                            cartItem.setCount(cartItem.getCount() + count);
+                        if (cartItem.getItemId().equals(cartItemRequest.getItemId())
+                                && cartItem.getItemInfoId().equals(cartItemRequest.getItemInfoId())
+                                && cartItem.getSizeId().equals(cartItemRequest.getSizeId())) {
+                            cartItem.setCount(cartItem.getCount() + cartItemRequest.getCount());
                             cartItemRepository.save(cartItem);
                             cartItemAlreadyExist = true;
                             break;
                         }
                     }
                     if (!cartItemAlreadyExist) {
-                        cartItemRepository.save(new CartItem(itemId, itemInfoId, sizeId, count, cart.getId()));
+                        cartItemRepository.save(new CartItem(
+                                cartItemRequest.getItemId(), cartItemRequest.getItemInfoId(),
+                                cartItemRequest.getSizeId(), cartItemRequest.getCount(), cart.getId()
+                        ));
                     }
                 },
                 () -> {
                     Cart newCart = cartRepository.save(new Cart(userId));
-                    cartItemRepository.save(new CartItem(itemId, itemInfoId, sizeId, count, newCart.getId()));
+                    cartItemRepository.save(new CartItem(
+                            cartItemRequest.getItemId(), cartItemRequest.getItemInfoId(),
+                            cartItemRequest.getSizeId(), cartItemRequest.getCount(), newCart.getId()
+                    ));
                 }
         );
         return CommonResponse.builder()
@@ -112,4 +104,35 @@ public class CartService {
                 .message("Item added to cart successfully")
                 .build();
     }
+
+    @Transactional
+    public CommonResponse removeItemFromCart(CartItemRequest cartItemRequest, String userId) {
+        if (cartItemRequest.getCount() <= 0) {
+            throw new IllegalArgumentException("Count must be less than zero");
+        }
+
+        Optional<Cart> existCart = cartRepository.findCartByUserId(userId);
+        if (existCart.isEmpty()) {
+            throw new IllegalArgumentException("Cart for user with id: " + userId + " does not exist");
+        }
+
+        CartItem cartItem = cartItemRepository.findCartItemByCartIdAndItemIdAndItemInfoIdAndSizeId(
+                existCart.get().getId(), cartItemRequest.getItemId(),
+                cartItemRequest.getItemInfoId(), cartItemRequest.getSizeId()
+        );
+
+        if (cartItem.getCount() < cartItemRequest.getCount()) {
+            throw new IllegalArgumentException("Count must be less than current count of this item in the cart");
+        } else if (Objects.equals(cartItemRequest.getCount(), cartItem.getCount())) {
+            cartItemRepository.deleteById(cartItem.getId());
+        } else {
+            cartItem.setCount(cartItem.getCount() - cartItemRequest.getCount());
+            cartItemRepository.save(cartItem);
+        }
+        return CommonResponse.builder()
+                .message("Item has removed from cart successfully")
+                .success(true)
+                .build();
+    }
 }
+
