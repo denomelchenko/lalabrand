@@ -4,14 +4,11 @@ import com.lalabrand.ecommerce.exception.UserAlreadyExistException;
 import com.lalabrand.ecommerce.user.enums.Role;
 import com.lalabrand.ecommerce.user.role.UserRole;
 import com.lalabrand.ecommerce.user.role.UserRoleRepository;
-import com.lalabrand.ecommerce.utils.UserAccessChecker;
 import jakarta.transaction.Transactional;
 import lombok.SneakyThrows;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.nio.file.AccessDeniedException;
 import java.util.Optional;
@@ -32,7 +29,7 @@ public class UserService {
 
     @SneakyThrows
     @Transactional
-    public UserResponse saveUser(UserRequest userRequest)  {
+    public UserResponse saveUser(UserRequest userRequest) {
         if (userRequest.getEmail() == null || userRequest.getPassword() == null) {
             throw new BadCredentialsException("Password or email can not be null");
         }
