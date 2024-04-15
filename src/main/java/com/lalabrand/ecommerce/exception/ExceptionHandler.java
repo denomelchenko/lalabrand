@@ -35,7 +35,7 @@ public class ExceptionHandler extends DataFetcherExceptionResolverAdapter {
         } else if (ex instanceof EntityNotFoundException || ex instanceof UsernameNotFoundException || ex instanceof UserAlreadyExistException) {
             return ErrorType.NOT_FOUND;
         } else {
-            return ErrorType.INTERNAL_ERROR; // или любой другой тип ошибки по умолчанию
+            return ErrorType.INTERNAL_ERROR;
         }
     }
 }

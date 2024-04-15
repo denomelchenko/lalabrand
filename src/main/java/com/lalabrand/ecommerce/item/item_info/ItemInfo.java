@@ -18,8 +18,11 @@ public class ItemInfo {
     private String id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "item_id", nullable = false)
+    @JoinColumn(name = "item_id", nullable = false, insertable = false, updatable = false)
     private Item item;
+
+    @Column(name = "item_id", nullable = false)
+    private String item_id;
 
     @Column(name = "color", nullable = false)
     @Enumerated(EnumType.STRING)

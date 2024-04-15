@@ -3,7 +3,9 @@ package com.lalabrand.ecommerce.user.cart;
 import com.lalabrand.ecommerce.user.User;
 import com.lalabrand.ecommerce.user.cart.cart_item.CartItem;
 import com.lalabrand.ecommerce.user.cart.cart_item.CartItemDTO;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 import lombok.Value;
 
 import java.io.Serializable;
@@ -17,6 +19,8 @@ import java.util.stream.Collectors;
  */
 @Value
 @Builder
+@NoArgsConstructor(force = true)
+@AllArgsConstructor
 public class CartDTO implements Serializable {
     String id;
     Set<CartItemDTO> cartItems;

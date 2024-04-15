@@ -1,6 +1,11 @@
 type Cart {
-    cart: ID!,
+    id: ID!,
     cartItems: [CartItem!]
+}
+
+extend type Mutation {
+    itemToCart(cartItemRequest: CartItemRequest): CommonResponse!
+    removeItemFromCart(cartItemRequest: CartItemRequest): CommonResponse!
 }
 
 type Query {
