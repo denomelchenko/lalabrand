@@ -7,8 +7,8 @@ type CartItem {
 }
 
 input CartItemRequest {
-    itemId: String
-    itemInfoId: String
-    sizeId: String
-    count: Int
+    itemId: String!
+    itemInfoId: String!
+    sizeId: String!
+    count: Int!
 }
