@@ -8,12 +8,8 @@ import java.util.Collection;
 
 @Component
 public class CommonUtils {
-    public static boolean isIdInvalid(String id) {
-        return id == null || id.isEmpty() || id.length() > 36;
-    }
-
     public static boolean isIdsInvalid(Collection<String> ids) {
-        return ids.stream().allMatch(id -> id == null || id.isEmpty() || id.length() > 36);
+        return ids.stream().anyMatch(id -> id == null || id.isEmpty() || id.contains(" ") || id.length() > 36);
     }
 
     public UserDetailsImpl getCurrentUser() {
