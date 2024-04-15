@@ -27,4 +27,14 @@ public class CartItemDTO {
                 .count(cartItem.getCount())
                 .build();
     }
+
+    public CartItem toEntity() {
+        CartItem cartItem = new CartItem();
+        cartItem.setId(this.id);
+        cartItem.setItem(this.item.toEntity());
+        cartItem.setItemInfo(this.itemInfo.toEntity());
+        cartItem.setSize(this.size.toEntity());
+        cartItem.setCount(this.count);
+        return cartItem;
+    }
 }

@@ -23,4 +23,12 @@ public class ItemInfoDTO implements Serializable {
                 .image(itemInfo.getImage())
                 .build();
     }
+
+    public ItemInfo toEntity() {
+        ItemInfo itemInfo = new ItemInfo();
+        itemInfo.setId(this.id);
+        itemInfo.setImage(this.image);
+        itemInfo.setColor(this.color);
+        return itemInfo;
+    }
 }

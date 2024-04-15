@@ -31,7 +31,7 @@ public class OrderController {
         if (user == null) {
             throw new UsernameNotFoundException("User not found!");
         }
-        return orderService.getAll(Long.valueOf(user.getId()));
+        return orderService.getAll(user.getId());
     }
 
     @MutationMapping(name = "placeOrder")
@@ -53,7 +53,7 @@ public class OrderController {
 
     @MutationMapping(name = "deleteOrderById")
     @PreAuthorize("hasAuthority('USER')")
-    public String deleteOrderById(@Argument("orderId") Long orderId) {
+    public String deleteOrderById(@Argument("orderId") String orderId) {
         try {
             orderService.delete(orderId);
             return "Order deleted successfully.";

@@ -6,6 +6,7 @@ import com.lalabrand.ecommerce.order.ordered_item.OrderItemsService;
 import com.lalabrand.ecommerce.order.ordered_item.OrderedItem;
 import com.lalabrand.ecommerce.order.shipping.ShippingInfo;
 import com.lalabrand.ecommerce.order.shipping.ShippingInfoDTO;
+import com.lalabrand.ecommerce.user.UserRepository;
 import com.lalabrand.ecommerce.user.cart.CartDTO;
 import com.lalabrand.ecommerce.user.cart.CartService;
 import com.lalabrand.ecommerce.user.cart.cart_item.CartItemDTO;
@@ -22,18 +23,23 @@ import java.util.Set;
 public class OrderServiceImpl implements OrderService{
 
     private final OrderRepository orderRepository;
+    private final UserRepository userRepository;
     private final CartService cartService;
     private final OrderItemsService orderItemsService;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, CartService cartService, OrderItemsService orderItemsService) {
+    public OrderServiceImpl(OrderRepository orderRepository, UserRepository userRepository, CartService cartService, OrderItemsService orderItemsService) {
         this.orderRepository = orderRepository;
+        this.userRepository = userRepository;
         this.cartService = cartService;
         this.orderItemsService = orderItemsService;
     }
 
     @Override
     public void placeOrder(String userId, ShippingInfo shippingInfo) {
+        if (CommonUtils.isIdInvalid(userId)) {
+            throw new IllegalArgumentException("UserId is not valid");
+        }
         CartDTO cartDto = cartService.findCartByUserId(userId).orElseThrow(
                     () -> new BadCredentialsException("Cart cannot be null to place the order")
         );
@@ -71,25 +77,21 @@ public class OrderServiceImpl implements OrderService{
                 .orderedItems(orderItemsService.getAll())
                 .build();
 
-        orderRepository.save(getOrderFromDto(orderDTO));
+        orderRepository.save(orderDTO.toEntity(shippingInfo, userRepository.getReferenceById(userId)));
 
         cartService.deleteCartItems();
     }
 
         @Override
-    public List<Order> getAll(Long userId) {
-        if (CommonUtils.isIdInValid(String.valueOf(userId))) {
+    public List<Order> getAll(String userId) {
+        if (CommonUtils.isIdInvalid(userId)) {
             throw new IllegalArgumentException("UserId is not valid");
         }
         return orderRepository.findAllByUserIdOrderByCreatedAtDesc(userId);
     }
 
     @Override
-    public void delete(Long orderId) {
+    public void delete(String orderId) {
         orderRepository.deleteById(orderId);
-    }
-
-    private Order getOrderFromDto(OrderDTO orderDto) {
-        return orderRepository.getReferenceById(Long.valueOf(orderDto.getId()));
     }
 }

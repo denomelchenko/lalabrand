@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
-    void deleteById(Long orderId);
+    void deleteById(String orderId);
     @Query("SELECT o FROM Order o WHERE o.user.id = :userId ORDER BY o.createdAt DESC")
-    List<Order> findAllByUserIdOrderByCreatedAtDesc(Long userId);
+    List<Order> findAllByUserIdOrderByCreatedAtDesc(String userId);
 }

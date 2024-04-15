@@ -1,11 +1,14 @@
 package com.lalabrand.ecommerce.user.cart;
 
+import com.lalabrand.ecommerce.user.User;
+import com.lalabrand.ecommerce.user.cart.cart_item.CartItem;
 import com.lalabrand.ecommerce.user.cart.cart_item.CartItemDTO;
 import lombok.Builder;
 import lombok.Value;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -27,5 +30,20 @@ public class CartDTO implements Serializable {
                         .map(cartItem -> cartItem.getItem().getPrice())
                         .reduce(BigDecimal.ZERO, BigDecimal::add))
                 .build();
+    }
+
+    public Cart toEntity(User user) {
+        Cart cart = new Cart();
+        cart.setId(this.id);
+        cart.setUser(user);
+        Set<CartItem> cartItemEntities = new HashSet<>();
+        for (CartItemDTO cartItemDTO : this.cartItems) {
+            cartItemEntities.add(cartItemDTO.toEntity());
+        }
+        cart.setCartItems(cartItemEntities);
+
+        cart.setTotalCost(this.totalCost);
+
+        return cart;
     }
 }
