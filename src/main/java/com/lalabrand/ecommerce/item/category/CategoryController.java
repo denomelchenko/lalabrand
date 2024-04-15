@@ -1,5 +1,6 @@
 package com.lalabrand.ecommerce.item.category;
 
+import com.lalabrand.ecommerce.utils.Id;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
@@ -20,7 +21,7 @@ public class CategoryController {
     }
 
     @QueryMapping(name = "categoryById")
-    public CategoryDTO findCategoryById(@Argument String categoryId) {
+    public CategoryDTO findCategoryById(@Argument @Id String categoryId) {
         return categoryService.findCategoryById(categoryId).orElse(null);
     }
 }
