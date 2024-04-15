@@ -2,6 +2,8 @@ package com.lalabrand.ecommerce.user.wishlist;
 
 import com.lalabrand.ecommerce.security.UserDetailsImpl;
 import com.lalabrand.ecommerce.utils.CommonUtils;
+import com.lalabrand.ecommerce.utils.Id;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -26,17 +28,13 @@ public class WishlistController {
     @QueryMapping(name = "wishlist")
     @PreAuthorize("hasAuthority('USER')")
     public WishlistDTO findWishlistForCurrentUser() {
-        UserDetailsImpl user = commonUtils.getCurrentUser();
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found!");
-        }
-        return wishlistService.findWishlistByUserId(user.getId()).orElse(null);
+        return wishlistService.findWishlistByUserId(commonUtils.getCurrentUser().getId()).orElse(null);
 
     }
 
     @MutationMapping(name = "itemToWishlist")
     @PreAuthorize("hasAuthority('USER')")
-    public WishlistDTO addItemToWishlist(@Argument String itemId) {
+    public WishlistDTO addItemToWishlist(@Argument @Id String itemId) {
         return wishlistService.addItemToWishlist(itemId, commonUtils.getCurrentUser().getId());
     }
 

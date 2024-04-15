@@ -4,7 +4,8 @@ type Cart {
 }
 
 extend type Mutation {
-    itemToCart(itemInfoId: ID, sizeId: ID, itemId: ID, count: Int): CommonResponse!
+    itemToCart(cartItemRequest: CartItemRequest): CommonResponse!
+    removeItemFromCart(cartItemRequest: CartItemRequest): CommonResponse!
 }
 
 type Query {
