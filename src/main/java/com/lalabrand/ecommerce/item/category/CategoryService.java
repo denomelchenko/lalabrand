@@ -39,9 +39,6 @@ public class CategoryService {
     }
 
     public Optional<CategoryDTO> findCategoryById(String categoryId) {
-        if (CommonUtils.isIdInvalid(categoryId)) {
-            throw new IllegalArgumentException("Id is invalid");
-        }
         Optional<Category> categoryEntityOptional = categoryRepository.findById(categoryId);
         if (categoryEntityOptional.isEmpty()) {
             throw new EntityNotFoundException("Category not found for id: " + categoryId);
