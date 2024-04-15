@@ -30,11 +30,7 @@ public class CartController {
     @QueryMapping(name = "cart")
     @PreAuthorize("hasAuthority('USER')")
     public CartDTO findCartForCurrentUser() {
-        UserDetailsImpl user = commonUtils.getCurrentUser();
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found!");
-        }
-        return cartService.findCartByUserId(user.getId()).orElse(null);
+        return cartService.findCartByUserId(commonUtils.getCurrentUser().getId()).orElse(null);
     }
 
     @MutationMapping(name = "itemToCart")
