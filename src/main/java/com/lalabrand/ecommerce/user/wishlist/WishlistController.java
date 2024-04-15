@@ -28,17 +28,13 @@ public class WishlistController {
     @QueryMapping(name = "wishlist")
     @PreAuthorize("hasAuthority('USER')")
     public WishlistDTO findWishlistForCurrentUser() {
-        UserDetailsImpl user = commonUtils.getCurrentUser();
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found!");
-        }
-        return wishlistService.findWishlistByUserId(user.getId()).orElse(null);
+        return wishlistService.findWishlistByUserId(commonUtils.getCurrentUser().getId()).orElse(null);
 
     }
 
     @MutationMapping(name = "itemToWishlist")
     @PreAuthorize("hasAuthority('USER')")
-    public WishlistDTO addItemToWishlist(@Argument @Valid @Id String itemId) {
+    public WishlistDTO addItemToWishlist(@Argument @Id String itemId) {
         return wishlistService.addItemToWishlist(itemId, commonUtils.getCurrentUser().getId());
     }
 
