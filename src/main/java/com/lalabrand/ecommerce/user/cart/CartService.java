@@ -8,7 +8,6 @@ import com.lalabrand.ecommerce.user.cart.cart_item.CartItem;
 import com.lalabrand.ecommerce.user.cart.cart_item.CartItemRepository;
 import com.lalabrand.ecommerce.user.cart.cart_item.CartItemRequest;
 import com.lalabrand.ecommerce.utils.CommonResponse;
-import com.lalabrand.ecommerce.utils.CommonUtils;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,10 +36,6 @@ public class CartService {
     }
 
     public Optional<CartDTO> findCartByUserId(String userId) {
-        if (CommonUtils.isIdInvalid(userId)) {
-            logger.error("UserId: {}is not valid", userId);
-            throw new IllegalArgumentException("UserId is not valid");
-        }
         Optional<Cart> cart = cartRepository.findCartByUserId(userId);
         if (cart.isEmpty() || cart.get().getCartItems().isEmpty()) {
             return Optional.empty();
@@ -125,8 +120,9 @@ public class CartService {
                 existCart.get().getId(), cartItemRequest.getItemId(),
                 cartItemRequest.getItemInfoId(), cartItemRequest.getSizeId()
         );
+
         if (cartItem.getCount() < cartItemRequest.getCount()) {
-            throw new IllegalArgumentException("Count must be greater than current count of this item in the cart");
+            throw new IllegalArgumentException("Count must be less than current count of this item in the cart");
         } else if (Objects.equals(cartItemRequest.getCount(), cartItem.getCount())) {
             cartItemRepository.deleteById(cartItem.getId());
         } else {
