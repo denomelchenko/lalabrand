@@ -24,12 +24,18 @@ public class Cart {
     @Column(name = "id", nullable = false)
     private String id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false, insertable = false, updatable = false)
     private User user;
+
+    @Column(name = "user_id")
+    private String userId;
 
     @OneToMany(mappedBy = "cart")
     private Set<CartItem> cartItems;
 
+    public Cart( String userId) {
+        this.userId = userId;
+    }
 }
