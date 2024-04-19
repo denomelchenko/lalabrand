@@ -106,6 +106,14 @@ CREATE TABLE `cart_item`
     FOREIGN KEY (`size_id`) REFERENCES `size` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
+CREATE TABLE `shipping_option`
+(
+    `id`    VARCHAR(36) NOT NULL,
+    `name`  VARCHAR(255),
+    `price` DECIMAL(10, 2),
+    PRIMARY KEY (`id`)
+);
+
 CREATE TABLE `shipping_info`
 (
     `id`                 VARCHAR(36) PRIMARY KEY,
@@ -115,11 +123,12 @@ CREATE TABLE `shipping_info`
     `address1`           VARCHAR(255) NOT NULL,
     `address2`           VARCHAR(255) NOT NULL,
     `phone`              VARCHAR(255) NOT NULL,
-    `shipping_option_id` VARCHAR(36)
+    `shipping_option_id` VARCHAR(36),
+    FOREIGN KEY (`shipping_option_id`) REFERENCES `shipping_option` (`id`)
 );
 
 
-CREATE TABLE `order`
+CREATE TABLE `orders`
 (
     `id`           VARCHAR(36) PRIMARY KEY,
     `user_id`      VARCHAR(36)                         NOT NULL,
@@ -129,6 +138,7 @@ CREATE TABLE `order`
     `tax`          DECIMAL,
     `shipping_id`  VARCHAR(36),
     `currency`     ENUM ('UAH','EUR','USD')            NOT NULL,
+    `status`       ENUM ('PENDING', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'CANCELED'),
     `created_at`   TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (`shipping_id`) REFERENCES `shipping_info` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
@@ -136,17 +146,16 @@ CREATE TABLE `order`
 
 CREATE TABLE `ordered_item`
 (
-    `id`       VARCHAR(36) PRIMARY KEY,
-    `order_id` VARCHAR(36)  NOT NULL,
-    `item_id`  VARCHAR(36),
-    `title`    VARCHAR(255) NOT NULL,
-    `size`     VARCHAR(255) NOT NULL,
-    `color`    VARCHAR(255) NOT NULL,
-    `price`    DECIMAL      NOT NULL,
-    `count`    INTEGER      NOT NULL,
-    `image`    VARCHAR(255) NOT NULL,
-    FOREIGN KEY (`order_id`) REFERENCES `order` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (`item_id`) REFERENCES `item` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+    `id`           VARCHAR(36) NOT NULL,
+    `item_id`      VARCHAR(36) NOT NULL,
+    `item_info_id` VARCHAR(36),
+    `order_id`     VARCHAR(36) NOT NULL,
+    `size_id`      VARCHAR(36),
+    `count`        INT         NOT NULL,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`item_id`) REFERENCES `item` (`id`),
+    FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`),
+    FOREIGN KEY (`size_id`) REFERENCES `size` (`id`)
 );
 
 CREATE TABLE `item_comment`
