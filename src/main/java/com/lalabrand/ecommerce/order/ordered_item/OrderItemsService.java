@@ -20,7 +20,7 @@ public class OrderItemsService {
     public void addOrderedProducts(OrderedItem orderItem) {
         orderItemsRepository.save(orderItem);
     }
-    public Set<OrderItemsDTO> getAll() {
-        return (orderItemsRepository.findAll().stream().map(OrderItemsDTO::fromEntity).collect(Collectors.toSet()));
+    public Set<OrderedItem> getByAllOrderId(String orderId) {
+        return orderItemsRepository.findAllByOrderId(orderId);
     }
 }
