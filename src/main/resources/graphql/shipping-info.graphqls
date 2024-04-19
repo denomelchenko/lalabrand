@@ -7,4 +7,5 @@ type ShippingInfo {
     address2: String!
     order: Order!
     phone: String!
+    shippingOption: ShippingOption!
 }
