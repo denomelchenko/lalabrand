@@ -1,9 +1,10 @@
 package com.lalabrand.ecommerce.order;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.lalabrand.ecommerce.item.enums.Currency;
 import com.lalabrand.ecommerce.order.enums.Status;
 import com.lalabrand.ecommerce.order.ordered_item.OrderedItem;
-import com.lalabrand.ecommerce.order.shipping.ShippingInfo;
+import com.lalabrand.ecommerce.order.shipping.shipping_info.ShippingInfo;
 import com.lalabrand.ecommerce.user.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,7 +22,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Builder
-@Table(name = "order")
+@Table(name = "orders")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -38,12 +39,14 @@ public class Order {
     private Instant createdAt;
 
     @OneToMany(mappedBy = "order")
+    @JsonManagedReference
     private Set<OrderedItem> orderedItems;
 
     @Column(name = "total_price", precision = 10)
     private BigDecimal totalPrice;
 
-    @Column(name = "status")
+    @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     @Column(name = "shipping_fee", precision = 10)
@@ -62,6 +65,7 @@ public class Order {
     @OneToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "shipping_id")
+    @JsonManagedReference
     private ShippingInfo shipping;
 
     @PrePersist

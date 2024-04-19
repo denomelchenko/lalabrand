@@ -1,12 +1,10 @@
 package com.lalabrand.ecommerce.order;
 
-import com.lalabrand.ecommerce.order.shipping.ShippingInfo;
-import com.lalabrand.ecommerce.security.UserDetailsImpl;
+import com.lalabrand.ecommerce.order.shipping.shipping_info.ShippingInfoRequest;
+import com.lalabrand.ecommerce.utils.CommonResponse;
 import com.lalabrand.ecommerce.utils.CommonUtils;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -24,41 +22,21 @@ public class OrderController {
         this.commonUtils = commonUtils;
     }
 
-    @QueryMapping(name = "ordersByUserId")
+    @QueryMapping(name = "orders")
     @PreAuthorize("hasAuthority('USER')")
     public List<Order> getAllOrders() {
-        UserDetailsImpl user = commonUtils.getCurrentUser();
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found!");
-        }
-        return orderService.getAll(user.getId());
+        return orderService.getAll(commonUtils.getCurrentUser().getId());
     }
 
     @MutationMapping(name = "placeOrder")
     @PreAuthorize("hasAuthority('USER')")
-    public String placeOrder(
-            @Argument("shipping") ShippingInfo shippingInfo
-    ) {
-        UserDetailsImpl user = commonUtils.getCurrentUser();
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found!");
-        }
-        try {
-            orderService.placeOrder(user.getId(), shippingInfo);
-            return "Order placed successfully.";
-        } catch (BadCredentialsException e) {
-            throw new RuntimeException(e.getMessage());
-        }
+    public CommonResponse placeOrder( @Argument("shipping") ShippingInfoRequest request) {
+        return orderService.placeOrder(commonUtils.getCurrentUser().getId(), request);
     }
 
     @MutationMapping(name = "deleteOrderById")
-    @PreAuthorize("hasAuthority('USER')")
-    public String deleteOrderById(@Argument("orderId") String orderId) {
-        try {
-            orderService.delete(orderId);
-            return "Order deleted successfully.";
-        } catch (Exception e) {
-            return "Failed to delete order: " + e.getMessage();
-        }
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public CommonResponse deleteOrderById(@Argument("orderId") String orderId) {
+           return orderService.delete(orderId);
     }
 }
