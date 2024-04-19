@@ -12,19 +12,20 @@ type Order {
 
 
 extend type Query {
-    ordersByUserId: [Order!]!
+    orders: [Order!]!
 }
 
-input ShippingInfoInput {
+input ShippingInfoRequest {
     country: Country!
     zip: String!
     city: String!
     address1: String!
     address2: String!
     phone: String!
+    shippingOptionId: String!
 }
 
 extend type Mutation {
-    placeOrder(shipping: ShippingInfoInput!): String!
-    deleteOrderById(orderId: ID!): String!
+    placeOrder(shipping: ShippingInfoRequest!): CommonResponse!
+    deleteOrderById(orderId: ID!): CommonResponse!
 }

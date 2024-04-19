@@ -2,10 +2,7 @@ type OrderedItem {
     id: ID!
     item: Item!
     order: Order!
-    title: String!
+    itemInfo: ItemInfo
     size: Size
-    color: String!
-    price: Float!
     count: Int!
-    image: String!
 }
