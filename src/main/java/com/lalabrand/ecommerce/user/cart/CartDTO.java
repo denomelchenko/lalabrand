@@ -37,17 +37,15 @@ public class CartDTO implements Serializable {
     }
 
     public Cart toEntity(User user) {
-        Cart cart = new Cart();
-        cart.setId(this.id);
-        cart.setUser(user);
         Set<CartItem> cartItemEntities = new HashSet<>();
         for (CartItemDTO cartItemDTO : this.cartItems) {
             cartItemEntities.add(cartItemDTO.toEntity());
         }
-        cart.setCartItems(cartItemEntities);
-
-        cart.setTotalCost(this.totalCost);
-
-        return cart;
+        return Cart.builder()
+                .id(this.id)
+                .user(user)
+                .cartItems(cartItemEntities)
+                .totalCost(this.totalCost)
+                .build();
     }
 }

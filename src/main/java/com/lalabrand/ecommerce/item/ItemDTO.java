@@ -47,7 +47,7 @@ public class ItemDTO implements Serializable {
     }
 
     public Item toEntity() {
-        Item item = Item.builder()
+        return Item.builder()
                 .id(this.id)
                 .title(this.title)
                 .shortDisc(this.shortDisc)
@@ -59,6 +59,5 @@ public class ItemDTO implements Serializable {
                 .image(this.image)
                 .soldCount(this.soldCount)
                 .build();
-        return item;
     }
 }

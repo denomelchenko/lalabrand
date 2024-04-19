@@ -3,10 +3,9 @@ package com.lalabrand.ecommerce.order;
 import com.lalabrand.ecommerce.item.enums.Currency;
 import com.lalabrand.ecommerce.order.enums.Status;
 import com.lalabrand.ecommerce.order.ordered_item.OrderItemsDTO;
-import com.lalabrand.ecommerce.order.shipping.ShippingInfo;
-import com.lalabrand.ecommerce.order.shipping.ShippingInfoDTO;
+import com.lalabrand.ecommerce.order.shipping.shipping_info.ShippingInfo;
+import com.lalabrand.ecommerce.order.shipping.shipping_info.ShippingInfoDTO;
 import com.lalabrand.ecommerce.user.User;
-import com.lalabrand.ecommerce.user.UserRepository;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -48,17 +47,17 @@ public class OrderDTO implements Serializable {
     }
 
     public Order toEntity(ShippingInfo shippingInfo, User user) {
-        Order order = new Order();
-        order.setId(this.getId());
-        order.setTax(this.getTax());
-        order.setCurrency(this.getCurrency());
-        order.setStatus(this.getStatus());
-        order.setShippingFee(this.getShippingFee());
-        order.setTotalPrice(this.getTotalPrice());
-        order.setUser(user);
-        order.setShipping(shippingInfo);
-        order.setOrderedItems(this.getOrderedItems().stream().map(OrderItemsDTO::toEntity).collect(Collectors.toSet()));
-        return order;
+        return Order.builder()
+                .id(this.getId())
+                .tax(this.getTax())
+                .currency(this.getCurrency())
+                .status(this.getStatus())
+                .shippingFee(this.getShippingFee())
+                .totalPrice(this.getTotalPrice())
+                .user(user)
+                .shipping(shippingInfo)
+                .orderedItems(this.getOrderedItems().stream().map(OrderItemsDTO::toEntity).collect(Collectors.toSet()))
+                .build();
     }
 
 }

@@ -1,15 +1,15 @@
 package com.lalabrand.ecommerce.order.ordered_item;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.lalabrand.ecommerce.item.Item;
-import com.lalabrand.ecommerce.item.enums.SizeType;
+import com.lalabrand.ecommerce.item.item_info.ItemInfo;
 import com.lalabrand.ecommerce.item.size.Size;
 import com.lalabrand.ecommerce.order.Order;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-
-import java.math.BigDecimal;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,28 +29,28 @@ public class OrderedItem {
     @JoinColumn(name = "item_id", nullable = false)
     private Item item;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "item_info_id", insertable = false, updatable = false)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
+    private ItemInfo itemInfo;
+
+    @Column(name = "item_info_id")
+    private String itemInfoId;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "order_id", nullable = false)
+    @JsonBackReference
     private Order order;
 
-    @Column(name = "title", nullable = false)
-    private String title;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
+    @JoinColumn(name = "size_id", insertable = false, updatable = false)
+    private Size size;
 
-    @Column(name = "size_type", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private SizeType sizeType;
-
-    @Column(name = "color", nullable = false)
-    private String color;
-
-    @Column(name = "price", nullable = false, precision = 10)
-    private BigDecimal price;
+    @Column(name = "size_id")
+    private String sizeId;
 
     @Column(name = "count", nullable = false)
     private Integer count;
-
-    @Column(name = "image", nullable = false)
-    private String image;
-
 }

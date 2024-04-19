@@ -1,9 +1,13 @@
-package com.lalabrand.ecommerce.order.shipping;
+package com.lalabrand.ecommerce.order.shipping.shipping_info;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.lalabrand.ecommerce.order.Order;
+import com.lalabrand.ecommerce.order.shipping.shipping_option.ShippingOption;
 import com.lalabrand.ecommerce.user.enums.Country;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Getter
 @Setter
@@ -35,8 +39,17 @@ public class ShippingInfo {
     private String address2;
 
     @OneToOne(mappedBy = "shipping")
+    @JsonBackReference
     private Order order;
 
     @Column(name = "phone")
     private String phone;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
+    @JoinColumn(name = "shipping_option_id", insertable = false, updatable = false)
+    private ShippingOption shippingOption;
+
+    @Column(name = "shipping_option_id")
+    private String shippingOptionId;
 }

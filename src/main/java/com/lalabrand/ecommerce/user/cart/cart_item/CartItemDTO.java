@@ -29,12 +29,12 @@ public class CartItemDTO {
     }
 
     public CartItem toEntity() {
-        CartItem cartItem = new CartItem();
-        cartItem.setId(this.id);
-        cartItem.setItem(this.item.toEntity());
-        cartItem.setItemInfo(this.itemInfo.toEntity());
-        cartItem.setSize(this.size.toEntity());
-        cartItem.setCount(this.count);
-        return cartItem;
+        return CartItem.builder()
+                .cartId(this.id)
+                .item(this.item.toEntity())
+                .itemInfo(this.itemInfo.toEntity())
+                .size(this.size.toEntity())
+                .count(this.count)
+                .build();
     }
 }

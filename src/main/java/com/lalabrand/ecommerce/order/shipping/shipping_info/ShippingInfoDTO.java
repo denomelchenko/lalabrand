@@ -1,5 +1,7 @@
-package com.lalabrand.ecommerce.order.shipping;
+package com.lalabrand.ecommerce.order.shipping.shipping_info;
 
+import com.lalabrand.ecommerce.order.shipping.shipping_option.ShippingOption;
+import com.lalabrand.ecommerce.order.shipping.shipping_option.ShippingOptionDTO;
 import com.lalabrand.ecommerce.user.enums.Country;
 import lombok.Builder;
 import lombok.Value;
@@ -16,6 +18,7 @@ public class ShippingInfoDTO implements Serializable {
     String address1;
     String address2;
     String phone;
+    ShippingOptionDTO shippingOptionDTO;
 
     public static ShippingInfoDTO fromEntity(ShippingInfo shippingInfo){
         return ShippingInfoDTO.builder()
@@ -26,18 +29,20 @@ public class ShippingInfoDTO implements Serializable {
                 .address1(shippingInfo.getAddress1())
                 .address2(shippingInfo.getAddress2())
                 .phone(shippingInfo.getPhone())
+                .shippingOptionDTO(ShippingOptionDTO.fromEntity(shippingInfo.getShippingOption()))
                 .build();
     }
 
     public ShippingInfo toEntity() {
-        ShippingInfo shippingInfo = new ShippingInfo();
-        shippingInfo.setId(this.id);
-        shippingInfo.setCountry(this.country);
-        shippingInfo.setZip(this.zip);
-        shippingInfo.setCity(this.city);
-        shippingInfo.setAddress1(this.address1);
-        shippingInfo.setAddress2(this.address2);
-        shippingInfo.setPhone(this.phone);
-        return shippingInfo;
+        return ShippingInfo.builder()
+                .id(this.id)
+                .country(this.country)
+                .zip(this.zip)
+                .city(this.city)
+                .address1(this.address1)
+                .address2(this.address2)
+                .phone(this.phone)
+                .shippingOption(this.shippingOptionDTO.toEntity())
+                .build();
     }
 }
