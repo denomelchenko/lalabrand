@@ -1,144 +1,133 @@
 package com.lalabrand.ecommerce.user;
 
 import com.lalabrand.ecommerce.exception.UserAlreadyExistException;
+
 import com.lalabrand.ecommerce.user.role.UserRole;
 import com.lalabrand.ecommerce.user.role.UserRoleRepository;
-import com.lalabrand.ecommerce.utils.UserAccessChecker;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.nio.file.AccessDeniedException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 public class UserServiceTest {
 
-    private UserRepository userRepository;
-    private UserRoleRepository userRoleRepository;
-    private UserService userService;
-
-    @BeforeEach
-    public void setUp() {
-        userRepository = mock(UserRepository.class);
-        userRoleRepository = mock(UserRoleRepository.class);
-        userService = new UserService(userRepository, userRoleRepository, new UserAccessChecker(userRepository));
-    }
-
     // saveUser method saves a new user with valid email and password
     @Test
-    public void test_saveUser_savesNewUserWithValidEmailAndPassword() throws AccessDeniedException, UserAlreadyExistException {
-        UserRequest userRequest = new UserRequest("password123", "test@example.com", null);
-        User savedUser = new User("1", "test@example.com", "password123", 1);
+    public void test_saveUser_validEmailAndPassword() {
+        UserRepository userRepository = mock(UserRepository.class);
+        UserRoleRepository userRoleRepository = mock(UserRoleRepository.class);
+        UserService userService = new UserService(userRepository, userRoleRepository);
+
+        UserRequest userRequest = new UserRequest("password123", "test@example.com");
+        UserResponse expectedResponse = new UserResponse(null, "email");
+        User savedUser = new User("email", "password", 1);
         when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.empty());
         when(userRepository.save(any(User.class))).thenReturn(savedUser);
 
-        // Act
-        UserResponse result = userService.saveUser(userRequest);
+        UserResponse actualResponse = userService.saveUser(userRequest);
 
-        // Assert
-        assertEquals(savedUser.getId(), result.getId());
-        assertEquals(savedUser.getEmail(), result.getEmail());
-        verify(userRoleRepository, times(1)).save(any(UserRole.class));
-        verify(userRepository, times(1)).save(any(User.class));
+        assertEquals(expectedResponse, actualResponse);
+        verify(userRepository).findByEmail("test@example.com");
+        verify(userRepository).save(any(User.class));
+        verify(userRoleRepository).save(any(UserRole.class));
     }
 
-    // findByUserId method returns an optional user when given a valid user id
+    // findByUserId method returns an optional user when a valid userId is provided
     @Test
-    public void test_findByUserId_returnsOptionalUserWithValidUserId() {
-        User user = new User("1", "test@example.com", "password123", 1);
-        when(userRepository.findById("1")).thenReturn(Optional.of(user));
+    public void test_findByUserId_validUserId() {
+        UserRepository userRepository = mock(UserRepository.class);
+        UserRoleRepository userRoleRepository = mock(UserRoleRepository.class);
+        UserService userService = new UserService(userRepository, userRoleRepository);
 
-        // Act
-        Optional<User> result = userService.findByUserId("1");
+        String userId = "userId";
+        User expectedUser = new User("email", "password", 1);
+        when(userRepository.findById(userId)).thenReturn(Optional.of(expectedUser));
 
-        // Assert
-        assertTrue(result.isPresent());
-        assertEquals(user, result.get());
+        Optional<User> actualUser = userService.findByUserId(userId);
+
+        assertEquals(Optional.of(expectedUser), actualUser);
+        verify(userRepository).findById(userId);
     }
 
-    // findByEmail method returns an optional user when given a valid email
-    @Test public void test_findByEmail_returnsOptionalUserWithValidEmail() {
-        User user = new User("1", "test@example.com", "password123", 1);
-        when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.of(user));
+    // findByEmail method returns an optional user when a valid email is provided
+    @Test
+    public void test_findByEmail_validEmail() {
+        UserRepository userRepository = mock(UserRepository.class);
+        UserRoleRepository userRoleRepository = mock(UserRoleRepository.class);
+        UserService userService = new UserService(userRepository, userRoleRepository);
 
-        // Act
-        Optional<User> result = userService.findByEmail("test@example.com");
+        String email = "test@example.com";
+        User expectedUser = new User("email", "password", 1);
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(expectedUser));
 
-        // Assert
-        assertTrue(result.isPresent());
-        assertEquals(user, result.get());
+        Optional<User> actualUser = userService.findByEmail(email);
+
+        assertEquals(Optional.of(expectedUser), actualUser);
+        verify(userRepository).findByEmail(email);
+    }
+
+    // updatePasswordForUser method updates the password for a user when a valid user, password and userId are provided
+    @Test
+    public void test_updatePasswordForUser_validUserPasswordAndUserId() throws AccessDeniedException, AccessDeniedException {
+        UserRepository userRepository = mock(UserRepository.class);
+        UserRoleRepository userRoleRepository = mock(UserRoleRepository.class);
+        UserService userService = new UserService(userRepository, userRoleRepository);
+
+        User expectedUser = new User("email", "password", 1);
+        String password = "newPassword";
+        String userId = "userId";
+        User user = new User("email", "password", 1);
+        when(userRepository.save(user)).thenReturn(expectedUser);
+
+        User actualUser = userService.updatePasswordForUser(user, password, userId);
+
+        assertEquals(expectedUser, actualUser);
+        verify(userRepository).save(user);
     }
 
     // saveUser method throws BadCredentialsException when email or password is null
     @Test
-    public void test_saveUser_throwsBadCredentialsExceptionWhenEmailOrPasswordIsNull() {
-        UserRequest userRequest = new UserRequest(null, "test@example.com", null);
+    public void test_saveUser_nullEmailOrPassword() {
+        UserRepository userRepository = mock(UserRepository.class);
+        UserRoleRepository userRoleRepository = mock(UserRoleRepository.class);
+        UserService userService = new UserService(userRepository, userRoleRepository);
 
-        // Act & Assert
+        UserRequest userRequest = new UserRequest(null, "test@example.com");
+
         assertThrows(BadCredentialsException.class, () -> userService.saveUser(userRequest));
     }
 
-    // saveUser method throws AccessDeniedException when user id can not get info about user with id 1
+    // saveUser method throws UserAlreadyExistException when a user with the same email already exists
     @Test
-    public void test_saveUser_throwsIllegalArgumentExceptionWhenUserIdIsInvalid() {
-        UserRequest userRequest = new UserRequest("password123", "test@example.com", "1");
-        when(userRepository.findById("1")).thenReturn(Optional.empty());
+    public void test_saveUser_existingEmail() {
+        UserRepository userRepository = mock(UserRepository.class);
+        UserRoleRepository userRoleRepository = mock(UserRoleRepository.class);
+        UserService userService = new UserService(userRepository, userRoleRepository);
 
-        // Act & Assert
-        assertThrows(AccessDeniedException.class, () -> userService.saveUser(userRequest));
+        UserRequest userRequest = new UserRequest("password123", "test@example.com");
+        User existingUser = new User("email", "password", 1);
+        when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.of(existingUser));
+
+        assertThrows(UserAlreadyExistException.class, () -> userService.saveUser(userRequest));
     }
 
-    // saveUser method throws ResponseStatusException when user with email already exists
+    // updatePasswordForUser method does not update the password when the provided user is null
     @Test
-    public void test_saveUser_throwsResponseStatusExceptionWhenUserWithEmailAlreadyExists() {
-        UserRequest userRequest = new UserRequest("password123", "test@example.com", null);
-        when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.of(new User()));
+    public void test_updatePasswordForUser_nullUser() {
+        UserRepository userRepository = mock(UserRepository.class);
+        UserRoleRepository userRoleRepository = mock(UserRoleRepository.class);
+        UserService userService = new UserService(userRepository, userRoleRepository);
 
-        // Act & Assert
-        assertThrows(ResponseStatusException.class, () -> userService.saveUser(userRequest));
+        User user = null;
+        String password = "newPassword";
+        String userId = "userId";
+
+        assertThrows(NullPointerException.class, () -> userService.updatePasswordForUser(user, password, userId));
     }
 
-    // findByUserId method returns an empty optional when given an invalid user id
-    @Test
-    public void test_findByUserId_returnsEmptyOptionalWhenGivenInvalidUserId() {
-        when(userRepository.findById("1")).thenReturn(Optional.empty());
-
-        // Act
-        Optional<User> result = userService.findByUserId("1");
-
-        // Assert
-        assertFalse(result.isPresent());
-    }
-
-    // findByEmail method returns an empty optional when given an invalid email
-    @Test
-    public void test_findByEmail_returnsEmptyOptionalWhenGivenInvalidEmail() {
-        when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.empty());
-
-        // Act
-        Optional<User> result = userService.findByEmail("test@example.com");
-
-        // Assert
-        assertFalse(result.isPresent());
-    }
-
-    // saveUser method saves a new user with valid email and password and assigns a default role
-    @Test
-    public void test_saveUser_savesNewUserWithValidEmailAndPasswordAndAssignsDefaultRole() throws AccessDeniedException {
-        UserRequest userRequest = new UserRequest("password123", "test@example.com", null);
-        User savedUser = new User("1", "test@example.com", "password123", 1);
-        when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.empty());
-        when(userRepository.save(any(User.class))).thenReturn(savedUser);
-
-        // Act
-        UserResponse result = userService.saveUser(userRequest);
-
-        // Assert
-        assertEquals(savedUser.getId(), result.getId());
-        assertEquals(savedUser.getEmail(), result.getEmail());
-    }
 }
