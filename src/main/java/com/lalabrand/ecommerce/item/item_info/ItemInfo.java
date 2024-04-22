@@ -22,7 +22,7 @@ public class ItemInfo {
     private Item item;
 
     @Column(name = "item_id", nullable = false)
-    private String item_id;
+    private String itemId;
 
     @Column(name = "color", nullable = false)
     @Enumerated(EnumType.STRING)

@@ -51,7 +51,7 @@ public class UserService {
     }
 
     @Transactional
-    public User updatePasswordForUser(User user, String password, String userId) throws AccessDeniedException {
+    public User updatePasswordForUser(User user, String password, String userId) {
         user.setPassword(password);
         user.setPasswordVersion(user.getPasswordVersion() + 1);
         user.setId(userId);
