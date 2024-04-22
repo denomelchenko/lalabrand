@@ -1,29 +1,31 @@
 #GraphQL:
-spring.graphql.graphiql.enabled=
+spring.graphql.graphiql.enabled=true
 
 #DB:
-spring.datasource.username=
-spring.datasource.password=
-spring.datasource.url=
-spring.datasource.driver-class-name=
+spring.datasource.username=${DB_USERNAME}
+spring.datasource.password=${DB_PASSWORD}
+spring.datasource.url=${SPRING_DATASOURCE_URL}
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 
 #Hibernate
-spring.jpa.show-sql=
-spring.jpa.properties.hibernate.format_sql=
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
 
 #Security
-secret=
-auth.header=
-auth.header.start=
-access.token.expiration.seconds=
-refresh.token.expiration.seconds=
-reset.password.token.expiration.seconds=
-password.reset.token.symbols=
+secret=${AUTH_SECRET}
+auth.header=${AUTH_HEADER}
+auth.header.start=${AUTH_HEADER_START}
+access.token.expiration.seconds=${ACCESS_TOKEN_EXPIRATION}
+refresh.token.expiration.seconds=${REFRESH_TOKEN_EXPIRATION}
+reset.password.token.expiration.seconds=${RESET_PASSWORD_TOKEN_EXPIRATION}
+password.reset.token.symbols=${PASSWORD_RESET_TOKEN_SYMBOLS}
 
 #Email sender
-spring.mail.host=
-spring.mail.port=
-spring.mail.username=
-spring.mail.password=
-spring.mail.properties.mail.smtp.auth=
-spring.mail.properties.mail.smtp.starttls.enable=
+spring.mail.host=${SPRING_MAIL_HOST}
+spring.mail.port=${SPRING_MAIL_PORT}
+spring.mail.username=${SPRING_MAIL_USERNAME}
+spring.mail.password=${SPRING_MAIL_PASSWORD}
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+
+
