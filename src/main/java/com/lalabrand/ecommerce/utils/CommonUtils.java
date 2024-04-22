@@ -12,7 +12,7 @@ public class CommonUtils {
         return ids.stream().anyMatch(id -> id == null || id.isEmpty() || id.contains(" ") || id.length() > 36);
     }
 
-    public UserDetailsImpl getCurrentUser() {
+    public static UserDetailsImpl getCurrentUser() {
         return (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }
