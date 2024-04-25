@@ -1,6 +1,5 @@
 package com.lalabrand.ecommerce.item.category;
 
-import com.lalabrand.ecommerce.utils.CommonUtils;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

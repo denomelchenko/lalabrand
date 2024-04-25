@@ -48,8 +48,7 @@ public class WishlistService {
         Optional<Wishlist> existWishlist = wishlistRepository.findWishlistByUserId(userId);
         if (existWishlist.isEmpty()) {
             return WishlistDTO.fromEntity(wishlistRepository.save(new Wishlist(userId, Collections.singleton(itemId))));
-        }
-        else if (existWishlist.get().getItems().stream().anyMatch(item -> item.getId().equals(itemId))) {
+        } else if (existWishlist.get().getItems().stream().anyMatch(item -> item.getId().equals(itemId))) {
             logger.error("Item with id: {} already exist in user cart ( user id:{} )", itemId, userId);
             throw new IllegalArgumentException("An item with this ID is already in the wishlist");
         }

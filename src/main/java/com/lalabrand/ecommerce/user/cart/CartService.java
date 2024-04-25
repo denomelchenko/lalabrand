@@ -54,7 +54,7 @@ public class CartService {
             logger.error("ItemInfo with id: {} does not exist", cartItemRequest.getItemInfoId());
             return new IllegalArgumentException("Item info with id: " + cartItemRequest.getItemInfoId() + " does not exist");
         });
-        if (!itemInfo.get().getItem_id().equals(cartItemRequest.getItemId())) {
+        if (!itemInfo.get().getItemId().equals(cartItemRequest.getItemId())) {
             logger.error("ItemInfo with id: {} is not for item with id: {}", cartItemRequest.getItemInfoId(), cartItemRequest.getItemId());
             throw new IllegalArgumentException("ItemInfo with id: " + cartItemRequest.getItemInfoId() + " is not for item with id: " + cartItemRequest.getItemId());
         }
