@@ -10,7 +10,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.AccessDeniedException;
 import java.util.Optional;
 
 @Service
@@ -51,7 +50,7 @@ public class UserService {
     }
 
     @Transactional
-    public User updatePasswordForUser(User user, String password, String userId) throws AccessDeniedException {
+    public User updatePasswordForUser(User user, String password, String userId) {
         user.setPassword(password);
         user.setPasswordVersion(user.getPasswordVersion() + 1);
         user.setId(userId);

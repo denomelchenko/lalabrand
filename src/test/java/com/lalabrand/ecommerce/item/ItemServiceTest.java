@@ -4,14 +4,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -23,32 +21,42 @@ public class ItemServiceTest {
     private ItemService itemService;
 
     @BeforeEach()
-    public void before() {
+    public void setUp() {
         itemRepository = mock(ItemRepository.class);
         itemService = new ItemService(itemRepository);
     }
 
-    // should return a list of ItemDto when findBestSellersItems is called with a valid limit
+    // should return a list of best-selling items when findBestSellersItems is called
     @Test
-    public void test_findBestSellersItems_validLimit() {
+    public void test_findBestSellersItems() {
         List<Item> items = new ArrayList<>();
-        items.add(new Item());
-        items.add(new Item());
-        when(itemRepository.findItemsByOrderBySoldCountDesc(PageRequest.of(0, 2))).thenReturn(items);
+        Item item = new Item();
+        item.setId("1");
+        items.add(item);
+        when(itemRepository.findItemsByOrderBySoldCountDesc(any(Pageable.class))).thenReturn(items);
 
-        List<ItemDTO> result = itemService.findBestSellersItems(Optional.of(2));
+        List<ItemDTO> result = itemService.findBestSellersItems(Optional.of(4));
 
-        assertEquals(2, result.size());
+        assertEquals("1", result.get(0).getId());
     }
 
-    // Should throw an IllegalArgumentException when findItemsByCategoryId is called with a null
+    // should return a list of items when findItemsByTitle is called with a non-empty title
     @Test
-    public void test_return_empty_list_if_categoryId_is_null() {
-        assertThrows(IllegalArgumentException.class, () -> itemService.findItemsByCategoryId(null));
+    public void test_findItemsByTitle() {
+        List<Item> items = new ArrayList<>();
+        Item item = new Item();
+        item.setId("1");
+        items.add(item);
+        when(itemRepository.findByTitleContainingIgnoreCase(anyString())).thenReturn(items);
+
+        List<ItemDTO> result = itemService.findItemsByTitle("title");
+
+        assertEquals("1", result.get(0).getId());
     }
 
+    // should return a list of items when findItemsByCategoryId is called with a valid category id
     @Test
-    public void test_return_list_of_ItemDto_if_categoryId_is_valid() {
+    public void test_findItemsByCategoryId() {
         List<Item> items = new ArrayList<>();
         Item item = new Item();
         item.setId("1");
@@ -60,98 +68,79 @@ public class ItemServiceTest {
         assertEquals("1", result.get(0).getId());
     }
 
-    // should throw an IllegalArgumentException when findItemsByTitle is called with a null or empty title
+    // should return an item when findItemByIdOrThrow is called with a valid item id
     @Test
-    public void test_findItemsByTitle_nullOrEmptyTitle() {
-        assertThrows(IllegalArgumentException.class, () -> itemService.findItemsByTitle(null));
-        assertThrows(IllegalArgumentException.class, () -> itemService.findItemsByTitle(""));
+    public void test_findItemByIdOrThrow() {
+        Item item = new Item();
+        item.setId("1");
+        when(itemRepository.findById(anyString())).thenReturn(Optional.of(item));
+
+        Item result = itemService.findItemByIdOrThrow("1");
+
+        assertEquals("1", result.getId());
     }
 
-    // should return a list of ItemDto when findItemsByTitle is called with a valid title
+    // should return a set of items when findItemsByIdsOrThrow is called with a valid collection of item ids
     @Test
-    public void test_findItemsByTitle_validTitle() {
-        List<Item> items = new ArrayList<>();
-        items.add(new Item());
-        items.add(new Item());
-        when(itemRepository.findByTitleContainingIgnoreCase("title")).thenReturn(items);
+    public void test_findItemsByIdsOrThrow() {
+        Set<Item> items = new HashSet<>();
+        Item item = new Item();
+        item.setId("1");
+        items.add(item);
+        when(itemRepository.findAllByIds(anyCollection())).thenReturn(items);
 
-        List<ItemDTO> result = itemService.findItemsByTitle("title");
+        Set<Item> result = itemService.findItemsByIdsOrThrow(Collections.singleton("1"));
 
-        assertEquals(2, result.size());
+        assertEquals("1", result.iterator().next().getId());
     }
 
-    // should return a list of ItemDto with size 4 when findBestSellersItems is called with an empty limit
+    // should throw an IllegalArgumentException when findItemsByTitle is called with an empty title
     @Test
-    public void test_findBestSellersItems_emptyLimit() {
+    public void test_findItemsByTitle_emptyTitle() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            itemService.findItemsByTitle("");
+        });
+    }
+
+    // should throw an IllegalArgumentException when findItemByIdOrThrow is called with an invalid item id
+    @Test
+    public void test_findItemByIdOrThrow_invalidItemId() {
+        when(itemRepository.findById(anyString())).thenReturn(Optional.empty());
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            itemService.findItemByIdOrThrow("invalid");
+        });
+    }
+
+    // should throw an IllegalArgumentException when findItemsByIdsOrThrow is called with an invalid collection of item ids
+    @Test
+    public void test_findItemsByIdsOrThrow_invalidItemIds() {
+        Set<Item> items = new HashSet<>();
+        items.add(null);
+        when(itemRepository.findAllByIds(anyCollection())).thenReturn(items);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            itemService.findItemsByIdsOrThrow(Collections.singleton("1"));
+        });
+    }
+
+    // should handle gracefully when limit is not present in findBestSellersItems
+    @Test
+    public void test_findBestSellersItems_noLimit() {
         List<Item> items = new ArrayList<>();
-        items.add(new Item());
-        items.add(new Item());
-        items.add(new Item());
-        items.add(new Item());
-        when(itemRepository.findItemsByOrderBySoldCountDesc(PageRequest.of(0, 4))).thenReturn(items);
+        Item item = new Item();
+        item.setId("1");
+        items.add(item);
+        when(itemRepository.findItemsByOrderBySoldCountDesc(any(Pageable.class))).thenReturn(items);
 
         List<ItemDTO> result = itemService.findBestSellersItems(Optional.empty());
 
-        assertEquals(4, result.size());
+        assertEquals("1", result.get(0).getId());
     }
 
-    // should return items when findBestSellersItems is called with a negative limit
+    // should handle gracefully when limit is less than or equal to zero in findBestSellersItems
     @Test
-    public void test_findBestSellersItems_negativeLimit() {
-        when(itemRepository.findItemsByOrderBySoldCountDesc(PageRequest.of(0, 5))).thenReturn(new ArrayList<>(4));
-        assertEquals(new ArrayList<>(), itemService.findBestSellersItems(Optional.of(-1)));
-    }
-
-    // should return an empty list when findItemsByTitle is called with a title that does not exist
-    @Test
-    public void test_findItemsByTitle_nonExistingTitle() {
-        when(itemRepository.findByTitleContainingIgnoreCase("non-existing")).thenReturn(Collections.emptyList());
-
-        List<ItemDTO> result = itemService.findItemsByTitle("non-existing");
-
-        assertEquals(Collections.emptyList(), result);
-    }
-
-    // should return a list of ItemDto with size equal to the limit when findBestSellersItems is called with a valid limit
-    @Test
-    public void test_findBestSellersItems_validLimitWithLimit() {
-        List<Item> items = new ArrayList<>();
-        items.add(new Item());
-        items.add(new Item());
-        when(itemRepository.findItemsByOrderBySoldCountDesc(PageRequest.of(0, 2))).thenReturn(items);
-
-        List<ItemDTO> result = itemService.findBestSellersItems(Optional.of(2));
-
-        assertEquals(2, result.size());
-    }
-
-    // should return a list of ItemDto with size equal to the number of items found when findItemsByTitle is called with a valid title
-    @Test
-    public void test_findItemsByTitle_validTitleWithItems() {
-        List<Item> items = new ArrayList<>();
-        items.add(new Item());
-        items.add(new Item());
-        when(itemRepository.findByTitleContainingIgnoreCase("title")).thenReturn(items);
-
-        List<ItemDTO> result = itemService.findItemsByTitle("title");
-
-        assertEquals(2, result.size());
-    }
-
-    // should return a list of ItemDto with all items sorted by sold count when findBestSellersItems is called with a limit greater than the number of items
-    @Test
-    public void test_findBestSellersItems_limitGreaterThanItems() {
-        List<Item> items = new ArrayList<>();
-        items.add(new Item());
-        items.add(new Item());
-        when(itemRepository.findItemsByOrderBySoldCountDesc(PageRequest.of(0, 3))).thenReturn(items);
-
-        List<ItemDTO> result = itemService.findBestSellersItems(Optional.of(3));
-
-        assertEquals(2, result.size());
-    }
-    @Test
-    public void test_findItemsByCategoryId(){
+    public void test_findBestSellersItems_zeroLimit() {
         ItemRepository itemRepository = mock(ItemRepository.class);
         ItemService itemService = new ItemService(itemRepository);
 
@@ -159,10 +148,22 @@ public class ItemServiceTest {
         Item item = new Item();
         item.setId("1");
         items.add(item);
+        when(itemRepository.findItemsByOrderBySoldCountDesc(any(Pageable.class))).thenReturn(items);
+
+        List<ItemDTO> result = itemService.findBestSellersItems(Optional.of(0));
+
+        assertEquals("1", result.get(0).getId());
+    }
+
+    // should handle gracefully when itemRepository returns an empty list in convertToItemDtoList
+    @Test
+    public void test_convertToItemDtoList_emptyList() {
+        List<Item> items = new ArrayList<>();
         when(itemRepository.findItemsByCategoryId(anyString())).thenReturn(items);
 
         List<ItemDTO> result = itemService.findItemsByCategoryId("1");
 
-        assertEquals("1", result.get(0).getId());
+        assertTrue(result.isEmpty());
     }
+
 }

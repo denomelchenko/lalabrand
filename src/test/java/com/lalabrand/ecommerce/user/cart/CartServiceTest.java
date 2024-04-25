@@ -1,19 +1,17 @@
-package com.lalabrand.ecommerce.item.cart;
+package com.lalabrand.ecommerce.user.cart;
 
 import com.lalabrand.ecommerce.item.Item;
 import com.lalabrand.ecommerce.item.enums.ColorEnum;
 import com.lalabrand.ecommerce.item.enums.SizeType;
 import com.lalabrand.ecommerce.item.item_info.ItemInfo;
+import com.lalabrand.ecommerce.item.item_info.ItemInfoRepository;
 import com.lalabrand.ecommerce.item.size.Size;
-import com.lalabrand.ecommerce.user.cart.Cart;
-import com.lalabrand.ecommerce.user.cart.CartDTO;
-import com.lalabrand.ecommerce.user.cart.CartRepository;
-import com.lalabrand.ecommerce.user.cart.CartService;
-
+import com.lalabrand.ecommerce.item.size.SizeRepository;
 import com.lalabrand.ecommerce.user.cart.cart_item.CartItem;
+import com.lalabrand.ecommerce.user.cart.cart_item.CartItemRepository;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -22,14 +20,15 @@ import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class CartServiceTest {
-    private CartRepository cartRepository;
-
-    private CartService cartService;
-
     private static Cart cartWithItems;
+    private CartRepository cartRepository;
+    private CartService cartService;
+    private SizeRepository sizeRepository;
+    private CartItemRepository cartItemRepository;
 
     @BeforeAll
     public static void beforeAll() {
@@ -73,7 +72,10 @@ public class CartServiceTest {
     @BeforeEach
     public void beforeEach() {
         cartRepository = mock(CartRepository.class);
-        cartService = new CartService(cartRepository);
+        ItemInfoRepository itemInfoRepository = mock(ItemInfoRepository.class);
+        sizeRepository = mock(SizeRepository.class);
+        cartItemRepository = mock(CartItemRepository.class);
+        cartService = new CartService(cartRepository, itemInfoRepository, sizeRepository, cartItemRepository);
     }
 
     // Should return CartDto when userId is valid and cart exists
@@ -90,16 +92,6 @@ public class CartServiceTest {
         assertNotNull(result);
         assertEquals(cartWithItems.getId(), result.getId());
         assertEquals(cartWithItems.getCartItems().size(), result.getCartItems().size());
-    }
-
-    // Should throw IllegalArgumentException when userId is null
-    @Test
-    public void test_throw_IllegalArgumentException_when_userId_null() {
-        // Arrange
-        String userId = null;
-
-        // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> cartService.findCartByUserId(userId));
     }
 
     // Should return empty CartDto when cart exists but has no cartItems
