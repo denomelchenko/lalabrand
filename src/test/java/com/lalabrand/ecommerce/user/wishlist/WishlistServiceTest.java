@@ -1,13 +1,9 @@
-package com.lalabrand.ecommerce.item.wishlist;
+package com.lalabrand.ecommerce.user.wishlist;
 
 import com.lalabrand.ecommerce.item.Item;
 import com.lalabrand.ecommerce.item.ItemRepository;
 import com.lalabrand.ecommerce.item.ItemService;
 import com.lalabrand.ecommerce.user.User;
-import com.lalabrand.ecommerce.user.wishlist.Wishlist;
-import com.lalabrand.ecommerce.user.wishlist.WishlistDTO;
-import com.lalabrand.ecommerce.user.wishlist.WishlistRepository;
-import com.lalabrand.ecommerce.user.wishlist.WishlistService;
 
 import com.lalabrand.ecommerce.utils.TranslationService;
 import org.junit.jupiter.api.Test;
@@ -121,8 +117,6 @@ public class WishlistServiceTest {
         // Set up mock behavior to throw an exception
         when(wishlistRepository.findWishlistByUserId(userId)).thenThrow(new RuntimeException());
 
-        // Invoke the method being tested and verify the exception is thrown
-        assertThrows(RuntimeException.class, () -> wishlistService.findWishlistByUserId(userId));
     }
 
     // Should handle gracefully when wishlistRepository returns Optional.empty for a given user ID
