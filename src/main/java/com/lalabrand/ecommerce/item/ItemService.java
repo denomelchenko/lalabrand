@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -32,8 +33,8 @@ public class ItemService {
         return convertToItemDtoList(itemRepository.findByTitleContainingIgnoreCase(title));
     }
 
-    public List<ItemDTO> findItemsByCategoryId(String categoryId) {
-        return convertToItemDtoList(itemRepository.findItemsByCategoryId(categoryId));
+    public List<ItemDTO> findItemsByCategoryId(String categoryId, Pageable pageable) {
+        return convertToItemDtoList(itemRepository.findItemsByCategoryId(categoryId, pageable));
     }
 
     public Item findItemByIdOrThrow(String itemId) {
