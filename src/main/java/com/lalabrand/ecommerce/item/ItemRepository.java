@@ -11,7 +11,7 @@ import java.util.Set;
 
 @Repository
 public interface ItemRepository extends JpaRepository<Item, String> {
-    List<Item> findItemsByCategoryId(String categoryId);
+    List<Item> findItemsByCategoryId(String categoryId, Pageable pageable);
 
     List<Item> findItemsByOrderBySoldCountDesc(Pageable pageable);
 
