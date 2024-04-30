@@ -1,6 +1,7 @@
 package com.lalabrand.ecommerce.order.ordered_item;
 
 import com.lalabrand.ecommerce.item.ItemDTO;
+import com.lalabrand.ecommerce.item.enums.SizeType;
 import com.lalabrand.ecommerce.item.item_info.ItemInfoDTO;
 import com.lalabrand.ecommerce.item.size.SizeDTO;
 import lombok.Builder;
@@ -17,25 +18,34 @@ import java.math.BigDecimal;
 @Builder
 public class OrderItemsDTO implements Serializable {
     Integer count;
-    SizeDTO size;
+    SizeType sizeType;
     ItemDTO item;
-    ItemInfoDTO itemInfo;
+    String title;
+    String color;
+    String image;
+    BigDecimal price;
 
     public static OrderItemsDTO fromEntity(OrderedItem orderedItem) {
         return OrderItemsDTO.builder()
                 .count(orderedItem.getCount())
-                .size(SizeDTO.fromEntity(orderedItem.getSize()))
+                .sizeType(orderedItem.getSizeType())
                 .item(ItemDTO.fromEntity(orderedItem.getItem()))
-                .itemInfo(ItemInfoDTO.fromEntity(orderedItem.getItemInfo()))
+                .title(orderedItem.getTitle())
+                .color(orderedItem.getColor())
+                .image(orderedItem.getImage())
+                .price(orderedItem.getPrice())
                 .build();
     }
 
     public OrderedItem toEntity() {
         return OrderedItem.builder()
                 .count(this.count)
-                .size(this.size.toEntity())
+                .sizeType(this.sizeType)
                 .item(this.item.toEntity())
-                .itemInfo(this.itemInfo.toEntity())
+                .title(this.title)
+                .color(this.color)
+                .image(this.image)
+                .price(this.price)
                 .build();
     }
 }

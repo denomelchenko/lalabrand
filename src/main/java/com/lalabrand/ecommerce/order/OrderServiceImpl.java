@@ -60,29 +60,33 @@ public class OrderServiceImpl implements OrderService {
 
         ShippingInfo savedShippingInfo = shippingInfoRepository.save(shippingInfo);
 
+        Set<OrderedItem> orderedItems = new HashSet<>();
+        Set<CartItem> cartItems = cartDto.toEntity(userRepository.getReferenceById(userId)).getCartItems();
+
         Order order = Order.builder()
                 .user(userRepository.getReferenceById(userId))
                 .status(Status.PENDING)
                 .currency(Currency.UAH) // need
                 .tax(BigDecimal.ZERO) // need
                 .discount(BigDecimal.ZERO) // need
-                .shippingFee(BigDecimal.valueOf(0)) // need
-                .totalPrice(cartDto.getTotalCost())
+                .shippingFee(BigDecimal.ZERO)
+                .totalPrice(cartItems.stream().map(cartItem -> cartItem.getItem().getPrice().multiply(BigDecimal.valueOf(cartItem.getCount())))
+                        .reduce(BigDecimal.ZERO, BigDecimal::add))
                 .shipping(savedShippingInfo)
                 .build();
 
         orderRepository.save(order);
 
-
-        Set<OrderedItem> orderedItems = new HashSet<>();
-        Set<CartItem> cartItems = cartDto.toEntity(userRepository.getReferenceById(userId)).getCartItems();
         for (CartItem cartItem : cartItems) {
             OrderedItem orderItem = OrderedItem.builder()
                     .order(order)
                     .item(cartItem.getItem())
-                    .itemInfoId(cartItem.getItemInfo().getId())
-                    .sizeId(cartItem.getSize().getId())
+                    .title(cartItem.getItem().getTitle())
+                    .color(String.valueOf(cartItem.getItemInfo().getColor()))
+                    .image(cartItem.getItemInfo().getImage())
+                    .sizeType(cartItem.getSize().getSizeType())
                     .count(cartItem.getCount())
+                    .price(cartItem.getItem().getPrice().multiply(BigDecimal.valueOf(cartItem.getCount())))
                     .build();
             orderItemsService.addOrderedProducts(orderItem);
             orderedItems.add(orderItem);
@@ -90,7 +94,7 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderedItems(orderedItems);
 
         orderRepository.save(order);
-        cartService.deleteCartItems();
+        cartService.deleteCartItems(userId);
         return CommonResponse.builder()
                 .message("Order has been placed successfully")
                 .success(true)
