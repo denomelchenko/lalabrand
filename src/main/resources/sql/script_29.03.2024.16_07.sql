@@ -68,12 +68,10 @@ CREATE TABLE `user_roles`
 
 CREATE TABLE `cart`
 (
-    `id`         VARCHAR(36) PRIMARY KEY,
-    `user_id`    VARCHAR(36) NOT NULL,
-    `total_cost` DECIMAL(19, 2),
+    `id`      VARCHAR(36) PRIMARY KEY,
+    `user_id` VARCHAR(36) NOT NULL,
     FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
-
 
 CREATE TABLE `item_info`
 (
@@ -108,10 +106,9 @@ CREATE TABLE `cart_item`
 
 CREATE TABLE `shipping_option`
 (
-    `id`    VARCHAR(36) NOT NULL,
-    `name`  VARCHAR(255),
-    `price` DECIMAL(10, 2),
-    PRIMARY KEY (`id`)
+    `id`    VARCHAR(36) PRIMARY KEY,
+    `name`  VARCHAR(255) NOT NULL,
+    `price` DECIMAL      NOT NULL
 );
 
 CREATE TABLE `shipping_info`
@@ -124,7 +121,7 @@ CREATE TABLE `shipping_info`
     `address2`           VARCHAR(255) NOT NULL,
     `phone`              VARCHAR(255) NOT NULL,
     `shipping_option_id` VARCHAR(36),
-    FOREIGN KEY (`shipping_option_id`) REFERENCES `shipping_option` (`id`)
+    FOREIGN KEY (`shipping_option_id`) REFERENCES `shipping_option` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 
@@ -138,7 +135,7 @@ CREATE TABLE `orders`
     `tax`          DECIMAL,
     `shipping_id`  VARCHAR(36),
     `currency`     ENUM ('UAH','EUR','USD')            NOT NULL,
-    `status`       ENUM ('PENDING', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'CANCELED'),
+    `status`       ENUM ('PENDING', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'CANCELED') NOT NULL,
     `created_at`   TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (`shipping_id`) REFERENCES `shipping_info` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
@@ -146,16 +143,17 @@ CREATE TABLE `orders`
 
 CREATE TABLE `ordered_item`
 (
-    `id`           VARCHAR(36) NOT NULL,
-    `item_id`      VARCHAR(36) NOT NULL,
-    `item_info_id` VARCHAR(36),
-    `order_id`     VARCHAR(36) NOT NULL,
-    `size_id`      VARCHAR(36),
-    `count`        INT         NOT NULL,
-    PRIMARY KEY (`id`),
-    FOREIGN KEY (`item_id`) REFERENCES `item` (`id`),
-    FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`),
-    FOREIGN KEY (`size_id`) REFERENCES `size` (`id`)
+    `id`        VARCHAR(36) PRIMARY KEY,
+    `order_id`  VARCHAR(36)  NOT NULL,
+    `item_id`   VARCHAR(36),
+    `title`     VARCHAR(255) NOT NULL,
+    `size_type` ENUM ('CLOTHES', 'SHOES') NOT NULL,
+    `color`     VARCHAR(255) NOT NULL,
+    `price`     DECIMAL      NOT NULL,
+    `count`     INTEGER      NOT NULL,
+    `image`     VARCHAR(255) NOT NULL,
+    FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (`item_id`) REFERENCES `item` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 CREATE TABLE `item_comment`

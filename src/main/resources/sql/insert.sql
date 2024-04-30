@@ -16,8 +16,8 @@ INSERT INTO `item` (`id`, `title`, `short_disc`, `long_disc`, `rating`, `price`,
                     `available_count`, `sale_price`, `image`, `created_at`)
 VALUES ('1', 'T-Shirt', 'Comfortable cotton t-shirt', NULL, 4.5, 19.99, 100, '1', 500, NULL, 'tshirt.jpg',
         CURRENT_TIMESTAMP),
-       ('2', 'Smartphone', 'Latest smartphone model', 'Amazing features...', 4.8, 799.99, 50, '2', 100, NULL,
-        'smartphone.jpg', CURRENT_TIMESTAMP);
+       ('2', 'Hoodie', 'Latest smartphone model', 'Printed with...', 4.8, 799.99, 50, '2', 100, NULL,
+        'hoodie.jpg', CURRENT_TIMESTAMP);
 
 -- Insert statements for the 'address' table
 INSERT INTO `address` (`id`, `country`, `zip`, `city`, `address1`, `address2`, `user_id`)
@@ -30,9 +30,9 @@ VALUES ('1', 'ADMIN', '1'),
        ('2', 'USER', '2');
 
 -- Insert statements for the 'cart' table
-INSERT INTO `cart` (`id`, `user_id`, `total_cost`)
-VALUES ('1', '1', 0),
-       ('2', '2', 0);
+INSERT INTO `cart` (`id`, `user_id`)
+VALUES ('1', '1'),
+       ('2', '2');
 
 -- Insert statements for the 'item_info' table
 INSERT INTO `item_info` (`id`, `color`, `image`, `item_id`, `is_color_available`)
@@ -45,13 +45,7 @@ VALUES ('1', 'BLACK', 'tshirt_black.jpg', '1', 1),
 -- Insert statements for the 'size' table
 INSERT INTO `size` (`id`, `type`, `value`)
 VALUES ('1', 'CLOTHES', 'S'),
-       ('2', 'CLOTHES', 'M'),
-       ('3', 'CLOTHES', 'L'),
-       ('4', 'CLOTHES', 'XL'),
-       ('5', 'SHOES', '38'),
-       ('6', 'SHOES', '39'),
-       ('7', 'SHOES', '40'),
-       ('8', 'SHOES', '41');
+       ('2', 'SHOES', '41');
 
 -- Insert statements for the 'cart_item' table
 INSERT INTO `cart_item` (`id`, `cart_id`, `item_id`, `item_info_id`, `size_id`, `count`)
@@ -60,10 +54,9 @@ VALUES ('1', '1', '1', '1', '1', 2),
        ('3', '2', '2', '4', '1', 1);
 
 INSERT INTO `shipping_option` (`id`, `name`, `price`)
-VALUES
-    ('1', 'NovaPoshta', 100),
-    ('2', 'UkrPoshta', 200),
-    ('3', 'GlobalPoshta', 150);
+VALUES ('1', 'NovaPoshta', 100),
+       ('2', 'UkrPoshta', 200),
+       ('3', 'GlobalPoshta', 150);
 
 -- Insert statements for the 'shipping_info' table
 INSERT INTO `shipping_info` (`id`, `country`, `zip`, `city`, `address1`, `address2`, `phone`, `shipping_option_id`)
@@ -72,15 +65,15 @@ VALUES ('1', 'US', '12345', 'New York', '123 Main St', 'Apt 101', '+123456789', 
 
 -- Insert statements for the 'order' table
 INSERT INTO `orders` (`id`, `user_id`, `total_price`, `shipping_fee`, `discount`, `tax`, `shipping_id`, `currency`,
-                      `status`, `created_at`)
+                     `status`, `created_at`)
 VALUES ('1', '1', 59.97, 5.00, NULL, NULL, '1', 'USD', 'PENDING', CURRENT_TIMESTAMP),
        ('2', '2', 799.99, 10.00, NULL, NULL, '2', 'USD', 'PENDING', CURRENT_TIMESTAMP);
 
 
 -- Insert statements for the 'ordered_item' table
-INSERT INTO `ordered_item` (`id`, `item_id`, `item_info_id`, `order_id`, `size_id`, `count`)
-VALUES ('1', '1', '1', '1', '1', 2),
-       ('2', '2', '2', '1', '2', 1);
+INSERT INTO ordered_item (id, order_id, item_id, title, size_type, color, price, count, image)
+VALUES ('1', '1', '1', 'T-Shirt', 'CLOTHES', 'BLACK', 19.99, 2, 'tshirt_black.jpg'),
+       ('2', '1', '2', 'Running Shoes', 'CLOTHES', 'BLACK', 79.99, 1, 'runningshoes_black.jpg');
 
 
 -- Insert statements for the 'item_comment' table
