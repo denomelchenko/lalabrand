@@ -6,6 +6,7 @@ import com.lalabrand.ecommerce.security.jwt_token.JwtService;
 import com.lalabrand.ecommerce.security.refresh_token.RefreshToken;
 import com.lalabrand.ecommerce.security.refresh_token.RefreshTokenRequestDTO;
 import com.lalabrand.ecommerce.security.refresh_token.RefreshTokenService;
+import com.lalabrand.ecommerce.utils.CommonResponse;
 import jakarta.validation.Valid;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -75,5 +76,10 @@ public class UserController {
                             .accessToken(accessToken)
                             .refreshToken(refreshTokenRequest.getToken()).build();
                 }).orElseThrow(() -> new RuntimeException("Refresh token is not valid"));
+    }
+
+    @MutationMapping(name = "updateUser")
+    public CommonResponse updateUser(@Validated @Argument UserUpdateRequest userUpdateRequest) {
+        return userService.updateUser(userUpdateRequest);
     }
 }
