@@ -1,6 +1,7 @@
 package com.lalabrand.ecommerce.item;
 
 import com.lalabrand.ecommerce.user.enums.Language;
+import com.lalabrand.ecommerce.utils.PaginationRequest;
 import com.lalabrand.ecommerce.utils.TranslationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,11 +31,11 @@ public class ItemService {
         );
     }
 
-    public List<ItemDTO> findItemsByTitle(String title, Language language) {
+    public List<ItemDTO> findItemsByTitle(String title, Language language, Pageable pageable) {
         if (!language.equals(Language.EN)) {
             title = translationService.textTranslate(language.toString(), Language.EN.toString(), title);
         }
-        return convertToItemDtoList(itemRepository.findByTitleContainingIgnoreCase(title));
+        return convertToItemDtoList(itemRepository.findByTitleContainingIgnoreCase(title, pageable));
     }
 
     public List<ItemDTO> findItemsByCategoryId(String categoryId, Pageable pageable) {
