@@ -34,9 +34,6 @@ public class Cart {
     @OneToMany(mappedBy = "cart")
     private Set<CartItem> cartItems;
 
-    @Column(name = "total_cost")
-    private BigDecimal totalCost;
-
     public Cart( String userId) {
         this.userId = userId;
     }
