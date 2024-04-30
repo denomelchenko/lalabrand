@@ -1,5 +1,7 @@
 package com.lalabrand.ecommerce.item;
 
+import com.lalabrand.ecommerce.user.enums.Language;
+import com.lalabrand.ecommerce.utils.TranslationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +14,12 @@ import java.util.*;
 public class ItemService {
     private final ItemRepository itemRepository;
     private final Logger logger = LoggerFactory.getLogger(ItemService.class);
+    private final TranslationService translationService;
 
     @Autowired
-    public ItemService(ItemRepository itemRepository) {
+    public ItemService(ItemRepository itemRepository, TranslationService translationService) {
         this.itemRepository = itemRepository;
+        this.translationService = translationService;
     }
 
     public List<ItemDTO> findBestSellersItems(Optional<Integer> limit) {
@@ -25,9 +29,9 @@ public class ItemService {
         );
     }
 
-    public List<ItemDTO> findItemsByTitle(String title) {
-        if (title == null || title.isEmpty()) {
-            throw new IllegalArgumentException("Title can not be empty");
+    public List<ItemDTO> findItemsByTitle(String title, Language language) {
+        if (!language.equals(Language.EN)) {
+            title = translationService.textTranslate(language.toString(), Language.EN.toString(), title);
         }
         return convertToItemDtoList(itemRepository.findByTitleContainingIgnoreCase(title));
     }
