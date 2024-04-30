@@ -28,4 +28,6 @@ spring.mail.password=${SPRING_MAIL_PASSWORD}
 spring.mail.properties.mail.smtp.auth=true
 spring.mail.properties.mail.smtp.starttls.enable=true
 
-
+#AWS
+aws.translation.access.key={AWS_ACCESS_KEY}
+aws.translation.secret.key={AWS_SECRET_KEY}

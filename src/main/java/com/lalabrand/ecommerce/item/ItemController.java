@@ -1,9 +1,11 @@
 package com.lalabrand.ecommerce.item;
 
 
+import com.lalabrand.ecommerce.user.enums.Language;
 import com.lalabrand.ecommerce.utils.Id;
 import com.lalabrand.ecommerce.utils.PaginationRequest;
 import org.springframework.data.domain.PageRequest;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
@@ -23,7 +25,7 @@ public class ItemController {
     public List<ItemDTO> findItemsByCategoryId(@Argument @Id String categoryId,
                                                @Argument PaginationRequest paginationRequest) {
         return itemService.findItemsByCategoryId(categoryId,
-                PageRequest.of(paginationRequest.getPageOffset(), paginationRequest.getPageSize()));
+                paginationRequest.toPageRequest());
     }
 
     @QueryMapping(name = "bestSellers")
@@ -32,7 +34,10 @@ public class ItemController {
     }
 
     @QueryMapping(name = "itemsByTitle")
-    public List<ItemDTO> findItemsByTitle(@Argument String title) {
-        return itemService.findItemsByTitle(title);
+    public List<ItemDTO> findItemsByTitle(@Argument @NotBlank String title,
+                                          @Argument Language language,
+                                          @Argument PaginationRequest paginationRequest) {
+        return itemService.findItemsByTitle(title, language,
+                paginationRequest.toPageRequest());
     }
 }
