@@ -1,5 +1,7 @@
 package com.lalabrand.ecommerce.item;
 
+import com.lalabrand.ecommerce.user.enums.Language;
+import com.lalabrand.ecommerce.utils.TranslationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -23,7 +25,7 @@ public class ItemServiceTest {
     @BeforeEach()
     public void setUp() {
         itemRepository = mock(ItemRepository.class);
-        itemService = new ItemService(itemRepository);
+        itemService = new ItemService(itemRepository, mock(TranslationService.class));
     }
 
     // should return a list of best-selling items when findBestSellersItems is called
@@ -49,7 +51,7 @@ public class ItemServiceTest {
         items.add(item);
         when(itemRepository.findByTitleContainingIgnoreCase(anyString())).thenReturn(items);
 
-        List<ItemDTO> result = itemService.findItemsByTitle("title");
+        List<ItemDTO> result = itemService.findItemsByTitle("title", Language.EN);
 
         assertEquals("1", result.get(0).getId());
     }
@@ -98,7 +100,7 @@ public class ItemServiceTest {
     @Test
     public void test_findItemsByTitle_emptyTitle() {
         assertThrows(IllegalArgumentException.class, () -> {
-            itemService.findItemsByTitle("");
+            itemService.findItemsByTitle("", Language.EN);
         });
     }
 
@@ -141,9 +143,6 @@ public class ItemServiceTest {
     // should handle gracefully when limit is less than or equal to zero in findBestSellersItems
     @Test
     public void test_findBestSellersItems_zeroLimit() {
-        ItemRepository itemRepository = mock(ItemRepository.class);
-        ItemService itemService = new ItemService(itemRepository);
-
         List<Item> items = new ArrayList<>();
         Item item = new Item();
         item.setId("1");
