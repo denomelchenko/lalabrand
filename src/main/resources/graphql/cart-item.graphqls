@@ -6,7 +6,7 @@ type CartItem {
     count: Int!
 }
 
-input CartItemRequest {
+input CartItemInput {
     itemId: String!
     itemInfoId: String!
     sizeId: String!
