@@ -24,6 +24,11 @@ public class ItemController {
         return itemService.findItemsByCategoryId(categoryId);
     }
 
+    @QueryMapping(name = "itemById")
+    public ItemDTO findItemById(@Argument @Id String id) {
+        return itemService.findById(id);
+    }
+
     @QueryMapping(name = "bestSellers")
     public List<ItemDTO> findBestSellers(@Argument Optional<Integer> limit) {
         return itemService.findBestSellersItems(limit);
