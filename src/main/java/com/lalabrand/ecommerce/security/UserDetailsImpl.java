@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class UserDetailsImpl extends User implements UserDetails {
+public class UserDetailsImpl implements UserDetails {
     private final String password;
     private final String email;
     @Getter
