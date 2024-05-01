@@ -4,8 +4,8 @@ type Cart {
 }
 
 extend type Mutation {
-    itemToCart(cartItemRequest: CartItemRequest): CommonResponse!
-    removeItemFromCart(cartItemRequest: CartItemRequest): CommonResponse!
+    itemToCart(cartItemInput: CartItemInput): CommonResponse!
+    removeItemFromCart(cartItemInput: CartItemInput): CommonResponse!
 }
 
 type Query {
