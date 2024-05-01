@@ -44,16 +44,13 @@ public class User {
     @Column(name = "created_at")
     private Instant createdAt;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Address> addresses;
-
-    @OneToOne(mappedBy = "user")
-    private Cart cart;
 
     @OneToMany(mappedBy = "user")
     private Set<ItemComment> itemComments;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Order> orders;
 
     @Column(name = "bonus")
@@ -61,9 +58,6 @@ public class User {
 
     @Column(name = "password")
     private String password;
-
-    @OneToOne(mappedBy = "user")
-    private Wishlist wishlist;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<UserRole> userRoles;
