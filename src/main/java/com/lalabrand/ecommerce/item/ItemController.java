@@ -25,8 +25,8 @@ public class ItemController {
     }
 
     @QueryMapping(name = "itemById")
-    public ItemDTO findItemById(@Argument @Id String id) {
-        return itemService.findById(id);
+    public ItemDTO findItemById(@Argument @Id String itemId) {
+        return itemService.findById(itemId);
     }
 
     @QueryMapping(name = "bestSellers")
