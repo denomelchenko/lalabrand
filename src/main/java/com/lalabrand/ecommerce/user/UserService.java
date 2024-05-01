@@ -6,7 +6,6 @@ import com.lalabrand.ecommerce.user.role.UserRole;
 import com.lalabrand.ecommerce.user.role.UserRoleRepository;
 import com.lalabrand.ecommerce.utils.CommonUtils;
 import jakarta.transaction.Transactional;
-import lombok.SneakyThrows;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -62,8 +61,8 @@ public class UserService {
     public UserDTO updateUser(UserUpdateRequest userUpdateRequest) {
         return UserDTO.fromEntity(userRepository.save(
                 updateUserFields(userRepository.findById(CommonUtils.getCurrentUser().getId()).orElseThrow(() ->
-                new UsernameNotFoundException("Current user does not exist")
-        ), userUpdateRequest)));
+                        new UsernameNotFoundException("Current user does not exist")
+                ), userUpdateRequest)));
     }
 
     private User updateUserFields(User user, UserUpdateRequest userUpdateRequest) {

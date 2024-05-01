@@ -15,9 +15,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.annotation.Validated;
-
-import java.nio.file.AccessDeniedException;
 
 @Controller
 public class UserController {
