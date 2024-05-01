@@ -1,11 +1,14 @@
 package com.lalabrand.ecommerce.user;
 
 import com.lalabrand.ecommerce.exception.UserAlreadyExistException;
+import com.lalabrand.ecommerce.security.UserDetailsImpl;
 import com.lalabrand.ecommerce.user.enums.Role;
 import com.lalabrand.ecommerce.user.role.UserRole;
 import com.lalabrand.ecommerce.user.role.UserRoleRepository;
 import com.lalabrand.ecommerce.utils.CommonUtils;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,6 +18,9 @@ import java.util.Optional;
 
 @Service
 public class UserService {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
 
@@ -37,10 +43,12 @@ public class UserService {
         User user = new User(userRequest.getEmail(), userRequest.getPassword(), 1);
         user.setPassword(new BCryptPasswordEncoder().encode(userRequest.getPassword()));
         if (userRepository.findByEmail(userRequest.getEmail()).isPresent()) {
+            logger.error("User with email {} already exists", userRequest.getEmail());
             throw new UserAlreadyExistException("User with this email already exist");
         } else {
             userRoleRepository.save(new UserRole(Role.USER, user));
             savedUser = userRepository.save(user);
+            logger.info("User with email {} created successfully", savedUser.getEmail());
         }
         return UserDTO.fromEntity(savedUser);
     }
@@ -59,9 +67,12 @@ public class UserService {
 
     @Transactional
     public UserDTO updateUser(UserUpdateRequest userUpdateRequest) {
+        String currentUserId = CommonUtils.getCurrentUserId();
         return UserDTO.fromEntity(userRepository.save(
-                updateUserFields(userRepository.findById(CommonUtils.getCurrentUser().getId()).orElseThrow(() ->
-                        new UsernameNotFoundException("Current user does not exist")
+                updateUserFields(userRepository.findById(currentUserId).orElseThrow(() -> {
+                            logger.error("User with id {} does not exists", currentUserId);
+                            return new UsernameNotFoundException("Error, the current user has been deleted");
+                        }
                 ), userUpdateRequest)));
     }
 
@@ -79,5 +90,12 @@ public class UserService {
             user.setLanguage(userUpdateRequest.getLanguage());
         }
         return user;
+    }
+
+    public UserDTO getUserInfoById(String id) {
+        return UserDTO.fromEntity(userRepository.findById(id).orElseThrow(() -> {
+            logger.error("User with id {} does not exists", id);
+            return new UsernameNotFoundException("Error, the current user has been deleted");
+        }));
     }
 }
