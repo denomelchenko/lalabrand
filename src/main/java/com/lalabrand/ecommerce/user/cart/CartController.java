@@ -11,30 +11,32 @@ import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
+import java.nio.file.AccessDeniedException;
+
 @Controller
 public class CartController {
     private final CartService cartService;
 
     @Autowired
-    public CartController(CartService cartService, CommonUtils commonUtils) {
+    public CartController(CartService cartService) {
         this.cartService = cartService;
     }
 
     @QueryMapping(name = "cart")
     @PreAuthorize("hasAuthority('USER')")
     public CartDTO findCartForCurrentUser() {
-        return cartService.findCartByUserId(CommonUtils.getCurrentUser().getId()).orElse(null);
+        return cartService.findCartByUserId(CommonUtils.getCurrentUserId()).orElse(null);
     }
 
     @MutationMapping(name = "itemToCart")
     @PreAuthorize("hasAuthority('USER')")
     public CommonResponse addItemToCart(@Argument(name = "cartItemInput") @Valid CartItemRequest cartItemRequest) {
-        return cartService.addItemToCart(cartItemRequest, CommonUtils.getCurrentUser().getId());
+        return cartService.addItemToCart(cartItemRequest, CommonUtils.getCurrentUserId());
     }
 
     @MutationMapping(name = "removeItemFromCart")
     @PreAuthorize("hasAuthority('USER')")
     public CommonResponse removeItemFromCart(@Argument("cartItemInput") @Valid CartItemRequest cartItemRequest) {
-        return cartService.removeItemFromCart(cartItemRequest, CommonUtils.getCurrentUser().getId());
+        return cartService.removeItemFromCart(cartItemRequest, CommonUtils.getCurrentUserId());
     }
 }
