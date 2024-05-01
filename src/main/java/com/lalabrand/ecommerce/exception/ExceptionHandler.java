@@ -25,8 +25,6 @@ public class ExceptionHandler extends DataFetcherExceptionResolverAdapter {
     protected GraphQLError resolveToSingleError(Throwable ex, DataFetchingEnvironment env) {
         ErrorType errorType = determineErrorType(ex);
         String errorMessage = determineErrorMessage(ex, errorType);
-        logger.error("Message handled: {}", ex.getMessage());
-        System.out.println(Arrays.toString(ex.getStackTrace()));
         return GraphqlErrorBuilder.newError()
                 .errorType(errorType)
                 .message(errorMessage)
@@ -55,6 +53,7 @@ public class ExceptionHandler extends DataFetcherExceptionResolverAdapter {
 
     private String determineErrorMessage(Throwable ex, ErrorType errorType) {
         if (errorType == ErrorType.INTERNAL_ERROR) {
+            logger.error("Error with message has handled: {}", ex.getMessage());
             return "An error occurred during the operation";
         }
         return ex.getLocalizedMessage();
