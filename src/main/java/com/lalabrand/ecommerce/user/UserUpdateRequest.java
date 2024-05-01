@@ -1,6 +1,8 @@
 package com.lalabrand.ecommerce.user;
 
 import com.lalabrand.ecommerce.user.enums.Language;
+import com.lalabrand.ecommerce.utils.PhoneNumber;
+import jakarta.validation.constraints.Size;
 import lombok.Value;
 
 import java.io.Serializable;
@@ -10,9 +12,11 @@ import java.io.Serializable;
  */
 @Value
 public class UserUpdateRequest implements Serializable {
+    @Size(min = 2, max = 50)
     String firstName;
+    @Size(min = 2, max = 50)
     String lastName;
-    String email;
+    @PhoneNumber
     String phone;
     Language language;
 }
