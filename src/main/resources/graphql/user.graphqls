@@ -1,7 +1,25 @@
+type User {
+    id: String
+    firstName: String
+    lastName: String
+    email: String
+    phone: String
+    bonus: Int
+    language: Language
+}
+
 type Mutation {
-    user(userRequest: UserRequest!): UserResponse!
+    user(userRequest: UserRequest!): User!
     login(authRequest: AuthRequest!): JwtResponse!
     refreshToken(refreshTokenRequest: RefreshTokenRequest!): JwtResponse!
+    updateUser(userUpdateInput: UserUpdateInput!): User!
+}
+
+input UserUpdateInput {
+    phone: String
+    firstName: String
+    lastName: String
+    language: String
 }
 
 input AuthRequest {
@@ -11,11 +29,6 @@ input AuthRequest {
 
 input UserRequest  {
     password: String!
-    email: String!
-}
-
-type UserResponse {
-    userId: ID!
     email: String!
 }
 
