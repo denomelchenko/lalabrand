@@ -10,6 +10,7 @@ import com.lalabrand.ecommerce.utils.CommonResponse;
 import jakarta.validation.Valid;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -34,7 +35,7 @@ public class UserController {
     }
 
     @MutationMapping(name = "user")
-    public UserResponse saveUser(@Validated @Argument UserRequest userRequest) throws AccessDeniedException {
+    public UserDTO saveUser(@Validated @Argument UserRequest userRequest) {
         return userService.saveUser(userRequest);
     }
 
@@ -79,7 +80,8 @@ public class UserController {
     }
 
     @MutationMapping(name = "updateUser")
-    public CommonResponse updateUser(@Validated @Argument UserUpdateRequest userUpdateRequest) {
+    @PreAuthorize("hasAuthority('USER')")
+    public UserDTO updateUser(@Argument(name = "userUpdateInput") @Valid UserUpdateRequest userUpdateRequest) {
         return userService.updateUser(userUpdateRequest);
     }
 }
