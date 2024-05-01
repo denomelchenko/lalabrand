@@ -4,9 +4,11 @@ import com.lalabrand.ecommerce.exception.UserAlreadyExistException;
 import com.lalabrand.ecommerce.user.enums.Role;
 import com.lalabrand.ecommerce.user.role.UserRole;
 import com.lalabrand.ecommerce.user.role.UserRoleRepository;
+import com.lalabrand.ecommerce.utils.CommonUtils;
 import jakarta.transaction.Transactional;
 import lombok.SneakyThrows;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -26,9 +28,8 @@ public class UserService {
         return userRepository.findById(userId);
     }
 
-    @SneakyThrows
     @Transactional
-    public UserResponse saveUser(UserRequest userRequest) {
+    public UserDTO saveUser(UserRequest userRequest) {
         if (userRequest.getEmail() == null || userRequest.getPassword() == null) {
             throw new BadCredentialsException("Password or email can not be null");
         }
@@ -42,7 +43,7 @@ public class UserService {
             userRoleRepository.save(new UserRole(Role.USER, user));
             savedUser = userRepository.save(user);
         }
-        return UserResponse.fromEntity(savedUser);
+        return UserDTO.fromEntity(savedUser);
     }
 
     public Optional<User> findByEmail(String email) {
@@ -55,5 +56,29 @@ public class UserService {
         user.setPasswordVersion(user.getPasswordVersion() + 1);
         user.setId(userId);
         return userRepository.save(user);
+    }
+
+    @Transactional
+    public UserDTO updateUser(UserUpdateRequest userUpdateRequest) {
+        return UserDTO.fromEntity(userRepository.save(
+                updateUserFields(userRepository.findById(CommonUtils.getCurrentUser().getId()).orElseThrow(() ->
+                new UsernameNotFoundException("Current user does not exist")
+        ), userUpdateRequest)));
+    }
+
+    private User updateUserFields(User user, UserUpdateRequest userUpdateRequest) {
+        if (userUpdateRequest.getFirstName() != null) {
+            user.setFirstName(userUpdateRequest.getFirstName());
+        }
+        if (userUpdateRequest.getLastName() != null) {
+            user.setLastName(userUpdateRequest.getLastName());
+        }
+        if (userUpdateRequest.getPhone() != null) {
+            user.setPhone(userUpdateRequest.getPhone());
+        }
+        if (userUpdateRequest.getLanguage() != null) {
+            user.setLanguage(userUpdateRequest.getLanguage());
+        }
+        return user;
     }
 }
