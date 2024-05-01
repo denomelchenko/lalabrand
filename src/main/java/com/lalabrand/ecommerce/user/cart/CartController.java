@@ -28,13 +28,13 @@ public class CartController {
 
     @MutationMapping(name = "itemToCart")
     @PreAuthorize("hasAuthority('USER')")
-    public CommonResponse addItemToCart(@Argument @Valid CartItemRequest cartItemRequest) {
+    public CommonResponse addItemToCart(@Argument(name = "cartItemInput") @Valid CartItemRequest cartItemRequest) {
         return cartService.addItemToCart(cartItemRequest, CommonUtils.getCurrentUser().getId());
     }
 
     @MutationMapping(name = "removeItemFromCart")
     @PreAuthorize("hasAuthority('USER')")
-    public CommonResponse removeItemFromCart(@Argument @Valid CartItemRequest cartItemRequest) {
+    public CommonResponse removeItemFromCart(@Argument("cartItemInput") @Valid CartItemRequest cartItemRequest) {
         return cartService.removeItemFromCart(cartItemRequest, CommonUtils.getCurrentUser().getId());
     }
 }
