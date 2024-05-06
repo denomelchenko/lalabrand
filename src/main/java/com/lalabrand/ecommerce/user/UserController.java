@@ -5,10 +5,13 @@ import com.lalabrand.ecommerce.security.JwtResponseDTO;
 import com.lalabrand.ecommerce.security.jwt_token.JwtService;
 import com.lalabrand.ecommerce.security.refresh_token.RefreshToken;
 import com.lalabrand.ecommerce.security.refresh_token.RefreshTokenService;
+import com.lalabrand.ecommerce.utils.CommonResponse;
+import com.lalabrand.ecommerce.utils.CommonUtils;
 import jakarta.validation.Valid;
 import org.hibernate.validator.constraints.UUID;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -73,6 +76,12 @@ public class UserController {
                             .accessToken(accessToken)
                             .refreshToken(refreshToken).build();
                 }).orElseThrow(() -> new RuntimeException("Refresh token is not valid"));
+    }
+
+    @QueryMapping(name = "userInfo")
+    @PreAuthorize("hasAuthority('USER')")
+    public UserDTO getUserInfo() {
+        return userService.getUserInfoById(CommonUtils.getCurrentUserId());
     }
 
     @MutationMapping(name = "updateUser")

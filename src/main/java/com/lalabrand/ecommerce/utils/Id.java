@@ -12,11 +12,9 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = {})
-@Pattern(regexp = "[\\w\\-]{1,36}")
+@Pattern(regexp = "[\\w\\-]{36}", message = "Invalid ID")
 public @interface Id {
     String message() default "Invalid ID";
-
     Class<?>[] groups() default {};
-
     Class<? extends Payload>[] payload() default {};
 }
