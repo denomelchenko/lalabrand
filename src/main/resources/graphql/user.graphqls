@@ -8,6 +8,10 @@ type User {
     language: Language
 }
 
+extend type Query {
+    userInfo: User
+}
+
 type Mutation {
     user(userInput: UserUpdateInput!): User!
     login(authInput: AuthInput!): JwtResponse!

@@ -23,19 +23,19 @@ public class WishlistController {
     @QueryMapping(name = "wishlist")
     @PreAuthorize("hasAuthority('USER')")
     public WishlistDTO findWishlistForCurrentUser() {
-        return wishlistService.findWishlistByUserId(CommonUtils.getCurrentUser().getId()).orElse(null);
+        return wishlistService.findWishlistByUserId(CommonUtils.getCurrentUserId()).orElse(null);
 
     }
 
     @MutationMapping(name = "itemToWishlist")
     @PreAuthorize("hasAuthority('USER')")
     public WishlistDTO addItemToWishlist(@Argument @Id String itemId) {
-        return wishlistService.addItemToWishlist(itemId, CommonUtils.getCurrentUser().getId());
+        return wishlistService.addItemToWishlist(itemId, CommonUtils.getCurrentUserId());
     }
 
     @MutationMapping(name = "itemsToWishlist")
     @PreAuthorize("hasAuthority('USER')")
     public WishlistDTO addItemsToWishlist(@Argument Set<String> itemsIds) {
-        return wishlistService.addItemsToWishlist(itemsIds, CommonUtils.getCurrentUser().getId());
+        return wishlistService.addItemsToWishlist(itemsIds, CommonUtils.getCurrentUserId());
     }
 }
