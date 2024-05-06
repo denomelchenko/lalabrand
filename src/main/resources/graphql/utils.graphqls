@@ -2,3 +2,8 @@ type CommonResponse {
     success: String!
     message: String!
 }
+
+input PaginationRequest {
+    pageSize: Int!
+    pageOffset: Int!
+}

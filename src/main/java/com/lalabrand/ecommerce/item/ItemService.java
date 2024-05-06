@@ -1,11 +1,13 @@
 package com.lalabrand.ecommerce.item;
 
 import com.lalabrand.ecommerce.user.enums.Language;
+import com.lalabrand.ecommerce.utils.PaginationRequest;
 import com.lalabrand.ecommerce.utils.TranslationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -29,15 +31,15 @@ public class ItemService {
         );
     }
 
-    public List<ItemDTO> findItemsByTitle(String title, Language language) {
+    public List<ItemDTO> findItemsByTitle(String title, Language language, Pageable pageable) {
         if (!language.equals(Language.EN)) {
             title = translationService.textTranslate(language.toString(), Language.EN.toString(), title);
         }
-        return convertToItemDtoList(itemRepository.findByTitleContainingIgnoreCase(title));
+        return convertToItemDtoList(itemRepository.findByTitleContainingIgnoreCase(title, pageable));
     }
 
-    public List<ItemDTO> findItemsByCategoryId(String categoryId) {
-        return convertToItemDtoList(itemRepository.findItemsByCategoryId(categoryId));
+    public List<ItemDTO> findItemsByCategoryId(String categoryId, Pageable pageable) {
+        return convertToItemDtoList(itemRepository.findItemsByCategoryId(categoryId, pageable));
     }
 
     public Item findItemByIdOrThrow(String itemId) {
