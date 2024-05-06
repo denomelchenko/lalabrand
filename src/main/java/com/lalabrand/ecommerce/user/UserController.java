@@ -4,19 +4,17 @@ import com.lalabrand.ecommerce.security.AuthRequestDTO;
 import com.lalabrand.ecommerce.security.JwtResponseDTO;
 import com.lalabrand.ecommerce.security.jwt_token.JwtService;
 import com.lalabrand.ecommerce.security.refresh_token.RefreshToken;
-import com.lalabrand.ecommerce.security.refresh_token.RefreshTokenRequestDTO;
 import com.lalabrand.ecommerce.security.refresh_token.RefreshTokenService;
 import jakarta.validation.Valid;
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.annotation.Validated;
-
-import java.nio.file.AccessDeniedException;
 
 @Controller
 public class UserController {
@@ -33,12 +31,12 @@ public class UserController {
     }
 
     @MutationMapping(name = "user")
-    public UserResponse saveUser(@Validated @Argument UserRequest userRequest) throws AccessDeniedException {
+    public UserDTO saveUser(@Argument(name = "userInput") @Valid UserRequest userRequest) {
         return userService.saveUser(userRequest);
     }
 
     @MutationMapping(name = "login")
-    public JwtResponseDTO loginUserAndGetTokens(@Argument @Valid AuthRequestDTO authRequest) {
+    public JwtResponseDTO loginUserAndGetTokens(@Argument(name = "authInput") @Valid AuthRequestDTO authRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword())
         );
@@ -60,9 +58,9 @@ public class UserController {
         }
     }
 
-    @MutationMapping(name = "refreshToken")
-    public JwtResponseDTO refreshAccessToken(@Argument @Valid RefreshTokenRequestDTO refreshTokenRequest) {
-        return refreshTokenService.findByToken(refreshTokenRequest.getToken())
+    @MutationMapping(name = "refreshAccessToken")
+    public JwtResponseDTO refreshAccessToken(@Argument @UUID(message = "Token is not correct") String refreshToken) {
+        return refreshTokenService.findByToken(refreshToken)
                 .map(refreshTokenService::verifyExpiration)
                 .map(RefreshToken::getUser)
                 .map(user -> {
@@ -73,7 +71,13 @@ public class UserController {
                     );
                     return JwtResponseDTO.builder()
                             .accessToken(accessToken)
-                            .refreshToken(refreshTokenRequest.getToken()).build();
+                            .refreshToken(refreshToken).build();
                 }).orElseThrow(() -> new RuntimeException("Refresh token is not valid"));
+    }
+
+    @MutationMapping(name = "updateUser")
+    @PreAuthorize("hasAuthority('USER')")
+    public UserDTO updateUser(@Argument(name = "userUpdateInput") @Valid UserUpdateRequest userUpdateRequest) {
+        return userService.updateUser(userUpdateRequest);
     }
 }
