@@ -28,6 +28,11 @@ public class ItemController {
                 paginationRequest.toPageRequest());
     }
 
+    @QueryMapping(name = "itemById")
+    public ItemDTO findItemById(@Argument @Id String itemId) {
+        return itemService.findById(itemId);
+    }
+
     @QueryMapping(name = "bestSellers")
     public List<ItemDTO> findBestSellers(@Argument Optional<Integer> limit) {
         return itemService.findBestSellersItems(limit);
