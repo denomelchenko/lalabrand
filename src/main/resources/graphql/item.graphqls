@@ -13,7 +13,7 @@ type Item {
 
 extend type Query {
     bestSellers(limit: Int): [Item!]!,
-    itemsByTitle(title: String!, language: Language!): [Item!]!,
-    itemsByCategoryId(categoryId: ID!): [Item!]!
+    itemsByTitle(title: String!, language: Language!, paginationRequest: PaginationRequest!): [Item!]!,
+    itemsByCategoryId(categoryId: ID!, paginationRequest: PaginationRequest!): [Item!]!
     itemById(itemId: ID!): Item!
 }

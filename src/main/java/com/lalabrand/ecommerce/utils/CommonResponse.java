@@ -1,11 +1,11 @@
 package com.lalabrand.ecommerce.utils;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
 public class CommonResponse {
     private boolean success;

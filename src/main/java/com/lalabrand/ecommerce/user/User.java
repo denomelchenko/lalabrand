@@ -3,10 +3,8 @@ package com.lalabrand.ecommerce.user;
 import com.lalabrand.ecommerce.item.item_comment.ItemComment;
 import com.lalabrand.ecommerce.order.Order;
 import com.lalabrand.ecommerce.user.address.Address;
-import com.lalabrand.ecommerce.user.cart.Cart;
 import com.lalabrand.ecommerce.user.enums.Language;
 import com.lalabrand.ecommerce.user.role.UserRole;
-import com.lalabrand.ecommerce.user.wishlist.Wishlist;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -44,16 +42,13 @@ public class User {
     @Column(name = "created_at")
     private Instant createdAt;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Address> addresses;
-
-    @OneToOne(mappedBy = "user")
-    private Cart cart;
 
     @OneToMany(mappedBy = "user")
     private Set<ItemComment> itemComments;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Order> orders;
 
     @Column(name = "bonus")
@@ -61,9 +56,6 @@ public class User {
 
     @Column(name = "password")
     private String password;
-
-    @OneToOne(mappedBy = "user")
-    private Wishlist wishlist;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<UserRole> userRoles;
