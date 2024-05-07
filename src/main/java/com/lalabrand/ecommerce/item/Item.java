@@ -25,9 +25,6 @@ import java.util.Set;
 @Entity
 @Table(name = "item")
 public class Item {
-    @ManyToMany(mappedBy = "items")
-    Set<Size> sizes;
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false)
@@ -38,31 +35,33 @@ public class Item {
 
     @Column(name = "short_disc", nullable = false, length = 128)
     private String shortDisc;
+
     @Column(name = "long_disc")
     private String longDisc;
 
     @Column(name = "rating", precision = 10)
     private BigDecimal rating;
-    @Column(name = "price", nullable = false, precision = 10)
 
+    @Column(name = "price", nullable = false, precision = 10)
     private BigDecimal price;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "category_id", nullable = false)
-
     private Category category;
+
     @Column(name = "available_count", nullable = false)
-
     private Integer availableCount;
+
     @Column(name = "sale_price")
-
     private BigDecimal salePrice;
+
     @Column(name = "image", nullable = false)
-
     private String image;
-    @Column(name = "sold_count", nullable = false)
 
+    @Column(name = "sold_count", nullable = false)
     private Integer soldCount;
+
     @Column(name = "created_at", nullable = false)
 
     private Instant createdAt;
