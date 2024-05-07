@@ -41,14 +41,14 @@ public class Item {
 
     @Column(name = "rating", precision = 10)
     private BigDecimal rating;
+
     @Column(name = "price", nullable = false, precision = 10)
-
     private BigDecimal price;
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.SET_NULL)
-    @JoinColumn(name = "category_id", nullable = false)
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "category_id", nullable = true)
     private Category category;
+
     @Column(name = "available_count", nullable = false)
 
     private Integer availableCount;

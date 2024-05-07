@@ -64,16 +64,16 @@ VALUES ('1', 'US', '12345', 'New York', '123 Main St', 'Apt 101', '+123456789', 
        ('2', 'UK', 'SW1A 1AA', 'London', '10 Downing St', '', '+987654321', 2);
 
 -- Insert statements for the 'order' table
-INSERT INTO `orders` (`id`, `user_id`, `total_price`, `shipping_fee`, `discount`, `tax`, `shipping_id`, `currency`,
-                     `status`, `created_at`)
-VALUES ('1', '1', 59.97, 5.00, NULL, NULL, '1', 'USD', 'PENDING', CURRENT_TIMESTAMP),
-       ('2', '2', 799.99, 10.00, NULL, NULL, '2', 'USD', 'PENDING', CURRENT_TIMESTAMP);
+INSERT INTO `orders` (`id`, `user_id`, `order_number`, `total_price`, `discount`, `tax`, `shipping_id`, `currency`,
+                      `status`, `created_at`)
+VALUES ('1', '1', '983129083901', 59.97, NULL, NULL, '1', 'USD', 'PENDING', CURRENT_TIMESTAMP),
+       ('2', '2', '983129321342', 799.99, NULL, NULL, '2', 'UAH', 'DELIVERED', CURRENT_TIMESTAMP);
 
 
 -- Insert statements for the 'ordered_item' table
-INSERT INTO ordered_item (id, order_id, item_id, title, size_type, color, price, count, image)
+INSERT INTO ordered_item (id, order_id, item_id, title, size, color, price, count, image)
 VALUES ('1', '1', '1', 'T-Shirt', 'CLOTHES', 'BLACK', 19.99, 2, 'tshirt_black.jpg'),
-       ('2', '1', '2', 'Running Shoes', 'CLOTHES', 'BLACK', 79.99, 1, 'runningshoes_black.jpg');
+       ('2', '1', '2', 'Running Shoes', 'SHOES', 'BLACK', 79.99, 1, 'runningshoes_black.jpg');
 
 
 -- Insert statements for the 'item_comment' table

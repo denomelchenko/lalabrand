@@ -1,6 +1,6 @@
 package com.lalabrand.ecommerce.order;
 
-import com.lalabrand.ecommerce.item.enums.Currency;
+import com.lalabrand.ecommerce.order.enums.Currency;
 import com.lalabrand.ecommerce.order.enums.Status;
 import com.lalabrand.ecommerce.order.ordered_item.OrderItemsDTO;
 import com.lalabrand.ecommerce.order.shipping.shipping_info.ShippingInfo;
@@ -22,24 +22,24 @@ import java.util.stream.Collectors;
 @Value
 @Builder
 public class OrderDTO implements Serializable {
-    private String id;
-    private String userId;
-    private BigDecimal tax;
-    private Currency currency;
-    private Status status;
-    private BigDecimal shippingFee;
-    private BigDecimal totalPrice;
-    private ShippingInfoDTO shippingInfoDTO;
-    private Set<OrderItemsDTO> orderedItems;
+    String id;
+    String userId;
+    Long orderNumber;
+    BigDecimal tax;
+    Currency currency;
+    Status status;
+    BigDecimal totalPrice;
+    ShippingInfoDTO shippingInfoDTO;
+    Set<OrderItemsDTO> orderedItems;
 
-    public static OrderDTO fromEntity(Order order){
+    public static OrderDTO fromEntity(Order order) {
         return OrderDTO.builder()
                 .id(order.getId())
                 .userId(order.getUser().getId())
+                .orderNumber(order.getOrderNumber())
                 .tax(order.getTax())
                 .currency(order.getCurrency())
                 .status(order.getStatus())
-                .shippingFee(order.getShippingFee())
                 .totalPrice(order.getTotalPrice())
                 .shippingInfoDTO(ShippingInfoDTO.fromEntity(order.getShipping()))
                 .orderedItems(order.getOrderedItems().stream().map(OrderItemsDTO::fromEntity).collect(Collectors.toSet()))
@@ -49,10 +49,10 @@ public class OrderDTO implements Serializable {
     public Order toEntity(ShippingInfo shippingInfo, User user) {
         return Order.builder()
                 .id(this.getId())
+                .orderNumber(this.orderNumber)
                 .tax(this.getTax())
                 .currency(this.getCurrency())
                 .status(this.getStatus())
-                .shippingFee(this.getShippingFee())
                 .totalPrice(this.getTotalPrice())
                 .user(user)
                 .shipping(shippingInfo)

@@ -1,7 +1,7 @@
 package com.lalabrand.ecommerce.order;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.lalabrand.ecommerce.item.enums.Currency;
+import com.lalabrand.ecommerce.order.enums.Currency;
 import com.lalabrand.ecommerce.order.enums.Status;
 import com.lalabrand.ecommerce.order.ordered_item.OrderedItem;
 import com.lalabrand.ecommerce.order.shipping.shipping_info.ShippingInfo;
@@ -34,6 +34,9 @@ public class Order {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @Column(name = "order_number", nullable = false)
+    private Long orderNumber;
+
     @Column(name = "created_at", nullable = false)
     @CreationTimestamp
     private Instant createdAt;
@@ -45,12 +48,9 @@ public class Order {
     @Column(name = "total_price", precision = 10)
     private BigDecimal totalPrice;
 
-    @Column(name = "status", nullable = false)
+    @Column(name = "status", nullable = false, columnDefinition = "ENUM('PENDING', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'CANCELED')")
     @Enumerated(EnumType.STRING)
     private Status status;
-
-    @Column(name = "shipping_fee", precision = 10)
-    private BigDecimal shippingFee;
 
     @Column(name = "discount", precision = 10)
     private BigDecimal discount;
@@ -58,7 +58,7 @@ public class Order {
     @Column(name = "tax", precision = 10)
     private BigDecimal tax;
 
-    @Column(name = "currency", nullable = false)
+    @Column(name = "currency", nullable = false , columnDefinition = "ENUM('UAH','EUR','USD')")
     @Enumerated(EnumType.STRING)
     private Currency currency;
 

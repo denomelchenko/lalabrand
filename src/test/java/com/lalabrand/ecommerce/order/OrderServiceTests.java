@@ -6,7 +6,7 @@ import com.lalabrand.ecommerce.item.enums.ColorEnum;
 import com.lalabrand.ecommerce.item.enums.SizeType;
 import com.lalabrand.ecommerce.item.item_info.ItemInfo;
 import com.lalabrand.ecommerce.item.size.Size;
-import com.lalabrand.ecommerce.order.ordered_item.OrderItemsService;
+import com.lalabrand.ecommerce.order.ordered_item.OrderItemsServiceImpl;
 import com.lalabrand.ecommerce.order.shipping.shipping_info.ShippingInfo;
 import com.lalabrand.ecommerce.order.shipping.shipping_info.ShippingInfoRepository;
 import com.lalabrand.ecommerce.order.shipping.shipping_info.ShippingInfoRequest;
@@ -49,7 +49,7 @@ public class OrderServiceTests {
     private CartService cartService;
 
     @Mock
-    private OrderItemsService orderItemsService;
+    private OrderItemsServiceImpl orderItemsService;
 
     @Mock
     private ShippingInfoRepository shippingInfoRepository;

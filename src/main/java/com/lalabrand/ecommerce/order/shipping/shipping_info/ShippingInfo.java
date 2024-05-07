@@ -22,7 +22,7 @@ public class ShippingInfo {
     @Column(name = "id", nullable = false)
     private String id;
 
-    @Column(name = "country", nullable = false)
+    @Column(name = "country", nullable = false, columnDefinition = "ENUM('UA', 'PL', 'DE', 'US', 'UK')")
     @Enumerated(EnumType.STRING)
     private Country country;
 

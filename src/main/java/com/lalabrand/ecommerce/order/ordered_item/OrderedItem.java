@@ -26,8 +26,7 @@ public class OrderedItem {
     private String id;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @OnDelete(action = OnDeleteAction.SET_NULL)
-    @JoinColumn(name = "item_id", nullable = false)
+    @JoinColumn(name = "item_id", nullable = true)
     private Item item;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -38,7 +37,8 @@ public class OrderedItem {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "size_type", nullable = false)
+    @Column(name = "size", nullable = false, columnDefinition = "ENUM('SHOES','CLOTHES')")
+    @Enumerated(EnumType.STRING)
     private SizeType sizeType;
 
     @Column(name = "color", nullable = false)

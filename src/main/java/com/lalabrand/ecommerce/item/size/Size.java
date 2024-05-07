@@ -22,14 +22,13 @@ public class Size {
     private String id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "type", nullable = false)
+    @Column(name = "type", nullable = false, columnDefinition = "ENUM('SHOES','CLOTHES')")
     private SizeType sizeType;
 
     @Column(name = "value", nullable = false, length = 40)
     private String value;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "item_sizes", joinColumns = @JoinColumn(name = "item_id"), inverseJoinColumns = @JoinColumn(name = "size_id"))
+    @JoinTable(name = "item_sizes", joinColumns = @JoinColumn(name = "size_id"), inverseJoinColumns = @JoinColumn(name = "item_id"))
     private Set<Item> items = new LinkedHashSet<>();
-
 }

@@ -3,7 +3,6 @@ type Order {
     createdAt: String!
     orderedItems: [OrderedItem!]!
     totalPrice: Float!
-    shippingFee: Float
     discount: Float
     tax: Float
     currency: Currency!
