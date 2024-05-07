@@ -2,6 +2,7 @@ package com.lalabrand.ecommerce.item.item_info;
 
 import com.lalabrand.ecommerce.item.Item;
 import com.lalabrand.ecommerce.item.enums.ColorEnum;
+import com.lalabrand.ecommerce.item.size.Size;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -20,6 +21,10 @@ public class ItemInfo {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "item_id", nullable = false, insertable = false, updatable = false)
     private Item item;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "size_id", nullable = false)
+    private Size size;
 
     @Column(name = "item_id", nullable = false)
     private String itemId;
