@@ -4,7 +4,6 @@ import com.lalabrand.ecommerce.item.category.Category;
 import com.lalabrand.ecommerce.item.item_comment.ItemComment;
 import com.lalabrand.ecommerce.item.item_info.ItemInfo;
 import com.lalabrand.ecommerce.item.look.Look;
-import com.lalabrand.ecommerce.item.size.Size;
 import com.lalabrand.ecommerce.order.ordered_item.OrderedItem;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

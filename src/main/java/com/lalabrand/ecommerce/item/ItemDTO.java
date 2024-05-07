@@ -1,8 +1,6 @@
 package com.lalabrand.ecommerce.item;
 
-import com.lalabrand.ecommerce.item.item_info.ItemInfo;
 import com.lalabrand.ecommerce.item.item_info.ItemInfoDTO;
-import com.lalabrand.ecommerce.item.size.SizeDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;

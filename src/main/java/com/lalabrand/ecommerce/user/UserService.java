@@ -1,7 +1,6 @@
 package com.lalabrand.ecommerce.user;
 
 import com.lalabrand.ecommerce.exception.UserAlreadyExistException;
-import com.lalabrand.ecommerce.security.UserDetailsImpl;
 import com.lalabrand.ecommerce.user.enums.Role;
 import com.lalabrand.ecommerce.user.role.UserRole;
 import com.lalabrand.ecommerce.user.role.UserRoleRepository;
