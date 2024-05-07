@@ -9,6 +9,7 @@ type Item {
     salePrice: Float,
     image: String,
     soldCount: Int!
+    itemInfos: [ItemInfo!]!
 }
 
 extend type Query {
