@@ -40,6 +40,7 @@ public class UserService {
         if (userRepository.findByEmail(userRequest.getEmail()).isPresent()) {
             throw new UserAlreadyExistException("User with this email already exist");
         } else {
+            user.setBonus(0);
             userRoleRepository.save(new UserRole(Role.USER, user));
             savedUser = userRepository.save(user);
         }
