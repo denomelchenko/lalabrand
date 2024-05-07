@@ -2,8 +2,6 @@ package com.lalabrand.ecommerce.user.cart;
 
 import com.lalabrand.ecommerce.item.item_info.ItemInfo;
 import com.lalabrand.ecommerce.item.item_info.ItemInfoRepository;
-import com.lalabrand.ecommerce.item.size.Size;
-import com.lalabrand.ecommerce.item.size.SizeRepository;
 import com.lalabrand.ecommerce.user.cart.cart_item.CartItem;
 import com.lalabrand.ecommerce.user.cart.cart_item.CartItemRepository;
 import com.lalabrand.ecommerce.user.cart.cart_item.CartItemRequest;
@@ -26,7 +24,7 @@ public class CartService {
 
     @Autowired
     public CartService(final CartRepository cartRepository, ItemInfoRepository itemInfoRepository,
-                           CartItemRepository cartItemRepository) {
+                       CartItemRepository cartItemRepository) {
         this.cartRepository = cartRepository;
         this.itemInfoRepository = itemInfoRepository;
         this.cartItemRepository = cartItemRepository;

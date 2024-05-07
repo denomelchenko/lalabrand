@@ -1,7 +1,6 @@
 package com.lalabrand.ecommerce.item;
 
 import com.lalabrand.ecommerce.user.enums.Language;
-import com.lalabrand.ecommerce.utils.PaginationRequest;
 import com.lalabrand.ecommerce.utils.TranslationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

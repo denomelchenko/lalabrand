@@ -1,7 +1,6 @@
 package com.lalabrand.ecommerce.item.item_info;
 
 import com.lalabrand.ecommerce.item.enums.ColorEnum;
-import com.lalabrand.ecommerce.item.size.Size;
 import com.lalabrand.ecommerce.item.size.SizeDTO;
 import lombok.Builder;
 import lombok.Value;

@@ -2,12 +2,10 @@ package com.lalabrand.ecommerce.utils;
 
 import com.lalabrand.ecommerce.security.UserDetailsImpl;
 import lombok.SneakyThrows;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.nio.file.AccessDeniedException;
-import java.util.Arrays;
 import java.util.Collection;
 
 @Component

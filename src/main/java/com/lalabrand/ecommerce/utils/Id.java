@@ -15,6 +15,8 @@ import java.lang.annotation.Target;
 @Pattern(regexp = "[\\w\\-]{36}", message = "Invalid ID")
 public @interface Id {
     String message() default "Invalid ID";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 }
