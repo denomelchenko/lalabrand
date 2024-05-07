@@ -1,5 +1,8 @@
 package com.lalabrand.ecommerce.item;
 
+import com.lalabrand.ecommerce.item.item_info.ItemInfo;
+import com.lalabrand.ecommerce.item.item_info.ItemInfoDTO;
+import com.lalabrand.ecommerce.item.size.SizeDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -9,6 +12,8 @@ import lombok.Value;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * DTO for {@link Item}
@@ -30,6 +35,7 @@ public class ItemDTO implements Serializable {
     BigDecimal salePrice;
     String image;
     Integer soldCount;
+    Set<ItemInfoDTO> itemInfos;
 
     public static ItemDTO fromEntity(Item item) {
         return ItemDTO.builder()
@@ -43,6 +49,7 @@ public class ItemDTO implements Serializable {
                 .salePrice(item.getSalePrice())
                 .image(item.getImage())
                 .soldCount(item.getSoldCount())
+                .itemInfos(item.getItemInfos().stream().map(ItemInfoDTO::fromEntity).collect(Collectors.toSet()))
                 .build();
     }
 }
