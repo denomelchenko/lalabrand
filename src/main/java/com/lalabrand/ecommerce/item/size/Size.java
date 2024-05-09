@@ -1,15 +1,11 @@
 package com.lalabrand.ecommerce.item.size;
 
-import com.lalabrand.ecommerce.item.Item;
 import com.lalabrand.ecommerce.item.enums.SizeType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,9 +25,4 @@ public class Size {
 
     @Column(name = "value", nullable = false, length = 40)
     private String value;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "item_sizes", joinColumns = @JoinColumn(name = "item_id"), inverseJoinColumns = @JoinColumn(name = "size_id"))
-    private Set<Item> items = new LinkedHashSet<>();
-
 }

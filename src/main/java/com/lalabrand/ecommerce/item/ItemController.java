@@ -4,7 +4,6 @@ package com.lalabrand.ecommerce.item;
 import com.lalabrand.ecommerce.user.enums.Language;
 import com.lalabrand.ecommerce.utils.Id;
 import com.lalabrand.ecommerce.utils.PaginationRequest;
-import org.springframework.data.domain.PageRequest;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;

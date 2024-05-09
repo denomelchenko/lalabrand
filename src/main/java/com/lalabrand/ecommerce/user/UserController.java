@@ -5,7 +5,6 @@ import com.lalabrand.ecommerce.security.JwtResponseDTO;
 import com.lalabrand.ecommerce.security.jwt_token.JwtService;
 import com.lalabrand.ecommerce.security.refresh_token.RefreshToken;
 import com.lalabrand.ecommerce.security.refresh_token.RefreshTokenService;
-import com.lalabrand.ecommerce.utils.CommonResponse;
 import com.lalabrand.ecommerce.utils.CommonUtils;
 import jakarta.validation.Valid;
 import org.hibernate.validator.constraints.UUID;
