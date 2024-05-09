@@ -2,4 +2,5 @@ type ItemInfo {
     id: ID!
     color: Color!
     image: String
+    size: Size!
 }
