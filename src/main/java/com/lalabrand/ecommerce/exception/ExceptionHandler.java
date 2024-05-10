@@ -5,6 +5,7 @@ import graphql.GraphqlErrorBuilder;
 import graphql.schema.DataFetchingEnvironment;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
+import org.apache.coyote.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.graphql.execution.DataFetcherExceptionResolverAdapter;
@@ -34,7 +35,8 @@ public class ExceptionHandler extends DataFetcherExceptionResolverAdapter {
     private ErrorType determineErrorType(Throwable ex) {
         if (ex instanceof IllegalArgumentException
                 || ex instanceof ConstraintViolationException
-                || ex instanceof TokenExpiredException) {
+                || ex instanceof TokenExpiredException
+                || ex instanceof BadRequestException) {
             return ErrorType.BAD_REQUEST;
         } else if (ex instanceof BadCredentialsException) {
             return ErrorType.UNAUTHORIZED;
