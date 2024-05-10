@@ -13,7 +13,7 @@ extend type Query {
 }
 
 type Mutation {
-    user(userInput: UserUpdateInput!): User!
+    user(userInput: UserInput!): User!
     login(authInput: AuthInput!): JwtResponse!
     refreshAccessToken(refreshToken: String!): JwtResponse!
     updateUser(userUpdateInput: UserUpdateInput!): User!
