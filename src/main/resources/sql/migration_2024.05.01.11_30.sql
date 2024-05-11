@@ -1,2 +1,0 @@
-ALTER TABLE `user`
-    MODIFY COLUMN `bonus` INTEGER DEFAULT 0;
