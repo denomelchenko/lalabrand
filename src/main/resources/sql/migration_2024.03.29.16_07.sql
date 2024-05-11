@@ -1,3 +1,5 @@
+CREATE DATABASE IF NOT EXIST;
+
 USE lalabrand;
 
 SET time_zone = '+00:00';
