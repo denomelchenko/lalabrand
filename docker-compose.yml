@@ -1,12 +1,12 @@
 services:
   mysql:
-    image: mysql:8.4
+    image: mysql:latest
     environment:
       MYSQL_PASSWORD: lalabrand
       MYSQL_DATABASE: lalabrand
       MYSQL_USER: lalabrand
       MYSQL_ROOT_PASSWORD: lalabrand
-    hostname:
-      127.0.0.1
     volumes:
       - ./data/mysql:/var/lib/mysql
+    ports:
+      - "3306:3306"
