@@ -137,6 +137,7 @@ public class CartService {
                 .build();
     }
 
+    @Transactional
     public void deleteCartItems(String userId) {
         if (cartRepository.findCartByUserId(userId).isPresent()) {
             cartItemRepository.deleteAllByCartId(cartRepository.findCartByUserId(userId).get().getId());
