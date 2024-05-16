@@ -52,7 +52,7 @@ public class PasswordResetService {
             if (resetToken.isPresent()) {
                 if (passwordEncoder.matches(passwordResetInput.getPassword(), user.get().getPassword())) {
                     logger.error("Password the same with exist password for this user");
-                    throw new BadRequestException("User does not exist");
+                    throw new BadRequestException("Password the same with exist password for this user");
                 }
                 updateUserPassword(new UserRequest(
                                 passwordResetInput.getPassword(),

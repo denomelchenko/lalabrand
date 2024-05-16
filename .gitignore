@@ -6,6 +6,8 @@ target/
 
 ### Local configuration file (sdk path, etc) ###
 /src/main/resources/application.properties
+/data
+.DS_Store
 
 ### STS ###
 .apt_generated
