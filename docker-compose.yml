@@ -1,0 +1,12 @@
+services:
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_PASSWORD: lalabrand
+      MYSQL_DATABASE: lalabrand
+      MYSQL_USER: lalabrand
+      MYSQL_ROOT_PASSWORD: lalabrand
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    ports:
+      - "3306:3306"
