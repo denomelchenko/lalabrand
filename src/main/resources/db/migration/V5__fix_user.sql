@@ -1,0 +1,3 @@
+ALTER TABLE `user`
+    MODIFY COLUMN `first_name` VARCHAR(50) NOT NULL,
+    MODIFY COLUMN `last_name` VARCHAR(50) NOT NULL
