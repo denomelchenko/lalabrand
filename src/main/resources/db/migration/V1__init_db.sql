@@ -15,7 +15,6 @@ CREATE TABLE `user`
     `language`         ENUM ('UA', 'EN'),
     `password`         VARCHAR(255)        NOT NULL,
     `password_version` INTEGER             NOT NULL,
-    INDEX `email_index` (email),
     `created_at`       TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
