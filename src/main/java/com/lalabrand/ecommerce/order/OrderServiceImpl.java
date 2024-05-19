@@ -103,11 +103,6 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findAllByUserIdOrderByCreatedAtDesc(userId);
     }
 
-    @Override
-    public Order read(String orderId) {
-        return orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new);
-    }
-
     @Transactional
     @Override
     public CommonResponse delete(String orderId) {
