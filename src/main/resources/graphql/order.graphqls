@@ -25,6 +25,5 @@ input ShippingInfoRequest {
 }
 
 extend type Mutation {
-    placeOrder(shipping: ShippingInfoRequest!): CommonResponse!
     deleteOrderById(orderId: ID!): CommonResponse!
 }

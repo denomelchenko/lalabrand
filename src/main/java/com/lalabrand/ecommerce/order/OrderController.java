@@ -1,5 +1,6 @@
 package com.lalabrand.ecommerce.order;
 
+import com.lalabrand.ecommerce.order.enums.Currency;
 import com.lalabrand.ecommerce.order.shipping.shipping_info.ShippingInfoRequest;
 import com.lalabrand.ecommerce.utils.CommonResponse;
 import com.lalabrand.ecommerce.utils.CommonUtils;
@@ -26,12 +27,6 @@ public class OrderController {
     @PreAuthorize("hasAuthority('USER')")
     public List<Order> getAllOrders() {
         return orderService.getAll(commonUtils.getCurrentUser().getId());
-    }
-
-    @MutationMapping(name = "placeOrder")
-    @PreAuthorize("hasAuthority('USER')")
-    public CommonResponse placeOrder( @Argument("shipping") ShippingInfoRequest request) {
-        return orderService.placeOrder(commonUtils.getCurrentUser().getId(), request);
     }
 
     @MutationMapping(name = "deleteOrderById")

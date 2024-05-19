@@ -1,5 +1,7 @@
 package com.lalabrand.ecommerce.order;
 
+import com.lalabrand.ecommerce.order.enums.Currency;
+import com.lalabrand.ecommerce.paypal.PaypalServiceImpl;
 import com.lalabrand.ecommerce.item.Item;
 import com.lalabrand.ecommerce.item.category.Category;
 import com.lalabrand.ecommerce.item.enums.ColorEnum;
@@ -55,6 +57,8 @@ public class OrderServiceTests {
     private ShippingInfoRepository shippingInfoRepository;
     @InjectMocks
     private OrderServiceImpl orderService;
+    @Mock
+    private PaypalServiceImpl paypalService;
 
     @BeforeEach
     void setUp() {
@@ -72,6 +76,8 @@ public class OrderServiceTests {
         shippingInfoRequest.setZip("12345");
         shippingInfoRequest.setPhone("1234567890");
         shippingInfoRequest.setShippingOptionId("1");
+
+        Currency currency = Currency.USD;
 
         Item item = Item.builder()
                 .id("1")
@@ -121,7 +127,7 @@ public class OrderServiceTests {
         when(orderRepository.save(any(Order.class))).thenReturn(new Order());
 
         OrderService orderService = new OrderServiceImpl(orderRepository, userRepository, cartService, orderItemsService, shippingInfoRepository);
-        CommonResponse response = orderService.placeOrder(userId, shippingInfoRequest);
+        CommonResponse response = orderService.placeOrder(userId, shippingInfoRequest, currency);
         assertTrue(response.isSuccess());
     }
 
@@ -130,9 +136,10 @@ public class OrderServiceTests {
     @Transactional
     void placeOrder_EmptyCart_ReturnsFailureResponse() {
         String userId = "1";
+        Currency currency = Currency.USD;
         ShippingInfoRequest shippingInfoRequest = new ShippingInfoRequest();
         when(cartService.findCartByUserId(anyString())).thenReturn(Optional.empty());
-        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> orderService.placeOrder(userId, shippingInfoRequest));
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> orderService.placeOrder(userId, shippingInfoRequest, currency));
         assertEquals("Cart hasn't been found for user ( it's empty )", exception.getMessage());
     }
 

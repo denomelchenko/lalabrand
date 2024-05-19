@@ -45,22 +45,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     @Override
-    public CommonResponse placeOrder(String userId, ShippingInfoRequest shippingInfoRequest) {
+    public CommonResponse placeOrder(String userId, ShippingInfoRequest shippingInfoRequest, Currency currency ) {
         CartDTO cartDto = cartService.findCartByUserId(userId).orElseThrow(
                 () -> new EntityNotFoundException("Cart hasn't been found for user ( it's empty )")
         );
 
-        ShippingInfo shippingInfo = ShippingInfo.builder()
-                .address1(shippingInfoRequest.getAddress1())
-                .address2(shippingInfoRequest.getAddress2())
-                .city(shippingInfoRequest.getCity())
-                .country(shippingInfoRequest.getCountry())
-                .zip(shippingInfoRequest.getZip())
-                .phone(shippingInfoRequest.getPhone())
-                .shippingOptionId(shippingInfoRequest.getShippingOptionId())
-                .build();
-
-        ShippingInfo savedShippingInfo = shippingInfoRepository.save(shippingInfo);
+        ShippingInfo savedShippingInfo = shippingInfoRepository.save(shippingInfoRequest.toEntity());
 
         Set<OrderedItem> orderedItems = new HashSet<>();
         Set<CartItem> cartItems = cartDto.toEntity(userRepository.getReferenceById(userId)).getCartItems();
@@ -69,7 +59,7 @@ public class OrderServiceImpl implements OrderService {
                 .user(userRepository.getReferenceById(userId))
                 .orderNumber(CommonUtils.getNext())
                 .status(Status.PENDING)
-                .currency(Currency.UAH) // need
+                .currency(currency)
                 .tax(BigDecimal.ZERO) // need
                 .discount(BigDecimal.ZERO) // need
                 .totalPrice(cartItems.stream().map(cartItem -> cartItem.getItem().getPrice().multiply(BigDecimal.valueOf(cartItem.getCount())))
@@ -108,10 +98,14 @@ public class OrderServiceImpl implements OrderService {
                 .build();
     }
 
-
     @Override
     public List<Order> getAll(String userId) {
         return orderRepository.findAllByUserIdOrderByCreatedAtDesc(userId);
+    }
+
+    @Override
+    public Order read(String orderId) {
+        return orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new);
     }
 
     @Transactional
