@@ -16,4 +16,16 @@ public class ShippingInfoRequest {
     String phone;
     String zip;
     String shippingOptionId;
+
+    public ShippingInfo toEntity () {
+        return ShippingInfo.builder()
+                .country(this.country)
+                .zip(this.zip)
+                .city(this.city)
+                .address1(this.address1)
+                .address2(this.address2)
+                .phone(this.phone)
+                .shippingOptionId(this.shippingOptionId)
+                .build();
+    }
 }
