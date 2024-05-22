@@ -5,7 +5,8 @@ services:
       MYSQL_PASSWORD: lalabrand
       MYSQL_DATABASE: lalabrand
       MYSQL_USER: lalabrand
-      MYSQL_ROOT_PASSWORD: lalabrand
+      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: root
     volumes:
       - ./data/mysql:/var/lib/mysql
     ports:
