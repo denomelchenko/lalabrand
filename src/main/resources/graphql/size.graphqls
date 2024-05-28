@@ -3,3 +3,12 @@ type Size {
     sizeType: SizeType!
     value: String!
 }
+
+input SizeInput {
+    sizeType: SizeType!
+    value: String!
+}
+
+extend type Mutation {
+    size(sizeInput: SizeInput!): Size!
+}
