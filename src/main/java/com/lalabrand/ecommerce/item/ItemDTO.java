@@ -10,6 +10,7 @@ import lombok.Value;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -31,11 +32,13 @@ public class ItemDTO implements Serializable {
     BigDecimal price;
     Integer availableCount;
     BigDecimal salePrice;
-    String image;
     Integer soldCount;
     Set<ItemInfoDTO> itemInfos;
 
     public static ItemDTO fromEntity(Item item) {
+        if (item.getItemInfos() == null) {
+            item.setItemInfos(new HashSet<>());
+        }
         return ItemDTO.builder()
                 .id(item.getId())
                 .title(item.getTitle())
@@ -45,7 +48,6 @@ public class ItemDTO implements Serializable {
                 .price(item.getPrice())
                 .availableCount(item.getAvailableCount())
                 .salePrice(item.getSalePrice())
-                .image(item.getImage())
                 .soldCount(item.getSoldCount())
                 .itemInfos(item.getItemInfos().stream().map(ItemInfoDTO::fromEntity).collect(Collectors.toSet()))
                 .build();
