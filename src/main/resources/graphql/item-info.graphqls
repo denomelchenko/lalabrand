@@ -3,4 +3,16 @@ type ItemInfo {
     color: Color!
     image: String
     size: Size!
+    isColorAvailable: Boolean!
+}
+
+input ItemInfoInput {
+    color: Color!
+    image: String!
+    size: SizeInput!
+    isColorAvailable: Boolean!
+}
+
+extend type Mutation {
+    itemInfo(itemInfoInput: ItemInfoInput!): ItemInfo!
 }
