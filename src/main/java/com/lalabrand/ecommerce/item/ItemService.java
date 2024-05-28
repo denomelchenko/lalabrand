@@ -74,4 +74,8 @@ public class ItemService {
         }
         return ItemDTO.fromEntity(item.get());
     }
+
+    public ItemDTO save(ItemInput itemInput) {
+        return ItemDTO.fromEntity(itemRepository.save(itemInput.toEntity()));
+    }
 }
