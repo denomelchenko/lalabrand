@@ -2,6 +2,7 @@ package com.lalabrand.ecommerce.order;
 
 import com.lalabrand.ecommerce.order.enums.Currency;
 import com.lalabrand.ecommerce.order.enums.Status;
+import com.lalabrand.ecommerce.order.ordered_item.OrderItemsService;
 import com.lalabrand.ecommerce.order.ordered_item.OrderItemsServiceImpl;
 import com.lalabrand.ecommerce.order.ordered_item.OrderedItem;
 import com.lalabrand.ecommerce.order.shipping.shipping_info.ShippingInfo;
@@ -30,7 +31,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
     private final CartService cartService;
-    private final OrderItemsServiceImpl orderItemsService;
+    private final OrderItemsService orderItemsService;
     private final ShippingInfoRepository shippingInfoRepository;
 
     @Autowired
@@ -70,18 +71,9 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.save(order);
 
         for (CartItem cartItem : cartItems) {
-            OrderedItem orderItem = OrderedItem.builder()
-                    .order(order)
-                    .item(cartItem.getItem())
-                    .title(cartItem.getItem().getTitle())
-                    .color(String.valueOf(cartItem.getItemInfo().getColor()))
-                    .image(cartItem.getItemInfo().getImage())
-                    .sizeType(cartItem.getSize().getSizeType())
-                    .count(cartItem.getCount())
-                    .price(cartItem.getItem().getPrice().multiply(BigDecimal.valueOf(cartItem.getCount())))
-                    .build();
-            orderItemsService.addOrderedProducts(orderItem);
-            orderedItems.add(orderItem);
+            OrderedItem orderedItem = orderItemsService.generateOrderedFromCartItem(order,cartItem);
+            orderItemsService.addOrderedProduct(orderedItem);
+            orderedItems.add(orderedItem);
         }
         order.setOrderedItems(orderedItems);
 
