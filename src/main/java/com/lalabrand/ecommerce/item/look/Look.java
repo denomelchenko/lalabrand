@@ -27,7 +27,7 @@ public class Look {
     @Column(name = "image", nullable = false)
     private String image;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
     @ManyToMany
