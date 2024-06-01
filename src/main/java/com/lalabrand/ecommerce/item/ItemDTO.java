@@ -23,8 +23,6 @@ import java.util.stream.Collectors;
 @Builder
 public class ItemDTO implements Serializable {
     String id;
-    @NotNull
-    @NotBlank
     String title;
     String shortDisc;
     String longDisc;
