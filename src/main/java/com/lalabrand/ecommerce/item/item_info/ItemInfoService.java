@@ -30,6 +30,7 @@ public class ItemInfoService {
         return itemInfoRepository.save(itemInfo).getSizes().stream().anyMatch(size1 -> size1.getId().equals(sizeId));
     }
 
+    @Transactional
     public ItemInfoDTO save(ItemInfoInput itemInfoInput) {
         if (itemService.findById(itemInfoInput.getItemId()) == null) {
             throw new IllegalArgumentException("Item with this id does not exist");
