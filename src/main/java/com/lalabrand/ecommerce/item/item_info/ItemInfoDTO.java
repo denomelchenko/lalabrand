@@ -17,12 +17,14 @@ public class ItemInfoDTO implements Serializable {
     String image;
     ColorEnum color;
     SizeDTO size;
+    String itemId;
     Boolean isColorAvailable;
 
     public static ItemInfoDTO fromEntity(ItemInfo itemInfo) {
         return ItemInfoDTO.builder()
                 .id(itemInfo.getId())
                 .color(itemInfo.getColor())
+                .itemId(itemInfo.getItemId())
                 .image(itemInfo.getImage())
                 .isColorAvailable(itemInfo.getIsColorAvailable())
                 .build();
