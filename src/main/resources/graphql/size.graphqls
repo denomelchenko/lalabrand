@@ -9,6 +9,10 @@ input SizeInput {
     value: String!
 }
 
+extend type Query {
+    sizes: [Size!]
+}
+
 extend type Mutation {
     size(sizeInput: SizeInput!): Size!
 }
