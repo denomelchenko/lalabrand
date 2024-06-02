@@ -1,11 +1,11 @@
 package com.lalabrand.ecommerce.security;
 
+import com.lalabrand.ecommerce.exception.UsernameNotFoundException;
 import com.lalabrand.ecommerce.user.User;
 import com.lalabrand.ecommerce.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -20,7 +20,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
-    public UserDetailsImpl loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetailsImpl loadUserByUsername(String username) {
         logger.debug("LoadUserByUsername started...");
 
         Optional<User> user = userService.findByEmail(username);
