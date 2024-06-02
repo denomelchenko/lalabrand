@@ -1,5 +1,6 @@
 package com.lalabrand.ecommerce.user;
 
+import com.lalabrand.ecommerce.exception.UsernameNotFoundException;
 import com.lalabrand.ecommerce.security.AuthRequestDTO;
 import com.lalabrand.ecommerce.security.JwtResponseDTO;
 import com.lalabrand.ecommerce.security.jwt_token.JwtService;
@@ -15,7 +16,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 
 @Controller
