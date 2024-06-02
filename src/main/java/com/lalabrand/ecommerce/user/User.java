@@ -6,7 +6,6 @@ import com.lalabrand.ecommerce.user.address.Address;
 import com.lalabrand.ecommerce.user.enums.Language;
 import com.lalabrand.ecommerce.user.role.UserRole;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

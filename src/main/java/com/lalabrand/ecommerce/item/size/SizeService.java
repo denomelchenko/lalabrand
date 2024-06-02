@@ -30,7 +30,7 @@ public class SizeService {
     public Size findSizeById(String sizeId) {
         return sizeRepository.findById(sizeId)
                 .orElseThrow(() -> {
-                        logger.error("Size with id + {} does not exist", sizeId);
+                    logger.error("Size with id + {} does not exist", sizeId);
                     return new IllegalArgumentException("Size with id: " + sizeId + " does not exist");
                 });
     }
