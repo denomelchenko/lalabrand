@@ -3,12 +3,9 @@ package com.lalabrand.ecommerce.security.password_reset;
 import com.lalabrand.ecommerce.utils.CommonResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
-import org.apache.coyote.BadRequestException;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.stereotype.Controller;
-
-import java.nio.file.AccessDeniedException;
 
 @Controller
 public class PasswordResetController {
@@ -30,7 +27,8 @@ public class PasswordResetController {
     }
 
     @MutationMapping("resetPasswordByToken")
-    public CommonResponse resetPasswordByToken(@Argument(name = "passwordResetInput") @Valid PasswordResetRequest passwordResetRequest) throws AccessDeniedException, BadRequestException {
+    public CommonResponse resetPasswordByToken(@Argument(name = "passwordResetInput")
+                                                   @Valid PasswordResetRequest passwordResetRequest) {
         boolean success = passwordResetService.resetPasswordForUser(passwordResetRequest);
         String message = success ? "Password reset successfully" : "Failed to reset password";
 
