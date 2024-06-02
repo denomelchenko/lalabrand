@@ -5,14 +5,11 @@ import graphql.GraphqlErrorBuilder;
 import graphql.schema.DataFetchingEnvironment;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
-import org.apache.coyote.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.graphql.execution.DataFetcherExceptionResolverAdapter;
 import org.springframework.graphql.execution.ErrorType;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -35,16 +32,17 @@ public class ExceptionHandler extends DataFetcherExceptionResolverAdapter {
     private ErrorType determineErrorType(Throwable ex) {
         if (ex instanceof IllegalArgumentException
                 || ex instanceof ConstraintViolationException
-                || ex instanceof TokenExpiredException
-                || ex instanceof BadRequestException) {
+                || ex instanceof TokenExpiredException) {
             return ErrorType.BAD_REQUEST;
         } else if (ex instanceof BadCredentialsException) {
             return ErrorType.UNAUTHORIZED;
-        } else if (ex instanceof AccessDeniedException) {
+        } else if (ex instanceof AccessDeniedException
+                || ex instanceof org.springframework.security.access.AccessDeniedException) {
             return ErrorType.FORBIDDEN;
         } else if (ex instanceof EntityNotFoundException
                 || ex instanceof UsernameNotFoundException
-                || ex instanceof UserAlreadyExistException) {
+                || ex instanceof UserAlreadyExistException
+                || ex instanceof org.springframework.security.core.userdetails.UsernameNotFoundException) {
             return ErrorType.NOT_FOUND;
         } else {
             return ErrorType.INTERNAL_ERROR;
