@@ -18,11 +18,13 @@ public class ItemInfoController {
     }
 
     @MutationMapping(name = "sizeToItemInfo")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ItemInfoDTO addSizeToItemInfo(@Argument String itemInfoId, @Argument String sizeId) {
         return itemInfoService.addSizeToItemInfo(itemInfoId, sizeId);
     }
 
     @MutationMapping(name = "sizesToItemInfo")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ItemInfoDTO addSizesToItemInfo(@Argument String itemInfoId, @Argument Set<String> sizeIds) {
         return itemInfoService.addSizesToItemInfo(itemInfoId, sizeIds);
     }
