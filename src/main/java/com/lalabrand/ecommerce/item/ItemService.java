@@ -70,7 +70,7 @@ public class ItemService {
     public ItemDTO findById(String id) {
         Optional<Item> item = itemRepository.findById(id);
         if (item.isEmpty()) {
-            throw new IllegalArgumentException("Item with this id does not exist");
+            throw new IllegalArgumentException("Item wit id: " + id + " does not exist");
         }
         return ItemDTO.fromEntity(item.get());
     }
