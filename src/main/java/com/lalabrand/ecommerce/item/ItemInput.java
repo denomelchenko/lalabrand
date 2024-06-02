@@ -1,6 +1,8 @@
 package com.lalabrand.ecommerce.item;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.Value;
 
 import java.math.BigDecimal;
 

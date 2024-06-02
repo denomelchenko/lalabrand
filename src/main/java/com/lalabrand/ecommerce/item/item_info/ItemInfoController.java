@@ -1,7 +1,5 @@
 package com.lalabrand.ecommerce.item.item_info;
 
-import com.lalabrand.ecommerce.utils.CommonResponse;
-import com.lalabrand.ecommerce.utils.Id;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.security.access.prepost.PreAuthorize;

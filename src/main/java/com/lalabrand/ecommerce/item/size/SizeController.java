@@ -1,6 +1,5 @@
 package com.lalabrand.ecommerce.item.size;
 
-import com.lalabrand.ecommerce.utils.CommonResponse;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
