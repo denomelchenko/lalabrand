@@ -7,6 +7,8 @@ import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
+import java.util.Set;
+
 @Controller
 public class ItemInfoController {
     private final ItemInfoService itemInfoService;
@@ -16,19 +18,13 @@ public class ItemInfoController {
     }
 
     @MutationMapping(name = "sizeToItemInfo")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public CommonResponse addSizeToItemInfo(@Argument @Id String itemInfoId, @Argument @Id String sizeId) {
-        if (itemInfoService.addSizeToItemInfo(itemInfoId, sizeId)) {
-            return CommonResponse.builder()
-                    .success(true)
-                    .message("Size added to item info successfully")
-                    .build();
-        } else {
-            return CommonResponse.builder()
-                    .success(false)
-                    .message("Size don`t added to item info")
-                    .build();
-        }
+    public ItemInfoDTO addSizeToItemInfo(@Argument String itemInfoId, @Argument String sizeId) {
+        return itemInfoService.addSizeToItemInfo(itemInfoId, sizeId);
+    }
+
+    @MutationMapping(name = "sizesToItemInfo")
+    public ItemInfoDTO addSizesToItemInfo(@Argument String itemInfoId, @Argument Set<String> sizeIds) {
+        return itemInfoService.addSizesToItemInfo(itemInfoId, sizeIds);
     }
 
     @MutationMapping(name = "itemInfo")
