@@ -3,20 +3,26 @@ package com.lalabrand.ecommerce.item.item_info;
 import com.lalabrand.ecommerce.item.enums.ColorEnum;
 import com.lalabrand.ecommerce.item.size.SizeDTO;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.Value;
 
 import java.io.Serializable;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * DTO for {@link ItemInfo}
  */
 @Value
+@Getter
+@Setter
 @Builder
 public class ItemInfoDTO implements Serializable {
     String id;
     String image;
     ColorEnum color;
-    SizeDTO size;
+    Set<SizeDTO> sizes;
     String itemId;
     Boolean isColorAvailable;
 
@@ -26,6 +32,7 @@ public class ItemInfoDTO implements Serializable {
                 .color(itemInfo.getColor())
                 .itemId(itemInfo.getItemId())
                 .image(itemInfo.getImage())
+                .sizes(itemInfo.getSizes().stream().map(SizeDTO::fromEntity).collect(Collectors.toSet()))
                 .isColorAvailable(itemInfo.getIsColorAvailable())
                 .build();
     }
