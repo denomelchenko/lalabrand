@@ -4,9 +4,9 @@ import com.lalabrand.ecommerce.item.ItemService;
 import com.lalabrand.ecommerce.item.size.Size;
 import com.lalabrand.ecommerce.item.size.SizeService;
 import jakarta.transaction.Transactional;
-import lombok.SneakyThrows;
-import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
 
 @Service
 public class ItemInfoService {
@@ -21,20 +21,40 @@ public class ItemInfoService {
     }
 
     @Transactional
-    @SneakyThrows
-    public Boolean addSizeToItemInfo(String itemInfoId, String sizeId) {
+    public ItemInfoDTO addSizeToItemInfo(String itemInfoId, String sizeId) {
         ItemInfo itemInfo = itemInfoRepository.findById(itemInfoId)
-                .orElseThrow(() -> new BadRequestException("Item info with this id does not exist"));
+                .orElseThrow(() -> new IllegalArgumentException("Item info with this id does not exist"));
+        if (itemInfo.getSizes().stream().anyMatch(size -> size.getId().equals(sizeId))) {
+            throw new IllegalArgumentException("Size with id: " + sizeId + " already exists in this item info");
+        }
         Size size = sizeService.findSizeById(sizeId);
         itemInfo.getSizes().add(size);
-        return itemInfoRepository.save(itemInfo).getSizes().stream().anyMatch(size1 -> size1.getId().equals(sizeId));
+        System.out.println(itemInfoRepository.save(itemInfo).getSizes().toString());
+        ItemInfoDTO itemInfoDTO = ItemInfoDTO.fromEntity(itemInfoRepository.save(itemInfo));
+        System.out.println(itemInfoDTO.getSizes());
+        return itemInfoDTO;
     }
 
     @Transactional
     public ItemInfoDTO save(ItemInfoInput itemInfoInput) {
-        if (itemService.findById(itemInfoInput.getItemId()) == null) {
-            throw new IllegalArgumentException("Item with this id does not exist");
-        }
+        itemService.findById(itemInfoInput.getItemId());
         return ItemInfoDTO.fromEntity(itemInfoRepository.save(itemInfoInput.toEntity()));
+    }
+
+    @Transactional
+    public ItemInfoDTO addSizesToItemInfo(String itemInfoId, Set<String> sizeIds) {
+        if (sizeIds.size() == 1) {
+            return addSizeToItemInfo(itemInfoId, sizeIds.iterator().next());
+        }
+        ItemInfo itemInfo = itemInfoRepository.findById(itemInfoId)
+                .orElseThrow(() -> new IllegalArgumentException("Item info with id: " + itemInfoId + " does not exist"));
+        sizeIds.forEach(sizeId -> {
+            if (itemInfo.getSizes().stream().anyMatch(size -> size.getId().equals(sizeId))) {
+                throw new IllegalArgumentException("Size with id: " + sizeId + " already exists in this item info");
+            }
+            Size size = sizeService.findSizeById(sizeId);
+            itemInfo.getSizes().add(size);
+        });
+        return ItemInfoDTO.fromEntity(itemInfoRepository.save(itemInfo));
     }
 }
