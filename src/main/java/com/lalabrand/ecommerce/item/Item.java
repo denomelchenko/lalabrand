@@ -23,9 +23,6 @@ import java.util.Set;
 @Builder
 @Table(name = "item")
 public class Item {
-    @ManyToMany(mappedBy = "items")
-    Set<Size> sizes;
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false)
