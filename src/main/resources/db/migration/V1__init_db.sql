@@ -122,7 +122,7 @@ CREATE TABLE `shipping_info`
 );
 
 
-CREATE TABLE `order`
+CREATE TABLE `orders`
 (
     `id`           VARCHAR(36) PRIMARY KEY,
     `user_id`      VARCHAR(36)                         NOT NULL,
@@ -148,7 +148,7 @@ CREATE TABLE `ordered_item`
     `price`    DECIMAL      NOT NULL,
     `count`    INTEGER      NOT NULL,
     `image`    VARCHAR(255) NOT NULL,
-    FOREIGN KEY (`order_id`) REFERENCES `order` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (`item_id`) REFERENCES `item` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
@@ -231,8 +231,8 @@ CREATE EVENT delete_expired_tokens
     ON SCHEDULE EVERY 1 DAY
     DO
     BEGIN
-DELETE FROM password_reset_token WHERE expires_at < UTC_TIMESTAMP();
-DELETE FROM refresh_token WHERE expires_at < UTC_TIMESTAMP();
-END //
+        DELETE FROM password_reset_token WHERE expires_at < UTC_TIMESTAMP();
+        DELETE FROM refresh_token WHERE expires_at < UTC_TIMESTAMP();
+    END //
 
 DELIMITER ;
