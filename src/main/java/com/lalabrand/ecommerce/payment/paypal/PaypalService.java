@@ -1,4 +1,4 @@
-package com.lalabrand.ecommerce.paypal;
+package com.lalabrand.ecommerce.payment.paypal;
 
 import com.paypal.api.payments.Payment;
 import org.springframework.stereotype.Service;

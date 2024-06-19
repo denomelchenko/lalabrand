@@ -1,11 +1,11 @@
-package com.lalabrand.ecommerce.paypal;
+package com.lalabrand.ecommerce.payment.paypal;
 
 import com.lalabrand.ecommerce.order.OrderService;
 import com.lalabrand.ecommerce.order.enums.Currency;
 import com.lalabrand.ecommerce.order.shipping.shipping_info.ShippingInfoRequest;
-import com.lalabrand.ecommerce.paypal.payment.PaymentInfo;
-import com.lalabrand.ecommerce.paypal.payment.PaymentInfoService;
-import com.lalabrand.ecommerce.paypal.payment.PaymentResponse;
+import com.lalabrand.ecommerce.payment.paypal.payment.PaymentInfo;
+import com.lalabrand.ecommerce.payment.paypal.payment.PaymentInfoService;
+import com.lalabrand.ecommerce.payment.paypal.payment.PaymentResponse;
 import com.lalabrand.ecommerce.utils.CommonResponse;
 import com.lalabrand.ecommerce.utils.CommonUtils;
 import com.paypal.api.payments.Links;

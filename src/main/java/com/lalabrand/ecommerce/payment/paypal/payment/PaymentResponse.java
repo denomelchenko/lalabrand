@@ -1,4 +1,4 @@
-package com.lalabrand.ecommerce.paypal.payment;
+package com.lalabrand.ecommerce.payment.paypal.payment;
 
 import lombok.*;
 import org.springframework.http.HttpStatus;

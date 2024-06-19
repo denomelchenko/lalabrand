@@ -1,12 +1,9 @@
-package com.lalabrand.ecommerce.paypal;
+package com.lalabrand.ecommerce.payment.paypal;
 
 import com.lalabrand.ecommerce.exception.PayPalException;
+import com.lalabrand.ecommerce.order.OrderService;
 import com.lalabrand.ecommerce.user.User;
-import com.lalabrand.ecommerce.user.UserRepository;
 import com.lalabrand.ecommerce.user.UserService;
-import com.lalabrand.ecommerce.user.cart.CartDTO;
-import com.lalabrand.ecommerce.user.cart.CartService;
-import com.lalabrand.ecommerce.user.cart.cart_item.CartItem;
 import com.paypal.api.payments.*;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
@@ -19,21 +16,18 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class PaypalServiceImpl implements PaypalService {
 
-    private final CartService cartService;
+    private final OrderService orderService;
     private final UserService userService;
-    private final UserRepository userRepository;
     private APIContext apiContext;
 
     @Autowired
-    public PaypalServiceImpl(CartService cartService, UserService userService, UserRepository userRepository, APIContext apiContext) {
-        this.cartService = cartService;
-        this.userRepository = userRepository;
+    public PaypalServiceImpl(OrderService orderService, UserService userService, APIContext apiContext) {
+        this.orderService = orderService;
         this.userService = userService;
         this.apiContext = apiContext;
     }
@@ -46,18 +40,10 @@ public class PaypalServiceImpl implements PaypalService {
             String successUrl,
             String cancelUrl
     ) {
-        CartDTO cartDto = cartService.findCartByUserId(userId).orElseThrow(
-                () -> new EntityNotFoundException("Cart hasn't been found for user ( it's empty )")
-        );
-        Set<CartItem> cartItems = cartDto.toEntity(userRepository.getReferenceById(userId)).getCartItems();
-        BigDecimal total = cartItems.stream()
-                .map(cartItem -> cartItem.getItem().getPrice().multiply(BigDecimal.valueOf(cartItem.getCount())))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-
         Payment payment = new Payment();
         payment.setIntent("SALE");
         payment.setPayer(getPayer(userId, method));
-        payment.setTransactions(getTransactions(currency, total));
+        payment.setTransactions(getTransactions(currency, orderService.calculateTotal(userId)));
         payment.setRedirectUrls(getRedirectUrls(successUrl, cancelUrl));
 
         try {
@@ -82,16 +68,9 @@ public class PaypalServiceImpl implements PaypalService {
     }
 
     private List<Transaction> getTransactions(String currency, BigDecimal total) {
-/*        Details details = new Details();
-        details.setFee(order.getShipping().getShippingOption().getPrice().setScale(2, RoundingMode.HALF_UP).toString());
-        details.setTax("%.2f", order);
-        details.setShipping(order.getShipping().getAddress1() + "," + order.getShipping().getAddress2() + ","
-                + order.getShipping().getCity() + "," + order.getShipping().getZip());*/
-
         Amount amount = new Amount();
         amount.setCurrency(String.valueOf(currency));
         amount.setTotal(String.format(Locale.forLanguageTag(String.valueOf(currency)), "%.2f", total));
-/*        amount.setDetails(details);*/
 
         Transaction transaction = new Transaction();
         transaction.setDescription("description of purchase");
