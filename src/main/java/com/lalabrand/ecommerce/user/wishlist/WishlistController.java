@@ -17,30 +17,28 @@ import java.util.Set;
 @Controller
 public class WishlistController {
     private final WishlistService wishlistService;
-    private final CommonUtils commonUtils;
 
     @Autowired
-    public WishlistController(WishlistService wishlistService, CommonUtils commonUtils) {
+    public WishlistController(WishlistService wishlistService) {
         this.wishlistService = wishlistService;
-        this.commonUtils = commonUtils;
     }
 
     @QueryMapping(name = "wishlist")
     @PreAuthorize("hasAuthority('USER')")
     public WishlistDTO findWishlistForCurrentUser() {
-        return wishlistService.findWishlistByUserId(commonUtils.getCurrentUser().getId()).orElse(null);
+        return wishlistService.findWishlistByUserId(CommonUtils.getCurrentUserId()).orElse(null);
 
     }
 
     @MutationMapping(name = "itemToWishlist")
     @PreAuthorize("hasAuthority('USER')")
     public WishlistDTO addItemToWishlist(@Argument @Id String itemId) {
-        return wishlistService.addItemToWishlist(itemId, commonUtils.getCurrentUser().getId());
+        return wishlistService.addItemToWishlist(itemId, CommonUtils.getCurrentUserId());
     }
 
     @MutationMapping(name = "itemsToWishlist")
     @PreAuthorize("hasAuthority('USER')")
     public WishlistDTO addItemsToWishlist(@Argument Set<String> itemsIds) {
-        return wishlistService.addItemsToWishlist(itemsIds, commonUtils.getCurrentUser().getId());
+        return wishlistService.addItemsToWishlist(itemsIds, CommonUtils.getCurrentUserId());
     }
 }

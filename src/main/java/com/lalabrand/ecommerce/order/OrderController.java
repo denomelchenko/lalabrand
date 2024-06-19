@@ -16,17 +16,15 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService;
-    private final CommonUtils commonUtils;
 
-    public OrderController(OrderService orderService, CommonUtils commonUtils) {
+    public OrderController(OrderService orderService) {
         this.orderService = orderService;
-        this.commonUtils = commonUtils;
     }
 
     @QueryMapping(name = "orders")
     @PreAuthorize("hasAuthority('USER')")
     public List<Order> getAllOrders() {
-        return orderService.getAll(commonUtils.getCurrentUser().getId());
+        return orderService.getAll(CommonUtils.getCurrentUserId());
     }
 
     @MutationMapping(name = "deleteOrderById")

@@ -20,16 +20,14 @@ import java.math.BigDecimal;
 @Controller
 public class CardPaymentController {
 
-    private final CommonUtils commonUtils;
     private final OrderService orderService;
 
     @Value("${stripe.api.key}")
     private String StripeApiKey;
 
     @Autowired
-    public CardPaymentController(OrderService orderService, CommonUtils commonUtils) {
+    public CardPaymentController(OrderService orderService) {
         this.orderService = orderService;
-        this.commonUtils = commonUtils;
     }
 
     @PostConstruct
@@ -40,7 +38,7 @@ public class CardPaymentController {
     @MutationMapping(name = "createPaymentCard")
     public CardPaymentResponse createPaymentCard(@Argument("currency") Currency currency,
                                                  @Argument("shippingInfo") ShippingInfoRequest shippingInfoRequest) throws StripeException {
-        BigDecimal totalCost = orderService.calculateTotal(commonUtils.getCurrentUser().getId());
+        BigDecimal totalCost = orderService.calculateTotal(CommonUtils.getCurrentUserId());
         PaymentIntentCreateParams params =
                 PaymentIntentCreateParams.builder()
                         .setAmount(Long.valueOf(String.valueOf(totalCost.multiply(BigDecimal.valueOf(100)))))
@@ -55,7 +53,7 @@ public class CardPaymentController {
 
         PaymentIntent paymentIntent = PaymentIntent.create(params);
 
-        orderService.placeOrder(commonUtils.getCurrentUser().getId(), shippingInfoRequest, currency);
+        orderService.placeOrder(CommonUtils.getCurrentUserId(), shippingInfoRequest, currency);
 
         return CardPaymentResponse.builder()
                 .success(true)
