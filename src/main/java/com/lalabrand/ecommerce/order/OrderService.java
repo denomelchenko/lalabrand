@@ -6,6 +6,7 @@ import com.lalabrand.ecommerce.utils.CommonResponse;
 import com.paypal.base.rest.PayPalRESTException;
 import org.aspectj.weaver.ast.Or;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,4 +14,5 @@ public interface OrderService {
     CommonResponse placeOrder(String userId, ShippingInfoRequest shippingInfoRequest, Currency currency);
     List<Order> getAll(String userId);
     CommonResponse delete(String orderId);
+    BigDecimal calculateTotal(String userId);
 }

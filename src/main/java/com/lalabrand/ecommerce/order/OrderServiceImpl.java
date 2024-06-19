@@ -95,6 +95,17 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findAllByUserIdOrderByCreatedAtDesc(userId);
     }
 
+    @Override
+    public BigDecimal calculateTotal(String userId){
+        CartDTO cartDto = cartService.findCartByUserId(userId).orElseThrow(
+                () -> new EntityNotFoundException("Cart hasn't been found for user ( it's empty )")
+        );
+        Set<CartItem> cartItems = cartDto.toEntity(userRepository.getReferenceById(userId)).getCartItems();
+        return cartItems.stream()
+                .map(cartItem -> cartItem.getItem().getPrice().multiply(BigDecimal.valueOf(cartItem.getCount())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
     @Transactional
     @Override
     public CommonResponse delete(String orderId) {
