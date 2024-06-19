@@ -26,4 +26,12 @@ public class ItemInfoDTO implements Serializable {
                 .size(SizeDTO.fromEntity(itemInfo.getSize()))
                 .build();
     }
+
+    public ItemInfo toEntity() {
+        return ItemInfo.builder()
+                .id(this.id)
+                .image(this.image)
+                .color(this.color)
+                .build();
+    }
 }

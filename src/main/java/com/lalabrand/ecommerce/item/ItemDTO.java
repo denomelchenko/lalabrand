@@ -50,4 +50,19 @@ public class ItemDTO implements Serializable {
                 .itemInfos(item.getItemInfos().stream().map(ItemInfoDTO::fromEntity).collect(Collectors.toSet()))
                 .build();
     }
+
+    public Item toEntity() {
+        return Item.builder()
+                .id(this.id)
+                .title(this.title)
+                .shortDisc(this.shortDisc)
+                .longDisc(this.longDisc)
+                .rating(this.rating)
+                .price(this.price)
+                .availableCount(this.availableCount)
+                .salePrice(this.salePrice)
+                .image(this.image)
+                .soldCount(this.soldCount)
+                .build();
+    }
 }

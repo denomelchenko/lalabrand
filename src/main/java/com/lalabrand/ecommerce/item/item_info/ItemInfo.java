@@ -5,12 +5,14 @@ import com.lalabrand.ecommerce.item.enums.ColorEnum;
 import com.lalabrand.ecommerce.item.size.Size;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "item_info")
 public class ItemInfo {
     @Id
@@ -29,7 +31,7 @@ public class ItemInfo {
     @Column(name = "item_id", nullable = false)
     private String itemId;
 
-    @Column(name = "color", nullable = false)
+    @Column(name = "color", nullable = false, columnDefinition = "ENUM('WHITE', 'BLACK', 'GREY', 'YELLOW', 'RED', 'BLUE', 'GREEN', 'BROWN', 'PINK', 'ORANGE', 'PURPLE')")
     @Enumerated(EnumType.STRING)
     private ColorEnum color;
 

@@ -1,0 +1,27 @@
+extend type Mutation {
+    createPayment(currency: Currency!, shippingInfo: ShippingInfoRequest!): PaymentResponse
+}
+
+type PaymentResponse {
+    success: Boolean!
+    message: String
+    redirectUrl: String
+}
+
+extend type Query {
+    paymentSuccess(paymentId: String!, payerID: String!): PaymentResponse
+    paymentCancel: CommonResponse
+    paymentError: CommonResponse
+}
+
+extend type Mutation {
+    createPaymentCard(currency: Currency!, shippingInfo: ShippingInfoRequest!): CardPaymentResponse
+}
+
+type CardPaymentResponse {
+    success: Boolean!
+    message: String
+    clientSecret: String!
+}
+
+

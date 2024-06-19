@@ -6,6 +6,7 @@ import com.lalabrand.ecommerce.user.cart.cart_item.CartItem;
 import com.lalabrand.ecommerce.user.cart.cart_item.CartItemRepository;
 import com.lalabrand.ecommerce.user.cart.cart_item.CartItemRequest;
 import com.lalabrand.ecommerce.utils.CommonResponse;
+import com.lalabrand.ecommerce.utils.CommonUtils;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class CartService {
@@ -118,5 +120,12 @@ public class CartService {
                 .success(true)
                 .build();
     }
+    @Transactional
+    public void deleteCartItems(String userId) {
+        if (cartRepository.findCartByUserId(userId).isPresent()) {
+            cartItemRepository.deleteAllByCartId(cartRepository.findCartByUserId(userId).get().getId());
+        } else {
+            throw new IllegalArgumentException("Cart for user with id: " + userId + " does not exist");
+        }
+    }
 }
-

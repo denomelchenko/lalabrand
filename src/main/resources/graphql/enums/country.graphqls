@@ -1,0 +1,3 @@
+enum Country {
+    UA, PL, DE, US, UK
+}
