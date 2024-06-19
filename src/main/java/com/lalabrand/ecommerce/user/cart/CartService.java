@@ -23,17 +23,14 @@ import java.util.Set;
 public class CartService {
     private final CartRepository cartRepository;
     private final ItemInfoRepository itemInfoRepository;
-    private final SizeRepository sizeRepository;
-    private final CartItemRepository cartItemRepository;
     private final Logger logger = LoggerFactory.getLogger(CartService.class);
+    private final CartItemRepository cartItemRepository;
 
     @Autowired
     public CartService(final CartRepository cartRepository, ItemInfoRepository itemInfoRepository,
-                       SizeRepository sizeRepository,
                        CartItemRepository cartItemRepository) {
         this.cartRepository = cartRepository;
         this.itemInfoRepository = itemInfoRepository;
-        this.sizeRepository = sizeRepository;
         this.cartItemRepository = cartItemRepository;
     }
 
@@ -62,17 +59,6 @@ public class CartService {
         }
 
         Optional<Cart> existCart = cartRepository.findCartByUserId(userId);
-
-        Optional<Size> size = sizeRepository.findById(cartItemRequest.getSizeId());
-        size.orElseThrow(() -> {
-            logger.error("Size with id: {} does not exist", cartItemRequest.getSizeId());
-            return new IllegalArgumentException("Size with id: " + cartItemRequest.getSizeId() + " does not exist");
-        });
-        if (size.get().getItems().stream().noneMatch(item -> item.getId().equals(cartItemRequest.getItemId()))) {
-            logger.error("Size with id: {} is not for item with id: {}", cartItemRequest.getSizeId(), cartItemRequest.getItemId());
-            throw new IllegalArgumentException("Size with id: " + cartItemRequest.getSizeId() + " is not for item with id: " + cartItemRequest.getItemId());
-        }
-
         existCart.ifPresentOrElse(
                 cart -> {
                     boolean cartItemAlreadyExist = false;
@@ -136,7 +122,6 @@ public class CartService {
                 .success(true)
                 .build();
     }
-
     @Transactional
     public void deleteCartItems(String userId) {
         if (cartRepository.findCartByUserId(userId).isPresent()) {
