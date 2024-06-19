@@ -10,18 +10,21 @@ import com.stripe.model.PaymentIntent;
 import com.stripe.param.PaymentIntentCreateParams;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.stereotype.Controller;
 
 import java.math.BigDecimal;
-import java.util.Locale;
 
 @Controller
 public class CardPaymentController {
 
     private final CommonUtils commonUtils;
     private final OrderService orderService;
+
+    @Value("${stripe.api.key}")
+    private String StripeApiKey;
 
     @Autowired
     public CardPaymentController(OrderService orderService, CommonUtils commonUtils) {
@@ -31,10 +34,10 @@ public class CardPaymentController {
 
     @PostConstruct
     public void setup() {
-        Stripe.apiKey = "sk_test_51PT0Q8P1691tICenOhQEIoDc0fUFR0XOG7J2VbpYjALSu1fNhcUfYlKZq9Gqklv4uCDuVNPd0XUzIEmcAl367I1p00O0C2JB2k";
+        Stripe.apiKey = StripeApiKey;
     }
 
-    @MutationMapping(name = "createPaymentCard") // /create-payment-intent
+    @MutationMapping(name = "createPaymentCard")
     public CardPaymentResponse createPaymentCard(@Argument("currency") Currency currency,
                                                  @Argument("shippingInfo") ShippingInfoRequest shippingInfoRequest) throws StripeException {
         BigDecimal totalCost = orderService.calculateTotal(commonUtils.getCurrentUser().getId());
