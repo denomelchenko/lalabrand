@@ -1,3 +1,6 @@
+ALTER TABLE `order`
+    RENAME TO `orders`;
+
 ALTER TABLE orders
     ADD order_number BIGINT NOT NULL;
 
