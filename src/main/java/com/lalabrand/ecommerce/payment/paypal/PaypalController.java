@@ -32,16 +32,14 @@ public class PaypalController {
     @Value("${payment.error.url}")
     private String errorUrl;
     private final PaypalService paypalService;
-    private final CommonUtils commonUtils;
     private final OrderService orderService;
     private final PaymentInfoService paymentInfoService;
 
 
 
     @Autowired
-    public PaypalController(PaypalService paypalService, CommonUtils commonUtils, OrderService orderService, PaymentInfoService paymentInfoService) {
+    public PaypalController(PaypalService paypalService, OrderService orderService, PaymentInfoService paymentInfoService) {
         this.paypalService = paypalService;
-        this.commonUtils = commonUtils;
         this.orderService = orderService;
         this.paymentInfoService = paymentInfoService;
     }
@@ -49,19 +47,19 @@ public class PaypalController {
     @MutationMapping(name = "createPayment")
     public PaymentResponse createPayment(@Argument("currency") Currency currency,
                                          @Argument("shippingInfo") ShippingInfoRequest shippingInfoRequest) {
-        logger.info("Creating PayPal payment for user {}", commonUtils.getCurrentUser().getId());
+        logger.info("Creating PayPal payment for user {}", CommonUtils.getCurrentUserId());
 
-        Payment payment = paypalService.createPayment(commonUtils.getCurrentUser().getId(), String.valueOf(currency), "paypal", successUrl, cancelUrl);
+        Payment payment = paypalService.createPayment(CommonUtils.getCurrentUserId(), String.valueOf(currency), "paypal", successUrl, cancelUrl);
         for (Links links : payment.getLinks()) {
             if (links.getRel().equals("approval_url")) {
-                logger.info("Successfully created PayPal payment for user {}", commonUtils.getCurrentUser().getId());
+                logger.info("Successfully created PayPal payment for user {}", CommonUtils.getCurrentUserId());
 
                 paymentInfoService.savePaymentInfo(payment.getId(), currency, shippingInfoRequest);
 
                 return new PaymentResponse(true, "Success to create payment", links.getHref(), HttpStatus.OK);
             }
         }
-        logger.error("Failed to create PayPal payment for user {}", commonUtils.getCurrentUser().getId());
+        logger.error("Failed to create PayPal payment for user {}", CommonUtils.getCurrentUserId());
         return new PaymentResponse(false, "Failed to create payment", errorUrl, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -77,12 +75,12 @@ public class PaypalController {
             Currency currency = paymentInfo.getCurrency();
             ShippingInfoRequest shippingInfoRequest = paymentInfo.getShippingInfoRequest();
 
-            CommonResponse orderResponse = orderService.placeOrder(commonUtils.getCurrentUser().getId(), shippingInfoRequest, currency);
+            CommonResponse orderResponse = orderService.placeOrder(CommonUtils.getCurrentUserId(), shippingInfoRequest, currency);
             if (orderResponse.isSuccess()) {
-                logger.info("Order placed successfully for user {}", commonUtils.getCurrentUser().getId());
+                logger.info("Order placed successfully for user {}", CommonUtils.getCurrentUserId());
                 return new PaymentResponse(true, "Success to execute payment and place order", "http://localhost:9091/home", HttpStatus.OK);
             } else {
-                logger.error("Order placement failed for user {}", commonUtils.getCurrentUser().getId());
+                logger.error("Order placement failed for user {}", CommonUtils.getCurrentUserId());
                 return new PaymentResponse(true, "Payment executed but failed to place order", "http://localhost:9091/home", HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
