@@ -6,7 +6,9 @@ import com.lalabrand.ecommerce.utils.Id;
 import com.lalabrand.ecommerce.utils.PaginationRequest;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
@@ -43,5 +45,11 @@ public class ItemController {
                                           @Argument PaginationRequest paginationRequest) {
         return itemService.findItemsByTitle(title, language,
                 paginationRequest.toPageRequest());
+    }
+
+    @MutationMapping(name = "item")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ItemDTO createItem(@Argument ItemInput itemInput) {
+        return itemService.save(itemInput);
     }
 }

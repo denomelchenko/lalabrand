@@ -43,8 +43,12 @@ public class Item {
     private BigDecimal price;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "category_id", nullable = true)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
+    @JoinColumn(name = "category_id", nullable = false, insertable = false, updatable = false)
     private Category category;
+
+    @Column(name = "category_id", nullable = false)
+    private String categoryId;
 
     @Column(name = "available_count", nullable = false)
     private Integer availableCount;
@@ -52,15 +56,12 @@ public class Item {
     @Column(name = "sale_price")
     private BigDecimal salePrice;
 
-    @Column(name = "image", nullable = false)
-    private String image;
-
     @Column(name = "sold_count", nullable = false)
     private Integer soldCount;
 
     @Column(name = "created_at", nullable = false)
-
     private Instant createdAt;
+
     @OneToMany(mappedBy = "item")
     private Set<ItemComment> itemComments;
 

@@ -37,7 +37,7 @@ public class User {
     @Column(name = "phone", length = 15)
     private String phone;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
@@ -62,7 +62,6 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Language language;
 
-    @NotNull
     @Column(name = "password_version", nullable = false)
     private Integer passwordVersion;
 

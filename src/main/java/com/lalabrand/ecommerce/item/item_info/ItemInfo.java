@@ -6,13 +6,16 @@ import com.lalabrand.ecommerce.item.size.Size;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 
 @Getter
 @Setter
 @Entity
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "item_info")
 public class ItemInfo {
     @Id
@@ -24,10 +27,6 @@ public class ItemInfo {
     @JoinColumn(name = "item_id", nullable = false, insertable = false, updatable = false)
     private Item item;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "size_id", nullable = false)
-    private Size size;
-
     @Column(name = "item_id", nullable = false)
     private String itemId;
 
@@ -38,7 +37,14 @@ public class ItemInfo {
     @Column(name = "image")
     private String image;
 
-    @NotNull
+    @ManyToMany
+    @JoinTable(
+            name = "items_sizes",
+            joinColumns = @JoinColumn(name = "item_info_id"),
+            inverseJoinColumns = @JoinColumn(name = "size_id")
+    )
+    private Set<Size> sizes = new LinkedHashSet<>();
+
     @Column(name = "is_color_available", nullable = false)
     private Boolean isColorAvailable = false;
 
