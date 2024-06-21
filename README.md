@@ -89,6 +89,8 @@ Key configurations include:
 - **Maven**
 - **Flyway**
 
+## Database projection
+![lalabrand db](https://github.com/denomelchenko/lalabrand/assets/124204526/e61aab4f-518b-4790-b290-3715f980e337)
 ## License
 
 This project is licensed under the AGPL-3.0 License - see the [LICENSE](https://github.com/denomelchenko/lalabrand/blob/master/LICENSE) file for details.
