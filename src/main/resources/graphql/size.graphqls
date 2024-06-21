@@ -3,3 +3,16 @@ type Size {
     sizeType: SizeType!
     value: String!
 }
+
+input SizeInput {
+    sizeType: SizeType!
+    value: String!
+}
+
+extend type Query {
+    sizes: [Size!]
+}
+
+extend type Mutation {
+    size(sizeInput: SizeInput!): Size!
+}

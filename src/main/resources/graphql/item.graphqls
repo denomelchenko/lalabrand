@@ -7,9 +7,20 @@ type Item {
     price: Float!,
     availableCount: Int!,
     salePrice: Float,
-    image: String,
     soldCount: Int!
     itemInfos: [ItemInfo!]!
+}
+
+input ItemInput {
+    title: String!,
+    shortDisc: String!,
+    longDisc: String,
+    rating: String,
+    price: Float!,
+    availableCount: Int!,
+    categoryId: String!,
+    salePrice: Float,
+    soldCount: Int!
 }
 
 extend type Query {
@@ -17,4 +28,8 @@ extend type Query {
     itemsByTitle(title: String!, language: Language!, paginationRequest: PaginationRequest!): [Item!]!,
     itemsByCategoryId(categoryId: ID!, paginationRequest: PaginationRequest!): [Item!]!
     itemById(itemId: ID!): Item!
+}
+
+extend type Mutation {
+    item(itemInput: ItemInput!): Item!
 }

@@ -1,5 +1,6 @@
 package com.lalabrand.ecommerce.security.password_reset;
 
+import com.lalabrand.ecommerce.exception.AccessDeniedException;
 import com.lalabrand.ecommerce.security.refresh_token.RefreshTokenService;
 import com.lalabrand.ecommerce.user.User;
 import com.lalabrand.ecommerce.user.UserRequest;
@@ -7,14 +8,12 @@ import com.lalabrand.ecommerce.user.UserService;
 import com.lalabrand.ecommerce.utils.EmailSenderService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import org.apache.coyote.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.AccessDeniedException;
 import java.time.Instant;
 import java.util.Optional;
 import java.util.Random;
@@ -44,7 +43,7 @@ public class PasswordResetService {
     }
 
     @Transactional
-    public boolean resetPasswordForUser(PasswordResetRequest passwordResetInput) throws AccessDeniedException, BadRequestException {
+    public boolean resetPasswordForUser(PasswordResetRequest passwordResetInput) {
         Optional<User> user = userService.findByEmail(passwordResetInput.getEmail());
         if (user.isPresent()) {
             Optional<PasswordResetToken> resetToken = passwordResetTokenRepository
@@ -52,7 +51,7 @@ public class PasswordResetService {
             if (resetToken.isPresent()) {
                 if (passwordEncoder.matches(passwordResetInput.getPassword(), user.get().getPassword())) {
                     logger.error("Password the same with exist password for this user");
-                    throw new BadRequestException("Password the same with exist password for this user");
+                    throw new IllegalArgumentException("Password the same with exist password for this user");
                 }
                 updateUserPassword(new UserRequest(
                                 passwordResetInput.getPassword(),
@@ -69,11 +68,11 @@ public class PasswordResetService {
             throw new AccessDeniedException("Token is not valid");
         }
         logger.error("User with email: {} does not exist", passwordResetInput.getEmail());
-        throw new BadRequestException("User does not exist");
+        throw new IllegalArgumentException("User does not exist");
     }
 
     @Transactional
-    protected void updateUserPassword(UserRequest userRequest, Integer passwordVersion, String userId) throws AccessDeniedException {
+    protected void updateUserPassword(UserRequest userRequest, Integer passwordVersion, String userId) {
         String password = passwordEncoder.encode(userRequest.getPassword());
         userService.updatePasswordForUser(new User(userRequest.getEmail(), password, passwordVersion), password, userId);
     }
