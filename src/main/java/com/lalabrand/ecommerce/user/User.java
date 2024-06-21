@@ -6,7 +6,6 @@ import com.lalabrand.ecommerce.user.address.Address;
 import com.lalabrand.ecommerce.user.enums.Language;
 import com.lalabrand.ecommerce.user.role.UserRole;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,7 +38,7 @@ public class User {
     @Column(name = "phone", length = 15)
     private String phone;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
@@ -64,7 +63,6 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Language language;
 
-    @NotNull
     @Column(name = "password_version", nullable = false)
     private Integer passwordVersion;
 

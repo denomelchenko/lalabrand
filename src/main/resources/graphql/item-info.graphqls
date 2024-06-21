@@ -2,5 +2,20 @@ type ItemInfo {
     id: ID!
     color: Color!
     image: String
-    size: Size!
+    sizes: [Size!]
+    itemId: ID!
+    isColorAvailable: Boolean!
+}
+
+input ItemInfoInput {
+    color: Color!
+    image: String!
+    isColorAvailable: Boolean!
+    itemId: ID!
+}
+
+extend type Mutation {
+    itemInfo(itemInfoInput: ItemInfoInput!): ItemInfo!
+    sizeToItemInfo(itemInfoId: ID!, sizeId: ID!): ItemInfo!
+    sizesToItemInfo(itemInfoId: ID!, sizeIds: [ID!]!): ItemInfo
 }
