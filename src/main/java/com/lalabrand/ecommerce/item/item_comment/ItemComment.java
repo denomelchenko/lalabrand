@@ -20,22 +20,22 @@ import java.time.Instant;
 public class ItemComment {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false, length = 36)
     private String id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "item_id")
+    @JoinColumn(name = "item_id", nullable = false)
     private Item item;
 
     @Lob
     @Column(name = "text", nullable = false)
     private String text;
 
-    @Column(name = "rating", nullable = false, precision = 10)
+    @Column(name = "rating", nullable = false, scale = 1, precision = 2)
     private BigDecimal rating;
 
     @Column(name = "created_at", nullable = false)
