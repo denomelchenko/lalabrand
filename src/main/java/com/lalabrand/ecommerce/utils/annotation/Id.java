@@ -1,4 +1,4 @@
-package com.lalabrand.ecommerce.utils;
+package com.lalabrand.ecommerce.utils.annotation;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
