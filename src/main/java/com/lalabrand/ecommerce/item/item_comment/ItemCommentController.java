@@ -14,7 +14,7 @@ public class ItemCommentController {
     }
 
     @MutationMapping(name = "itemComment")
-    public CommonResponse createItemComment(@Argument(name = "itemCommentInput") ItemCommentInput itemCommentInput) {
+    public ItemCommentDTO createItemComment(@Argument(name = "itemCommentInput") ItemCommentInput itemCommentInput) {
         return itemCommentService.createItemComment(itemCommentInput);
     }
 }
