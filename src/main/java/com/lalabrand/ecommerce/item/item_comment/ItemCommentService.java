@@ -1,11 +1,18 @@
 package com.lalabrand.ecommerce.item.item_comment;
 
-import com.lalabrand.ecommerce.utils.CommonResponse;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ItemCommentService {
-    public CommonResponse createItemComment(ItemCommentInput itemCommentInput) {
-        return null;
+    private final ItemCommentRepository itemCommentRepository;
+
+    public ItemCommentService(ItemCommentRepository itemCommentRepository) {
+        this.itemCommentRepository = itemCommentRepository;
+    }
+
+    public ItemCommentDTO createItemComment(ItemCommentInput itemCommentInput) {
+        return ItemCommentDTO.fromEntity(
+                itemCommentRepository.save(ItemComment.fromItemCommentInput(itemCommentInput))
+        );
     }
 }
