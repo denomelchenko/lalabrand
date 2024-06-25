@@ -17,7 +17,7 @@ import java.util.Set;
 public class Look {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false, length = 36)
     private String id;
 
     @Enumerated(EnumType.STRING)
