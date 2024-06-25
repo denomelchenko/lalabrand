@@ -59,7 +59,6 @@ public class ItemDTO implements Serializable {
                 .price(this.price)
                 .availableCount(this.availableCount)
                 .salePrice(this.salePrice)
-                .image(this.image)
                 .soldCount(this.soldCount)
                 .build();
     }
