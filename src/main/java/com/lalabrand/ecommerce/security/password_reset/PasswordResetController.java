@@ -28,8 +28,8 @@ public class PasswordResetController {
 
     @MutationMapping("resetPasswordByToken")
     public CommonResponse resetPasswordByToken(@Argument(name = "passwordResetInput")
-                                                   @Valid PasswordResetRequest passwordResetRequest) {
-        boolean success = passwordResetService.resetPasswordForUser(passwordResetRequest);
+                                               @Valid PasswordResetInput passwordResetInput) {
+        boolean success = passwordResetService.resetPasswordForUser(passwordResetInput);
         String message = success ? "Password reset successfully" : "Failed to reset password";
 
         return CommonResponse.builder()

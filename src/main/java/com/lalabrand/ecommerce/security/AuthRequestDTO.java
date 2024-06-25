@@ -1,6 +1,6 @@
 package com.lalabrand.ecommerce.security;
 
-import com.lalabrand.ecommerce.utils.Password;
+import com.lalabrand.ecommerce.utils.annotation.Password;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

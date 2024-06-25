@@ -1,6 +1,6 @@
 package com.lalabrand.ecommerce.security.password_reset;
 
-import com.lalabrand.ecommerce.utils.Password;
+import com.lalabrand.ecommerce.utils.annotation.Password;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Data
-public class PasswordResetRequest {
+public class PasswordResetInput {
     @Email
     private String email;
     @NotBlank
