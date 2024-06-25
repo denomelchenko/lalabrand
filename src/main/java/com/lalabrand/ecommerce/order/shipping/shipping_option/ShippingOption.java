@@ -13,13 +13,13 @@ import java.math.BigDecimal;
 public class ShippingOption {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false, length = 36)
     private String id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "price", precision = 10)
+    @Column(name = "price", precision = 10, nullable = false)
     private BigDecimal price;
 
 }

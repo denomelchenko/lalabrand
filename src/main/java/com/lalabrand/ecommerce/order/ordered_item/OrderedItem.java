@@ -22,7 +22,7 @@ import java.math.BigDecimal;
 public class OrderedItem {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false, length = 36)
     private String id;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)

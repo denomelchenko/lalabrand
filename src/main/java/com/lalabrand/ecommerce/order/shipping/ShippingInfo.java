@@ -16,7 +16,7 @@ import org.hibernate.annotations.OnDeleteAction;
 public class ShippingInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false, length = 36)
     private String id;
 
     @Column(name = "country", nullable = false)

@@ -25,7 +25,7 @@ import java.util.Set;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false, length = 36)
     private String id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -39,16 +39,16 @@ public class Order {
     @OneToMany(mappedBy = "order")
     private Set<OrderedItem> orderedItems;
 
-    @Column(name = "total_price", precision = 10)
+    @Column(name = "total_price", nullable = false)
     private BigDecimal totalPrice;
 
-    @Column(name = "shipping_fee", precision = 10)
+    @Column(name = "shipping_fee", precision = 10, nullable = false)
     private BigDecimal shippingFee;
 
     @Column(name = "discount", precision = 10)
     private BigDecimal discount;
 
-    @Column(name = "tax", precision = 10)
+    @Column(name = "tax", precision = 10, nullable = false)
     private BigDecimal tax;
 
     @Column(name = "currency", nullable = false)
