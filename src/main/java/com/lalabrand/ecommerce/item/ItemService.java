@@ -1,5 +1,6 @@
 package com.lalabrand.ecommerce.item;
 
+import com.lalabrand.ecommerce.item.filters.FilterRequest;
 import com.lalabrand.ecommerce.user.enums.Language;
 import com.lalabrand.ecommerce.utils.TranslationService;
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ItemService {
@@ -75,7 +77,23 @@ public class ItemService {
         return ItemDTO.fromEntity(item.get());
     }
 
+
     public ItemDTO save(ItemInput itemInput) {
         return ItemDTO.fromEntity(itemRepository.save(itemInput.toEntity()));
+    }
+
+    public List<ItemDTO> filterItems(FilterRequest request, Pageable pageable) {
+        List<ItemDTO> filteredList = itemRepository.findFilteredItems(request.getCategoryId(), request.getSizeId(),
+                request.getColor(), pageable);
+        if ("asc".equalsIgnoreCase(request.getTypeOfPriceSort())) {
+            return filteredList.stream()
+                    .sorted(Comparator.comparing(ItemDTO::getPrice))
+                    .collect(Collectors.toList());
+        } else if ("desc".equalsIgnoreCase(request.getTypeOfPriceSort())) {
+            return filteredList.stream()
+                    .sorted(Comparator.comparing(ItemDTO::getPrice).reversed())
+                    .collect(Collectors.toList());
+        }
+        return filteredList;
     }
 }
