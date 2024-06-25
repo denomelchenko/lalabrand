@@ -3,8 +3,8 @@ package com.lalabrand.ecommerce.user.cart;
 import com.lalabrand.ecommerce.item.item_info.ItemInfo;
 import com.lalabrand.ecommerce.item.item_info.ItemInfoRepository;
 import com.lalabrand.ecommerce.user.cart.cart_item.CartItem;
+import com.lalabrand.ecommerce.user.cart.cart_item.CartItemInput;
 import com.lalabrand.ecommerce.user.cart.cart_item.CartItemRepository;
-import com.lalabrand.ecommerce.user.cart.cart_item.CartItemRequest;
 import com.lalabrand.ecommerce.utils.CommonResponse;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
@@ -39,7 +39,7 @@ public class CartService {
     }
 
     @Transactional
-    public CommonResponse addItemToCart(CartItemRequest cartItemRequest, String userId) {
+    public CommonResponse addItemToCart(CartItemInput cartItemRequest, String userId) {
         if (cartItemRequest.getCount() <= 0) {
             throw new IllegalArgumentException("Count must be greater than zero");
         }
@@ -90,7 +90,7 @@ public class CartService {
     }
 
     @Transactional
-    public CommonResponse removeItemFromCart(CartItemRequest cartItemRequest, String userId) {
+    public CommonResponse removeItemFromCart(CartItemInput cartItemRequest, String userId) {
         if (cartItemRequest.getCount() <= 0) {
             throw new IllegalArgumentException("Count must be less than zero");
         }

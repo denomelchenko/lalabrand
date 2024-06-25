@@ -1,7 +1,7 @@
 package com.lalabrand.ecommerce.user.wishlist;
 
 import com.lalabrand.ecommerce.utils.CommonUtils;
-import com.lalabrand.ecommerce.utils.Id;
+import com.lalabrand.ecommerce.utils.annotation.Id;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;

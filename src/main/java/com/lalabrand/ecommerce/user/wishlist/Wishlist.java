@@ -20,10 +20,10 @@ import java.util.Set;
 public class Wishlist {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false, length = 36)
     private String id;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", nullable = false, length = 36)
     private String userId;
 
     @OneToOne(fetch = FetchType.LAZY)
