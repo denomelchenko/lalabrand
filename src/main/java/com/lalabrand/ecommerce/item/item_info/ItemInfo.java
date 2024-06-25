@@ -19,21 +19,21 @@ import java.util.Set;
 public class ItemInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false, length = 36)
     private String id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "item_id", nullable = false, insertable = false, updatable = false)
     private Item item;
 
-    @Column(name = "item_id", nullable = false)
+    @Column(name = "item_id", nullable = false, length = 36)
     private String itemId;
 
     @Column(name = "color", nullable = false)
     @Enumerated(EnumType.STRING)
     private ColorEnum color;
 
-    @Column(name = "image")
+    @Column(name = "image", nullable = false)
     private String image;
 
     @ManyToMany
