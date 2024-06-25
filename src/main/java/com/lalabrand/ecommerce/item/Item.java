@@ -24,7 +24,7 @@ import java.util.Set;
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false, length = 36)
     private String id;
 
     @Column(name = "title", nullable = false, length = 40)
@@ -47,7 +47,7 @@ public class Item {
     @JoinColumn(name = "category_id", nullable = false, insertable = false, updatable = false)
     private Category category;
 
-    @Column(name = "category_id", nullable = false)
+    @Column(name = "category_id", nullable = false, length = 36)
     private String categoryId;
 
     @Column(name = "available_count", nullable = false)
