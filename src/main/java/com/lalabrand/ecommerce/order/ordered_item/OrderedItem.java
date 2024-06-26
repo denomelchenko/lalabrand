@@ -26,6 +26,7 @@ public class OrderedItem {
     private String id;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "item_id", nullable = true)
     private Item item;
 
