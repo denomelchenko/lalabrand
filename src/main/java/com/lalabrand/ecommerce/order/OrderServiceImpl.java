@@ -47,6 +47,8 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public CommonResponse placeOrder(String userId, ShippingInfoRequest shippingInfoRequest, Currency currency ) {
+        User currentUser = userRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
+
         CartDTO cartDto = cartService.findCartByUserId(userId).orElseThrow(
                 () -> new EntityNotFoundException("Cart hasn't been found for user ( it's empty )")
         );
@@ -56,17 +58,28 @@ public class OrderServiceImpl implements OrderService {
         Set<OrderedItem> orderedItems = new HashSet<>();
         Set<CartItem> cartItems = cartDto.toEntity(userRepository.getReferenceById(userId)).getCartItems();
 
+        BigDecimal discount = calculateDiscount(userId);
+
         Order order = Order.builder()
                 .user(userRepository.getReferenceById(userId))
                 .orderNumber(CommonUtils.getNext())
                 .status(Status.PENDING)
                 .currency(currency)
                 .tax(BigDecimal.ZERO) // need
-                .discount(BigDecimal.ZERO) // need
                 .totalPrice(cartItems.stream().map(cartItem -> cartItem.getItem().getPrice().multiply(BigDecimal.valueOf(cartItem.getCount())))
                         .reduce(BigDecimal.ZERO, BigDecimal::add))
                 .shipping(savedShippingInfo)
                 .build();
+
+        if (order.getTotalPrice().compareTo(discount) >= 0) {
+            order.setDiscount(discount);
+            currentUser.setBonus(currentUser.getBonus() - Integer.parseInt(String.valueOf(discount)) * 100);
+        } else {
+            BigDecimal totalPrice = order.getTotalPrice();
+            order.setDiscount(totalPrice);
+            int usedBonusPoints = Integer.parseInt(String.valueOf(totalPrice)) * 100;
+            currentUser.setBonus(currentUser.getBonus() - usedBonusPoints);
+        }
 
         orderRepository.save(order);
 
@@ -78,7 +91,6 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderedItems(orderedItems);
 
         if (userRepository.findById(userId).isPresent()) {
-            User currentUser = userRepository.findById(userId).get();
             currentUser.setBonus(BigDecimal.valueOf(currentUser.getBonus()).add(order.getTotalPrice()).intValue());
         }
 
@@ -91,8 +103,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getAll(String userId) {
+    public List<Order> getAllByUserId(String userId) {
         return orderRepository.findAllByUserIdOrderByCreatedAtDesc(userId);
+    }
+
+    @Override
+    public List<Order> getAllByStatus(Status status) {
+        return orderRepository.findAllByStatusOrderByCreatedAtAsc(status);
     }
 
     @Override
@@ -104,6 +121,14 @@ public class OrderServiceImpl implements OrderService {
         return cartItems.stream()
                 .map(cartItem -> cartItem.getItem().getPrice().multiply(BigDecimal.valueOf(cartItem.getCount())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public BigDecimal calculateDiscount(String userId) {
+        User existingUser = userRepository.findById(userId).orElseThrow(
+                () -> new EntityNotFoundException("Cart hasn't been found for user ( it's empty )")
+        );
+        return BigDecimal.valueOf(existingUser.getBonus() / 100);
     }
 
     @Transactional
