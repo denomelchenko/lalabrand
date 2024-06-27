@@ -1,7 +1,6 @@
 package com.lalabrand.ecommerce.order;
 
-import com.lalabrand.ecommerce.order.enums.Currency;
-import com.lalabrand.ecommerce.order.shipping.shipping_info.ShippingInfoRequest;
+import com.lalabrand.ecommerce.order.enums.Status;
 import com.lalabrand.ecommerce.utils.CommonResponse;
 import com.lalabrand.ecommerce.utils.CommonUtils;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -21,10 +20,16 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @QueryMapping(name = "orders")
-    @PreAuthorize("hasAuthority('USER')")
-    public List<Order> getAllOrders() {
-        return orderService.getAll(CommonUtils.getCurrentUserId());
+    @QueryMapping(name = "ordersByUserId")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    public List<Order> getAllOrdersByUserId() {
+        return orderService.getAllByUserId(CommonUtils.getCurrentUserId());
+    }
+
+    @QueryMapping(name = "ordersByStatus")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public List<Order> getAllOrdersByStatus(@Argument("status") Status status) {
+        return orderService.getAllByStatus(status);
     }
 
     @MutationMapping(name = "deleteOrderById")

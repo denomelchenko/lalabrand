@@ -4,6 +4,7 @@ type Order {
     orderedItems: [OrderedItem!]!
     totalPrice: Float!
     discount: Float
+    status: Status!
     tax: Float
     currency: Currency!
     shipping: ShippingInfo!
@@ -11,7 +12,11 @@ type Order {
 
 
 extend type Query {
-    orders: [Order!]!
+    ordersByUserId: [Order!]!
+}
+
+extend type Query {
+    ordersByStatus(status: Status!): [Order!]!
 }
 
 input ShippingInfoRequest {
