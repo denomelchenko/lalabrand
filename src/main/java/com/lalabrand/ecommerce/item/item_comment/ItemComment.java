@@ -32,7 +32,7 @@ public class ItemComment {
     private Item item;
 
     @Lob
-    @Column(name = "text", nullable = false)
+    @Column(name = "text", columnDefinition = "LONGTEXT", nullable = false)
     private String text;
 
     @Column(name = "rating", nullable = false, precision = 10)

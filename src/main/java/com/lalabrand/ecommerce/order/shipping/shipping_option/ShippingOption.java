@@ -1,14 +1,16 @@
 package com.lalabrand.ecommerce.order.shipping.shipping_option;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 
 @Getter
 @Setter
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "shipping_option")
 public class ShippingOption {
     @Id
@@ -21,5 +23,4 @@ public class ShippingOption {
 
     @Column(name = "price", precision = 10)
     private BigDecimal price;
-
 }

@@ -1,0 +1,5 @@
+type ShippingOption {
+    id: ID!
+    name: String!
+    price: Int!
+}

@@ -36,4 +36,12 @@ public class ItemInfoDTO implements Serializable {
                 .isColorAvailable(itemInfo.getIsColorAvailable())
                 .build();
     }
+
+    public ItemInfo toEntity() {
+        return ItemInfo.builder()
+                .id(this.id)
+                .image(this.image)
+                .color(this.color)
+                .build();
+    }
 }

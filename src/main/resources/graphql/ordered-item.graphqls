@@ -1,0 +1,8 @@
+type OrderedItem {
+    id: ID!
+    item: Item!
+    order: Order!
+    itemInfo: ItemInfo
+    size: Size
+    count: Int!
+}
