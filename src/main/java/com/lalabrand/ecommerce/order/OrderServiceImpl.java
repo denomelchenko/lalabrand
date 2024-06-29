@@ -46,7 +46,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     @Override
-    public CommonResponse placeOrder(String userId, ShippingInfoRequest shippingInfoRequest, Currency currency ) {
+    public CommonResponse placeOrder(String userId, ShippingInfoRequest shippingInfoRequest, Currency currency) {
         User currentUser = userRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
 
         CartDTO cartDto = cartService.findCartByUserId(userId).orElseThrow(
@@ -71,27 +71,18 @@ public class OrderServiceImpl implements OrderService {
                 .shipping(savedShippingInfo)
                 .build();
 
-        if (order.getTotalPrice().compareTo(discount) >= 0) {
-            order.setDiscount(discount);
-            currentUser.setBonus(currentUser.getBonus() - Integer.parseInt(String.valueOf(discount)) * 100);
-        } else {
-            BigDecimal totalPrice = order.getTotalPrice();
-            order.setDiscount(totalPrice);
-            int usedBonusPoints = Integer.parseInt(String.valueOf(totalPrice)) * 100;
-            currentUser.setBonus(currentUser.getBonus() - usedBonusPoints);
-        }
-
+        applyDiscountAndAdjustBonus(order, discount, currentUser);
         orderRepository.save(order);
 
         for (CartItem cartItem : cartItems) {
-            OrderedItem orderedItem = orderItemsService.generateOrderedFromCartItem(order,cartItem);
+            OrderedItem orderedItem = orderItemsService.generateOrderedFromCartItem(order, cartItem);
             orderItemsService.addOrderedProduct(orderedItem);
             orderedItems.add(orderedItem);
         }
         order.setOrderedItems(orderedItems);
 
         if (userRepository.findById(userId).isPresent()) {
-            currentUser.setBonus(BigDecimal.valueOf(currentUser.getBonus()).add(order.getTotalPrice()).intValue());
+            currentUser.setBonus(BigDecimal.valueOf(currentUser.getBonus()).add(order.getTotalPrice()).subtract(discount).intValue());
         }
 
         orderRepository.save(order);
@@ -100,6 +91,19 @@ public class OrderServiceImpl implements OrderService {
                 .message("Order has been placed successfully")
                 .success(true)
                 .build();
+    }
+
+    public void applyDiscountAndAdjustBonus(Order order, BigDecimal discount, User currentUser) {
+        BigDecimal totalPrice = order.getTotalPrice();
+        BigDecimal bonusToDeduct;
+        if (totalPrice.compareTo(discount) >= 0) {
+            order.setDiscount(discount);
+            bonusToDeduct = discount.multiply(BigDecimal.valueOf(100));
+        } else {
+            order.setDiscount(totalPrice);
+            bonusToDeduct = totalPrice.multiply(BigDecimal.valueOf(100));
+        }
+        currentUser.setBonus(currentUser.getBonus() - Integer.parseInt(String.valueOf(bonusToDeduct)));
     }
 
     @Override
@@ -113,7 +117,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public BigDecimal calculateTotal(String userId){
+    public BigDecimal calculateTotal(String userId) {
         CartDTO cartDto = cartService.findCartByUserId(userId).orElseThrow(
                 () -> new EntityNotFoundException("Cart hasn't been found for user ( it's empty )")
         );
