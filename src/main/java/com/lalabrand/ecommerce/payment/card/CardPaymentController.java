@@ -3,7 +3,6 @@ package com.lalabrand.ecommerce.payment.card;
 import com.lalabrand.ecommerce.order.OrderService;
 import com.lalabrand.ecommerce.order.enums.Currency;
 import com.lalabrand.ecommerce.order.shipping.shipping_info.ShippingInfoRequest;
-import com.lalabrand.ecommerce.payment.paypal.PaypalController;
 import com.lalabrand.ecommerce.utils.CommonUtils;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
@@ -49,9 +48,12 @@ public class CardPaymentController {
         BigDecimal totalCost = orderService.calculateTotal(userId);
         logger.info("Calculated total cost for user {}: {}", userId, totalCost);
 
+        BigDecimal discount = orderService.calculateDiscount(userId);
+        logger.info("Calculated discount for user {}: {}", userId, totalCost);
+
         PaymentIntentCreateParams params =
                 PaymentIntentCreateParams.builder()
-                        .setAmount(Long.valueOf(String.valueOf(totalCost.multiply(BigDecimal.valueOf(100)))))
+                        .setAmount(Long.valueOf(String.valueOf(totalCost.subtract(discount).multiply(BigDecimal.valueOf(100)))))
                         .setCurrency(currency.toString().toLowerCase())
                         .setAutomaticPaymentMethods(
                                 PaymentIntentCreateParams.AutomaticPaymentMethods
