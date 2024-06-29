@@ -43,7 +43,11 @@ public class PaypalServiceImpl implements PaypalService {
         Payment payment = new Payment();
         payment.setIntent("SALE");
         payment.setPayer(getPayer(userId, method));
-        payment.setTransactions(getTransactions(currency, orderService.calculateTotal(userId)));
+
+        BigDecimal discount = orderService.calculateDiscount(userId);
+        BigDecimal totalCost = orderService.calculateTotal(userId);
+
+        payment.setTransactions(getTransactions(currency, totalCost.subtract(discount)));
         payment.setRedirectUrls(getRedirectUrls(successUrl, cancelUrl));
 
         try {

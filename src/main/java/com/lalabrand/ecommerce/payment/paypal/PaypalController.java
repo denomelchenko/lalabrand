@@ -10,6 +10,7 @@ import com.lalabrand.ecommerce.utils.CommonResponse;
 import com.lalabrand.ecommerce.utils.CommonUtils;
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,7 @@ public class PaypalController {
     }
 
     @MutationMapping(name = "createPayment")
+    @Transactional
     public PaymentResponse createPayment(@Argument("currency") Currency currency,
                                          @Argument("shippingInfo") ShippingInfoRequest shippingInfoRequest) {
         logger.info("Creating PayPal payment for user {}", CommonUtils.getCurrentUserId());
@@ -65,6 +67,7 @@ public class PaypalController {
 
 
     @QueryMapping("paymentSuccess")
+    @Transactional
     public PaymentResponse paymentSuccess(@Argument("paymentId") String paymentId,
                                           @Argument("payerID") String payerId) {
         Payment payment = paypalService.executePayment(paymentId, payerId);
