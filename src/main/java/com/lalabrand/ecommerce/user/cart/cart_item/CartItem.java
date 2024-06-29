@@ -5,9 +5,7 @@ import com.lalabrand.ecommerce.item.item_info.ItemInfo;
 import com.lalabrand.ecommerce.item.size.Size;
 import com.lalabrand.ecommerce.user.cart.Cart;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -15,6 +13,8 @@ import org.hibernate.annotations.OnDeleteAction;
 @Getter
 @Setter
 @Entity
+@Builder
+@AllArgsConstructor
 @Table(name = "cart_item")
 public class CartItem {
     @Id

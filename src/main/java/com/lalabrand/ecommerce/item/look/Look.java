@@ -21,7 +21,7 @@ public class Look {
     private String id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "gender", nullable = false)
+    @Column(name = "gender", nullable = false, columnDefinition = "ENUM('MAN','WOMAN','UNISEX')")
     private Gender gender;
 
     @Column(name = "image", nullable = false)
