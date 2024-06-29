@@ -55,9 +55,6 @@ public class Order {
     @Column(name = "discount", precision = 10, nullable = false)
     private BigDecimal discount;
 
-    @Column(name = "tax", precision = 10, nullable = false)
-    private BigDecimal tax;
-
     @Column(name = "currency", nullable = false , columnDefinition = "ENUM('UAH','EUR','USD')")
     @Enumerated(EnumType.STRING)
     private Currency currency;

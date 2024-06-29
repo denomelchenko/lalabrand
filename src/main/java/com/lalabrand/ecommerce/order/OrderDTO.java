@@ -25,7 +25,6 @@ public class OrderDTO implements Serializable {
     String id;
     String userId;
     Long orderNumber;
-    BigDecimal tax;
     Currency currency;
     Status status;
     BigDecimal totalPrice;
@@ -37,7 +36,6 @@ public class OrderDTO implements Serializable {
                 .id(order.getId())
                 .userId(order.getUser().getId())
                 .orderNumber(order.getOrderNumber())
-                .tax(order.getTax())
                 .currency(order.getCurrency())
                 .status(order.getStatus())
                 .totalPrice(order.getTotalPrice())
@@ -50,7 +48,6 @@ public class OrderDTO implements Serializable {
         return Order.builder()
                 .id(this.getId())
                 .orderNumber(this.orderNumber)
-                .tax(this.getTax())
                 .currency(this.getCurrency())
                 .status(this.getStatus())
                 .totalPrice(this.getTotalPrice())

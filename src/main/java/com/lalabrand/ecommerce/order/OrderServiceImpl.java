@@ -65,7 +65,6 @@ public class OrderServiceImpl implements OrderService {
                 .orderNumber(CommonUtils.getNext())
                 .status(Status.PENDING)
                 .currency(currency)
-                .tax(BigDecimal.ZERO) // need
                 .totalPrice(cartItems.stream().map(cartItem -> cartItem.getItem().getPrice().multiply(BigDecimal.valueOf(cartItem.getCount())))
                         .reduce(BigDecimal.ZERO, BigDecimal::add))
                 .shipping(savedShippingInfo)
