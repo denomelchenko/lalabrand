@@ -11,8 +11,6 @@ import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.math.BigDecimal;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -45,7 +43,7 @@ public class OrderedItem {
     private String color;
 
     @Column(name = "price", nullable = false, precision = 10)
-    private BigDecimal price;
+    private Float price;
 
     @Column(name = "count", nullable = false)
     private Integer count;
