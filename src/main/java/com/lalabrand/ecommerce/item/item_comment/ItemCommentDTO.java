@@ -4,8 +4,6 @@ import lombok.Builder;
 import lombok.Value;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.time.Instant;
 
 /**
  * DTO for {@link ItemComment}
@@ -17,7 +15,7 @@ public class ItemCommentDTO implements Serializable {
     String userId;
     String itemId;
     String text;
-    BigDecimal rating;
+    Float rating;
 
     public static ItemCommentDTO fromEntity(ItemComment itemComment) {
         return ItemCommentDTO.builder()
