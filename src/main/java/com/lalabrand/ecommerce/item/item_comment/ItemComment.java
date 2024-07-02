@@ -5,7 +5,6 @@ import com.lalabrand.ecommerce.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 
 @AllArgsConstructor
@@ -39,8 +38,8 @@ public class ItemComment {
     @Column(name = "text", nullable = false)
     private String text;
 
-    @Column(name = "rating", nullable = false, scale = 1, precision = 2)
-    private BigDecimal rating;
+    @Column(name = "rating", nullable = false)
+    private Float rating;
 
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
