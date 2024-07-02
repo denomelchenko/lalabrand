@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-
 @Getter
 @Setter
 @Entity
@@ -20,6 +18,6 @@ public class ShippingOption {
     private String name;
 
     @Column(name = "price", precision = 10, nullable = false)
-    private BigDecimal price;
+    private Float price;
 
 }
