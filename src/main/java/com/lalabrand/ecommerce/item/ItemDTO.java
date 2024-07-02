@@ -7,7 +7,6 @@ import lombok.Setter;
 import lombok.Value;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -24,10 +23,10 @@ public class ItemDTO implements Serializable {
     String title;
     String shortDisc;
     String longDisc;
-    BigDecimal rating;
-    BigDecimal price;
+    Float rating;
+    Float price;
     Integer availableCount;
-    BigDecimal salePrice;
+    Float salePrice;
     Integer soldCount;
     Set<ItemInfoDTO> itemInfos;
 

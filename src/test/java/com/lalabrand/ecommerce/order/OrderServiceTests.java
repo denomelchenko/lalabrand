@@ -1,7 +1,7 @@
 package com.lalabrand.ecommerce.order;
 
 import com.lalabrand.ecommerce.order.enums.Currency;
-import com.lalabrand.ecommerce.paypal.PaypalServiceImpl;
+import com.lalabrand.ecommerce.payment.paypal.PaypalServiceImpl;
 import com.lalabrand.ecommerce.item.Item;
 import com.lalabrand.ecommerce.item.category.Category;
 import com.lalabrand.ecommerce.item.enums.ColorEnum;
@@ -27,7 +27,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Optional;
@@ -84,12 +83,11 @@ public class OrderServiceTests {
                 .title("Test Item")
                 .shortDisc("Short description")
                 .longDisc("Long description")
-                .rating(new BigDecimal("4.5"))
-                .price(new BigDecimal("50.00"))
+                .rating(4.5f)
+                .price(50.5f)
                 .category(new Category())
                 .availableCount(100)
-                .salePrice(new BigDecimal("45.00"))
-                .image("item_image.jpg")
+                .salePrice(45.5f)
                 .soldCount(50)
                 .createdAt(Instant.now())
                 .build();

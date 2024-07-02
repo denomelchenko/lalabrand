@@ -12,7 +12,6 @@ import lombok.Setter;
 import lombok.Value;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -27,7 +26,7 @@ public class OrderDTO implements Serializable {
     Long orderNumber;
     Currency currency;
     Status status;
-    BigDecimal totalPrice;
+    Float totalPrice;
     ShippingInfoDTO shippingInfoDTO;
     Set<OrderItemsDTO> orderedItems;
 

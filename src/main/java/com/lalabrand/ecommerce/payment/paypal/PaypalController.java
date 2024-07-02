@@ -37,7 +37,6 @@ public class PaypalController {
     private final PaymentInfoService paymentInfoService;
 
 
-
     @Autowired
     public PaypalController(PaypalService paypalService, OrderService orderService, PaymentInfoService paymentInfoService) {
         this.paypalService = paypalService;

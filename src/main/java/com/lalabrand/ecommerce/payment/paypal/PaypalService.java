@@ -6,5 +6,6 @@ import org.springframework.stereotype.Service;
 @Service
 public interface PaypalService {
     Payment createPayment(String userId, String currency, String method, String successUrl, String cancelUrl);
+
     Payment executePayment(String paymentId, String payerId);
 }

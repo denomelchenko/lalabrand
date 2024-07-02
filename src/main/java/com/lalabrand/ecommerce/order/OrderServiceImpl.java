@@ -20,7 +20,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -58,15 +57,14 @@ public class OrderServiceImpl implements OrderService {
         Set<OrderedItem> orderedItems = new HashSet<>();
         Set<CartItem> cartItems = cartDto.toEntity(userRepository.getReferenceById(userId)).getCartItems();
 
-        BigDecimal discount = calculateDiscount(userId);
+        Float discount = calculateDiscount(userId);
 
         Order order = Order.builder()
                 .user(userRepository.getReferenceById(userId))
                 .orderNumber(CommonUtils.getNext())
                 .status(Status.PENDING)
                 .currency(currency)
-                .totalPrice(cartItems.stream().map(cartItem -> cartItem.getItem().getPrice().multiply(BigDecimal.valueOf(cartItem.getCount())))
-                        .reduce(BigDecimal.ZERO, BigDecimal::add))
+                .totalPrice(cartItems.stream().map(cartItem -> cartItem.getItem().getPrice() * cartItem.getCount()).reduce(0.0f, Float::sum))
                 .shipping(savedShippingInfo)
                 .build();
 
@@ -81,7 +79,7 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderedItems(orderedItems);
 
         if (userRepository.findById(userId).isPresent()) {
-            currentUser.setBonus(BigDecimal.valueOf(currentUser.getBonus()).add(order.getTotalPrice()).subtract(discount).intValue());
+            currentUser.setBonus((int) ((currentUser.getBonus() + order.getTotalPrice()) - discount.intValue()));
         }
 
         orderRepository.save(order);
@@ -92,15 +90,15 @@ public class OrderServiceImpl implements OrderService {
                 .build();
     }
 
-    public void applyDiscountAndAdjustBonus(Order order, BigDecimal discount, User currentUser) {
-        BigDecimal totalPrice = order.getTotalPrice();
-        BigDecimal bonusToDeduct;
+    public void applyDiscountAndAdjustBonus(Order order, Float discount, User currentUser) {
+        Float totalPrice = order.getTotalPrice();
+        Float bonusToDeduct;
         if (totalPrice.compareTo(discount) >= 0) {
             order.setDiscount(discount);
-            bonusToDeduct = discount.multiply(BigDecimal.valueOf(100));
+            bonusToDeduct = discount * 100;
         } else {
             order.setDiscount(totalPrice);
-            bonusToDeduct = totalPrice.multiply(BigDecimal.valueOf(100));
+            bonusToDeduct = totalPrice * 100;
         }
         currentUser.setBonus(currentUser.getBonus() - Integer.parseInt(String.valueOf(bonusToDeduct)));
     }
@@ -116,22 +114,22 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public BigDecimal calculateTotal(String userId) {
+    public Float calculateTotal(String userId) {
         CartDTO cartDto = cartService.findCartByUserId(userId).orElseThrow(
                 () -> new EntityNotFoundException("Cart hasn't been found for user ( it's empty )")
         );
         Set<CartItem> cartItems = cartDto.toEntity(userRepository.getReferenceById(userId)).getCartItems();
         return cartItems.stream()
-                .map(cartItem -> cartItem.getItem().getPrice().multiply(BigDecimal.valueOf(cartItem.getCount())))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+                .map(cartItem -> cartItem.getItem().getPrice() * cartItem.getCount())
+                .reduce(0f, Float::sum);
     }
 
     @Override
-    public BigDecimal calculateDiscount(String userId) {
+    public Float calculateDiscount(String userId) {
         User existingUser = userRepository.findById(userId).orElseThrow(
                 () -> new EntityNotFoundException("Cart hasn't been found for user ( it's empty )")
         );
-        return BigDecimal.valueOf(existingUser.getBonus() / 100);
+        return existingUser.getBonus() / 100f;
     }
 
     @Transactional

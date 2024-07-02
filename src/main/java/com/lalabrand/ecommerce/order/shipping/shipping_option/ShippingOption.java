@@ -3,8 +3,6 @@ package com.lalabrand.ecommerce.order.shipping.shipping_option;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.math.BigDecimal;
-
 @Getter
 @Setter
 @Entity
@@ -15,12 +13,13 @@ import java.math.BigDecimal;
 public class ShippingOption {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false, length = 36)
     private String id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "price", precision = 10)
-    private BigDecimal price;
+    @Column(name = "price", precision = 10, nullable = false)
+    private Float price;
+
 }

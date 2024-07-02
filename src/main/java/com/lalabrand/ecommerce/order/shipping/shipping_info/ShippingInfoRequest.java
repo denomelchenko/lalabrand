@@ -17,7 +17,7 @@ public class ShippingInfoRequest {
     String zip;
     String shippingOptionId;
 
-    public ShippingInfo toEntity () {
+    public ShippingInfo toEntity() {
         return ShippingInfo.builder()
                 .country(this.country)
                 .zip(this.zip)

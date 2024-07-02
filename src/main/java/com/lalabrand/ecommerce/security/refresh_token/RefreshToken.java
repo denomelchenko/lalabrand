@@ -18,7 +18,7 @@ import java.time.Instant;
 public class RefreshToken {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "token", nullable = false)
+    @Column(name = "token", nullable = false, length = 36)
     private String token;
 
     @Column(name = "expires_at", nullable = false)

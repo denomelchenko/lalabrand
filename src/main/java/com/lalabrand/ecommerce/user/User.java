@@ -6,7 +6,6 @@ import com.lalabrand.ecommerce.user.address.Address;
 import com.lalabrand.ecommerce.user.enums.Language;
 import com.lalabrand.ecommerce.user.role.UserRole;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.Instant;
@@ -22,7 +21,7 @@ import java.util.Set;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false, length = 36)
     private String id;
 
     @Column(name = "first_name", length = 50)
@@ -31,7 +30,7 @@ public class User {
     @Column(name = "last_name", length = 50)
     private String lastName;
 
-    @Column(name = "email", nullable = false, length = 50)
+    @Column(name = "email", nullable = false)
     private String email;
 
     @Column(name = "phone", length = 15)
@@ -49,10 +48,10 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Order> orders;
 
-    @Column(name = "bonus")
+    @Column(name = "bonus", nullable = false)
     private Integer bonus;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)

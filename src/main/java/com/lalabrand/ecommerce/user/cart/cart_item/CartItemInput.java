@@ -1,6 +1,6 @@
 package com.lalabrand.ecommerce.user.cart.cart_item;
 
-import com.lalabrand.ecommerce.utils.Id;
+import com.lalabrand.ecommerce.utils.annotation.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class CartItemRequest {
+public class CartItemInput {
     @Id(message = "ItemId is not valid")
     String itemId;
     @Id(message = "ItemInfoId is not valid")
