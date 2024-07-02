@@ -6,8 +6,6 @@ import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
 
-import java.math.BigDecimal;
-
 @Data
 @Builder
 public class ItemCommentInput {
@@ -15,7 +13,7 @@ public class ItemCommentInput {
     private String text;
 
     @Rating
-    private BigDecimal rating;
+    private Float rating;
 
     @Id(message = "Item ID is invalid")
     private String itemId;
