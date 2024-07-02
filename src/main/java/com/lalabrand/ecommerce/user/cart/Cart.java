@@ -3,10 +3,7 @@ package com.lalabrand.ecommerce.user.cart;
 import com.lalabrand.ecommerce.user.User;
 import com.lalabrand.ecommerce.user.cart.cart_item.CartItem;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -17,6 +14,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+@Builder
 @Table(name = "cart")
 public class Cart {
     @Id

@@ -1,0 +1,11 @@
+type ShippingInfo {
+    id: ID!
+    country: Country!
+    zip: String!
+    city: String!
+    address1: String!
+    address2: String!
+    order: Order!
+    phone: String!
+    shippingOption: ShippingOption!
+}

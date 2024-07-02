@@ -6,10 +6,7 @@ import com.lalabrand.ecommerce.user.address.Address;
 import com.lalabrand.ecommerce.user.enums.Language;
 import com.lalabrand.ecommerce.user.role.UserRole;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.Instant;
 import java.util.Set;
@@ -19,6 +16,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+@Builder
 @Table(name = "user")
 public class User {
     @Id
@@ -59,7 +57,7 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<UserRole> userRoles;
 
-    @Column(name = "language")
+    @Column(name = "language", columnDefinition = "ENUM('UA', 'EN')")
     @Enumerated(EnumType.STRING)
     private Language language;
 

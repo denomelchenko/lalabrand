@@ -4,10 +4,7 @@ import com.lalabrand.ecommerce.item.Item;
 import com.lalabrand.ecommerce.item.enums.SizeType;
 import com.lalabrand.ecommerce.order.Order;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -16,6 +13,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @Getter
 @Setter
 @Entity
+@Builder
 @Table(name = "ordered_item")
 public class OrderedItem {
     @Id
@@ -25,7 +23,7 @@ public class OrderedItem {
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @OnDelete(action = OnDeleteAction.SET_NULL)
-    @JoinColumn(name = "item_id", nullable = false)
+    @JoinColumn(name = "item_id", nullable = true)
     private Item item;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -36,8 +34,9 @@ public class OrderedItem {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "size", nullable = false)
-    private SizeType size;
+    @Column(name = "size", nullable = false, columnDefinition = "ENUM('SHOES','CLOTHES')")
+    @Enumerated(EnumType.STRING)
+    private SizeType sizeType;
 
     @Column(name = "color", nullable = false)
     private String color;
@@ -50,5 +49,4 @@ public class OrderedItem {
 
     @Column(name = "image", nullable = false)
     private String image;
-
 }

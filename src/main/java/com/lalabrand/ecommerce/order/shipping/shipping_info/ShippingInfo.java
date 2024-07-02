@@ -1,17 +1,20 @@
-package com.lalabrand.ecommerce.order.shipping;
+package com.lalabrand.ecommerce.order.shipping.shipping_info;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.lalabrand.ecommerce.order.Order;
 import com.lalabrand.ecommerce.order.shipping.shipping_option.ShippingOption;
 import com.lalabrand.ecommerce.user.enums.Country;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Getter
 @Setter
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "shipping_info")
 public class ShippingInfo {
     @Id
@@ -19,7 +22,7 @@ public class ShippingInfo {
     @Column(name = "id", nullable = false, length = 36)
     private String id;
 
-    @Column(name = "country", nullable = false)
+    @Column(name = "country", nullable = false, columnDefinition = "ENUM('UA', 'PL', 'DE', 'US', 'UK')")
     @Enumerated(EnumType.STRING)
     private Country country;
 
@@ -36,6 +39,7 @@ public class ShippingInfo {
     private String address2;
 
     @OneToOne(mappedBy = "shipping")
+    @JsonBackReference
     private Order order;
 
     @Column(name = "phone")
@@ -43,7 +47,9 @@ public class ShippingInfo {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)
-    @JoinColumn(name = "shipping_option_id")
+    @JoinColumn(name = "shipping_option_id", insertable = false, updatable = false)
     private ShippingOption shippingOption;
 
+    @Column(name = "shipping_option_id")
+    private String shippingOptionId;
 }

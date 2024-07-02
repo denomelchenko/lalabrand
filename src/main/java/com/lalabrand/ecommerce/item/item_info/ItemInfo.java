@@ -9,6 +9,7 @@ import lombok.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+
 @Getter
 @Setter
 @Entity
@@ -29,7 +30,7 @@ public class ItemInfo {
     @Column(name = "item_id", nullable = false, length = 36)
     private String itemId;
 
-    @Column(name = "color", nullable = false)
+    @Column(name = "color", nullable = false, columnDefinition = "ENUM('WHITE', 'BLACK', 'GREY', 'YELLOW', 'RED', 'BLUE', 'GREEN', 'BROWN', 'PINK', 'ORANGE', 'PURPLE')")
     @Enumerated(EnumType.STRING)
     private ColorEnum color;
 

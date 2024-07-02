@@ -45,6 +45,7 @@ public class UserService {
             logger.error("User with email {} already exists", userRequest.getEmail());
             throw new UserAlreadyExistException("User with this email already exist");
         } else {
+            user.setBonus(0);
             userRoleRepository.save(new UserRole(Role.USER, user));
             savedUser = userRepository.save(user);
             logger.info("User with email {} created successfully", savedUser.getEmail());

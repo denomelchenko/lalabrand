@@ -1,12 +1,14 @@
 package com.lalabrand.ecommerce.order.shipping.shipping_option;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "shipping_option")
 public class ShippingOption {
     @Id

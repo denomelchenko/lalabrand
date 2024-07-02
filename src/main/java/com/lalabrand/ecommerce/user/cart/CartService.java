@@ -118,5 +118,13 @@ public class CartService {
                 .success(true)
                 .build();
     }
-}
 
+    @Transactional
+    public void deleteCartItems(String userId) {
+        if (cartRepository.findCartByUserId(userId).isPresent()) {
+            cartItemRepository.deleteAllByCartId(cartRepository.findCartByUserId(userId).get().getId());
+        } else {
+            throw new IllegalArgumentException("Cart for user with id: " + userId + " does not exist");
+        }
+    }
+}

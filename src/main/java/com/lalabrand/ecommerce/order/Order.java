@@ -1,14 +1,14 @@
 package com.lalabrand.ecommerce.order;
 
-import com.lalabrand.ecommerce.item.enums.Currency;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.lalabrand.ecommerce.order.enums.Currency;
+import com.lalabrand.ecommerce.order.enums.Status;
 import com.lalabrand.ecommerce.order.ordered_item.OrderedItem;
-import com.lalabrand.ecommerce.order.shipping.ShippingInfo;
+import com.lalabrand.ecommerce.order.shipping.shipping_info.ShippingInfo;
 import com.lalabrand.ecommerce.user.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -20,7 +20,8 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table(name = "order")
+@Builder
+@Table(name = "orders")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -32,10 +33,15 @@ public class Order {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @Column(name = "order_number", nullable = false)
+    private Long orderNumber;
+
     @Column(name = "created_at", nullable = false)
+    @CreationTimestamp
     private Instant createdAt;
 
     @OneToMany(mappedBy = "order")
+    @JsonManagedReference
     private Set<OrderedItem> orderedItems;
 
     @Column(name = "total_price", nullable = false)
@@ -50,13 +56,18 @@ public class Order {
     @Column(name = "tax", precision = 10, nullable = false)
     private Float tax;
 
-    @Column(name = "currency", nullable = false)
+    @Column(name = "status", nullable = false, columnDefinition = "ENUM('PENDING', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'CANCELED')")
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
+    @Column(name = "currency", nullable = false, columnDefinition = "ENUM('UAH','EUR','USD')")
     @Enumerated(EnumType.STRING)
     private Currency currency;
 
     @OneToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "shipping_id")
+    @JsonManagedReference
     private ShippingInfo shipping;
 
     @PrePersist

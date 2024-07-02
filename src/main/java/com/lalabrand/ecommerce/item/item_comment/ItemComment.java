@@ -35,7 +35,7 @@ public class ItemComment {
     private String itemId;
 
     @Lob
-    @Column(name = "text", nullable = false)
+    @Column(name = "text", columnDefinition = "LONGTEXT", nullable = false)
     private String text;
 
     @Column(name = "rating", nullable = false)
