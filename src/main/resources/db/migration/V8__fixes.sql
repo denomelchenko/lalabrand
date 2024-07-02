@@ -1,9 +1,11 @@
 ALTER TABLE `order`
-    ADD CONSTRAINT uc_order_shipping UNIQUE (shipping_id),
-    MODIFY shipping_fee DECIMAL(10) NOT NULL;
+    MODIFY shipping_fee FLOAT NOT NULL,
+    MODIFY total_price FLOAT NOT NULL,
+    MODIFY tax FLOAT NOT NULL,
+    MODIFY discount FLOAT NOT NULL;
 
-ALTER TABLE refresh_token
-    ADD CONSTRAINT uc_refresh_token_user UNIQUE (user_id);
+ALTER TABLE `ordered_item`
+    MODIFY price FLOAT NOT NULL;
 
 ALTER TABLE address
     MODIFY address1 VARCHAR(50) NOT NULL,
@@ -18,17 +20,23 @@ ALTER TABLE shipping_info
     MODIFY zip VARCHAR(10) NOT NULL,
     MODIFY phone VARCHAR(15) NOT NULL;
 
+ALTER TABLE shipping_option
+    MODIFY price FLOAT NOT NULL;
+
 ALTER TABLE category
     MODIFY name VARCHAR(50) NOT NULL;
 
 ALTER TABLE user
-    MODIFY phone VARCHAR(15) NOT NULL;
+    MODIFY phone VARCHAR(15);
 
 ALTER TABLE shipping_option
-    MODIFY price DECIMAL(10) NOT NULL;
+    MODIFY price FLOAT NOT NULL;
+
+ALTER TABLE item_comment
+    MODIFY rating FLOAT NOT NULL;
 
 ALTER TABLE item
-    MODIFY short_disc VARCHAR(128) NOT NULL;
-
-ALTER TABLE item
-    MODIFY title VARCHAR(40) NOT NULL;
+    MODIFY short_disc VARCHAR(128) NOT NULL,
+    MODIFY price FLOAT NOT NULL,
+    MODIFY title VARCHAR(40) NOT NULL,
+    MODIFY sale_price FLOAT;
