@@ -4,8 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.Value;
 
-import java.math.BigDecimal;
-
 @Getter
 @Setter
 @Value
@@ -13,10 +11,10 @@ public class ItemInput {
     String title;
     String shortDisc;
     String longDisc;
-    BigDecimal rating;
-    BigDecimal price;
+    Float rating;
+    Float price;
     Integer availableCount;
-    BigDecimal salePrice;
+    Float salePrice;
     Integer soldCount;
     String categoryId;
 
