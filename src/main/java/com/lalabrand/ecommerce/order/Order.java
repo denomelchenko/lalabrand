@@ -12,7 +12,6 @@ import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Set;
 
@@ -40,16 +39,16 @@ public class Order {
     private Set<OrderedItem> orderedItems;
 
     @Column(name = "total_price", nullable = false)
-    private BigDecimal totalPrice;
+    private Float totalPrice;
 
     @Column(name = "shipping_fee", precision = 10, nullable = false)
-    private BigDecimal shippingFee;
+    private Float shippingFee;
 
     @Column(name = "discount", precision = 10)
-    private BigDecimal discount;
+    private Float discount;
 
     @Column(name = "tax", precision = 10, nullable = false)
-    private BigDecimal tax;
+    private Float tax;
 
     @Column(name = "currency", nullable = false)
     @Enumerated(EnumType.STRING)
