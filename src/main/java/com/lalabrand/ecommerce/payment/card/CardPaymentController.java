@@ -17,8 +17,6 @@ import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.stereotype.Controller;
 
-import java.math.BigDecimal;
-
 @Controller
 public class CardPaymentController {
 
@@ -45,15 +43,15 @@ public class CardPaymentController {
         String userId = CommonUtils.getCurrentUserId();
         logger.info("User {} is attempting to create a payment card with currency {} and shipping info {}", userId, currency, shippingInfoRequest);
 
-        BigDecimal totalCost = orderService.calculateTotal(userId);
+        Float totalCost = orderService.calculateTotal(userId);
         logger.info("Calculated total cost for user {}: {}", userId, totalCost);
 
-        BigDecimal discount = orderService.calculateDiscount(userId);
+        Float discount = orderService.calculateDiscount(userId);
         logger.info("Calculated discount for user {}: {}", userId, totalCost);
 
         PaymentIntentCreateParams params =
                 PaymentIntentCreateParams.builder()
-                        .setAmount(Long.valueOf(String.valueOf(totalCost.subtract(discount).multiply(BigDecimal.valueOf(100)))))
+                        .setAmount(Long.valueOf(String.valueOf(totalCost - (discount * 100))))
                         .setCurrency(currency.toString().toLowerCase())
                         .setAutomaticPaymentMethods(
                                 PaymentIntentCreateParams.AutomaticPaymentMethods

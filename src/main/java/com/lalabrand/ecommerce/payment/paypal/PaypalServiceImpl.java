@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -44,10 +43,10 @@ public class PaypalServiceImpl implements PaypalService {
         payment.setIntent("SALE");
         payment.setPayer(getPayer(userId, method));
 
-        BigDecimal discount = orderService.calculateDiscount(userId);
-        BigDecimal totalCost = orderService.calculateTotal(userId);
+        Float discount = orderService.calculateDiscount(userId);
+        Float totalCost = orderService.calculateTotal(userId);
 
-        payment.setTransactions(getTransactions(currency, totalCost.subtract(discount)));
+        payment.setTransactions(getTransactions(currency, totalCost - discount));
         payment.setRedirectUrls(getRedirectUrls(successUrl, cancelUrl));
 
         try {
@@ -71,7 +70,7 @@ public class PaypalServiceImpl implements PaypalService {
         return payer;
     }
 
-    private List<Transaction> getTransactions(String currency, BigDecimal total) {
+    private List<Transaction> getTransactions(String currency, Float total) {
         Amount amount = new Amount();
         amount.setCurrency(String.valueOf(currency));
         amount.setTotal(String.format(Locale.forLanguageTag(String.valueOf(currency)), "%.2f", total));

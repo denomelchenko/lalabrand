@@ -4,11 +4,11 @@ import com.lalabrand.ecommerce.order.enums.Status;
 import com.lalabrand.ecommerce.utils.CommonResponse;
 import com.lalabrand.ecommerce.utils.CommonUtils;
 import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
-import org.springframework.graphql.data.method.annotation.MutationMapping;
-import org.springframework.graphql.data.method.annotation.QueryMapping;
 import java.util.List;
 
 @Controller
@@ -35,6 +35,6 @@ public class OrderController {
     @MutationMapping(name = "deleteOrderById")
     @PreAuthorize("hasAuthority('ADMIN')")
     public CommonResponse deleteOrderById(@Argument("orderId") String orderId) {
-           return orderService.delete(orderId);
+        return orderService.delete(orderId);
     }
 }

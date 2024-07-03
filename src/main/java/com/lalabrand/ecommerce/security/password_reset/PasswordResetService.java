@@ -3,7 +3,7 @@ package com.lalabrand.ecommerce.security.password_reset;
 import com.lalabrand.ecommerce.exception.AccessDeniedException;
 import com.lalabrand.ecommerce.security.refresh_token.RefreshTokenService;
 import com.lalabrand.ecommerce.user.User;
-import com.lalabrand.ecommerce.user.UserRequest;
+import com.lalabrand.ecommerce.user.UserInput;
 import com.lalabrand.ecommerce.user.UserService;
 import com.lalabrand.ecommerce.utils.EmailSenderService;
 import jakarta.persistence.EntityNotFoundException;
@@ -43,7 +43,7 @@ public class PasswordResetService {
     }
 
     @Transactional
-    public boolean resetPasswordForUser(PasswordResetRequest passwordResetInput) {
+    public boolean resetPasswordForUser(PasswordResetInput passwordResetInput) {
         Optional<User> user = userService.findByEmail(passwordResetInput.getEmail());
         if (user.isPresent()) {
             Optional<PasswordResetToken> resetToken = passwordResetTokenRepository
@@ -53,7 +53,7 @@ public class PasswordResetService {
                     logger.error("Password the same with exist password for this user");
                     throw new IllegalArgumentException("Password the same with exist password for this user");
                 }
-                updateUserPassword(new UserRequest(
+                updateUserPassword(new UserInput(
                                 passwordResetInput.getPassword(),
                                 passwordResetInput.getEmail()
                         ),
@@ -72,7 +72,7 @@ public class PasswordResetService {
     }
 
     @Transactional
-    protected void updateUserPassword(UserRequest userRequest, Integer passwordVersion, String userId) {
+    protected void updateUserPassword(UserInput userRequest, Integer passwordVersion, String userId) {
         String password = passwordEncoder.encode(userRequest.getPassword());
         userService.updatePasswordForUser(new User(userRequest.getEmail(), password, passwordVersion), password, userId);
     }

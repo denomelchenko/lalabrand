@@ -1,22 +1,16 @@
 package com.lalabrand.ecommerce.order.ordered_item;
 
 import com.lalabrand.ecommerce.order.Order;
-import com.lalabrand.ecommerce.order.OrderRepository;
-import com.lalabrand.ecommerce.order.enums.Status;
 import com.lalabrand.ecommerce.user.cart.cart_item.CartItem;
-import com.lalabrand.ecommerce.utils.CommonResponse;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.util.Iterator;
 import java.util.Set;
 
 @Service
 @Transactional
-public class OrderItemsServiceImpl implements OrderItemsService{
+public class OrderItemsServiceImpl implements OrderItemsService {
     private OrderItemsRepository orderItemsRepository;
 
     @Autowired
@@ -27,19 +21,21 @@ public class OrderItemsServiceImpl implements OrderItemsService{
     public void addOrderedProduct(OrderedItem orderItem) {
         orderItemsRepository.save(orderItem);
     }
+
     public Set<OrderedItem> getByAllByOrderId(String orderId) {
         return orderItemsRepository.findAllByOrderId(orderId);
     }
-    public OrderedItem generateOrderedFromCartItem(Order order, CartItem cartItem){
-           return OrderedItem.builder()
-                    .order(order)
-                    .item(cartItem.getItem())
-                    .title(cartItem.getItem().getTitle())
-                    .color(String.valueOf(cartItem.getItemInfo().getColor()))
-                    .image(cartItem.getItemInfo().getImage())
-                    .sizeType(cartItem.getSize().getSizeType())
-                    .count(cartItem.getCount())
-                    .price(cartItem.getItem().getPrice().multiply(BigDecimal.valueOf(cartItem.getCount())))
-                    .build();
+
+    public OrderedItem generateOrderedFromCartItem(Order order, CartItem cartItem) {
+        return OrderedItem.builder()
+                .order(order)
+                .item(cartItem.getItem())
+                .title(cartItem.getItem().getTitle())
+                .color(String.valueOf(cartItem.getItemInfo().getColor()))
+                .image(cartItem.getItemInfo().getImage())
+                .sizeType(cartItem.getSize().getSizeType())
+                .count(cartItem.getCount())
+                .price(cartItem.getItem().getPrice() * cartItem.getCount())
+                .build();
     }
 }

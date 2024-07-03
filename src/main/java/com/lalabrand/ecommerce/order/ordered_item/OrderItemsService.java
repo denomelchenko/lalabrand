@@ -7,6 +7,8 @@ import java.util.Set;
 
 public interface OrderItemsService {
     void addOrderedProduct(OrderedItem orderItem);
+
     Set<OrderedItem> getByAllByOrderId(String orderId);
+
     OrderedItem generateOrderedFromCartItem(Order order, CartItem cartItem);
 }

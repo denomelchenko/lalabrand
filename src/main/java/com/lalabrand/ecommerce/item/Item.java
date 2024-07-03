@@ -10,7 +10,6 @@ import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Set;
 
@@ -24,7 +23,7 @@ import java.util.Set;
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false, length = 36)
     private String id;
 
     @Column(name = "title", nullable = false, length = 40)
@@ -37,24 +36,24 @@ public class Item {
     private String longDisc;
 
     @Column(name = "rating", precision = 10)
-    private BigDecimal rating;
+    private Float rating;
 
     @Column(name = "price", nullable = false, precision = 10)
-    private BigDecimal price;
+    private Float price;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "category_id", nullable = false, insertable = false, updatable = false)
     private Category category;
 
-    @Column(name = "category_id", nullable = false)
+    @Column(name = "category_id", nullable = false, length = 36)
     private String categoryId;
 
     @Column(name = "available_count", nullable = false)
     private Integer availableCount;
 
     @Column(name = "sale_price")
-    private BigDecimal salePrice;
+    private Float salePrice;
 
     @Column(name = "sold_count", nullable = false)
     private Integer soldCount;

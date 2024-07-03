@@ -2,15 +2,12 @@ package com.lalabrand.ecommerce.order.ordered_item;
 
 import com.lalabrand.ecommerce.item.ItemDTO;
 import com.lalabrand.ecommerce.item.enums.SizeType;
-import com.lalabrand.ecommerce.item.item_info.ItemInfoDTO;
-import com.lalabrand.ecommerce.item.size.SizeDTO;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Value;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 @Value
 @Getter
@@ -23,7 +20,7 @@ public class OrderItemsDTO implements Serializable {
     String title;
     String color;
     String image;
-    BigDecimal price;
+    Float price;
 
     public static OrderItemsDTO fromEntity(OrderedItem orderedItem) {
         return OrderItemsDTO.builder()

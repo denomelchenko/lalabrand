@@ -1,0 +1,42 @@
+ALTER TABLE `order`
+    MODIFY shipping_fee FLOAT NOT NULL,
+    MODIFY total_price FLOAT NOT NULL,
+    MODIFY tax FLOAT NOT NULL,
+    MODIFY discount FLOAT NOT NULL;
+
+ALTER TABLE `ordered_item`
+    MODIFY price FLOAT NOT NULL;
+
+ALTER TABLE address
+    MODIFY address1 VARCHAR(50) NOT NULL,
+    MODIFY address2 VARCHAR(50) NOT NULL,
+    MODIFY city VARCHAR(50) NOT NULL,
+    MODIFY zip VARCHAR(10) NOT NULL;
+
+ALTER TABLE shipping_info
+    MODIFY address2 VARCHAR(50) NOT NULL,
+    MODIFY address1 VARCHAR(50) NOT NULL,
+    MODIFY city VARCHAR(50) NOT NULL,
+    MODIFY zip VARCHAR(10) NOT NULL,
+    MODIFY phone VARCHAR(15) NOT NULL;
+
+ALTER TABLE shipping_option
+    MODIFY price FLOAT NOT NULL;
+
+ALTER TABLE category
+    MODIFY name VARCHAR(50) NOT NULL;
+
+ALTER TABLE user
+    MODIFY phone VARCHAR(15);
+
+ALTER TABLE shipping_option
+    MODIFY price FLOAT NOT NULL;
+
+ALTER TABLE item_comment
+    MODIFY rating FLOAT NOT NULL;
+
+ALTER TABLE item
+    MODIFY short_disc VARCHAR(128) NOT NULL,
+    MODIFY price FLOAT NOT NULL,
+    MODIFY title VARCHAR(40) NOT NULL,
+    MODIFY sale_price FLOAT;

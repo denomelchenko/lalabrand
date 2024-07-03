@@ -7,7 +7,6 @@ import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.math.BigDecimal;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -20,7 +19,7 @@ import java.util.Set;
 public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false, length = 36)
     private String id;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
@@ -28,7 +27,7 @@ public class Cart {
     @JoinColumn(name = "user_id", nullable = false, insertable = false, updatable = false)
     private User user;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", nullable = false, length = 36)
     private String userId;
 
     @OneToMany(mappedBy = "cart")

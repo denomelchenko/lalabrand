@@ -1,6 +1,5 @@
 package com.lalabrand.ecommerce.item.size;
 
-import com.lalabrand.ecommerce.item.Item;
 import com.lalabrand.ecommerce.item.enums.SizeType;
 import com.lalabrand.ecommerce.item.item_info.ItemInfo;
 import jakarta.persistence.*;
@@ -19,7 +18,7 @@ import java.util.Set;
 public class Size {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false, length = 36)
     private String id;
 
     @Enumerated(EnumType.STRING)

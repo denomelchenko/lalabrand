@@ -1,6 +1,5 @@
 package com.lalabrand.ecommerce.order.shipping.shipping_info;
 
-import com.lalabrand.ecommerce.order.shipping.shipping_option.ShippingOption;
 import com.lalabrand.ecommerce.order.shipping.shipping_option.ShippingOptionDTO;
 import com.lalabrand.ecommerce.user.enums.Country;
 import lombok.Builder;
@@ -20,7 +19,7 @@ public class ShippingInfoDTO implements Serializable {
     String phone;
     ShippingOptionDTO shippingOptionDTO;
 
-    public static ShippingInfoDTO fromEntity(ShippingInfo shippingInfo){
+    public static ShippingInfoDTO fromEntity(ShippingInfo shippingInfo) {
         return ShippingInfoDTO.builder()
                 .id(shippingInfo.getId())
                 .country(shippingInfo.getCountry())

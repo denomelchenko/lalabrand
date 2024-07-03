@@ -4,8 +4,8 @@ import com.lalabrand.ecommerce.item.Item;
 import com.lalabrand.ecommerce.item.enums.ColorEnum;
 import com.lalabrand.ecommerce.item.size.Size;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
+
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -20,21 +20,21 @@ import java.util.Set;
 public class ItemInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false, length = 36)
     private String id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "item_id", nullable = false, insertable = false, updatable = false)
     private Item item;
 
-    @Column(name = "item_id", nullable = false)
+    @Column(name = "item_id", nullable = false, length = 36)
     private String itemId;
 
     @Column(name = "color", nullable = false, columnDefinition = "ENUM('WHITE', 'BLACK', 'GREY', 'YELLOW', 'RED', 'BLUE', 'GREEN', 'BROWN', 'PINK', 'ORANGE', 'PURPLE')")
     @Enumerated(EnumType.STRING)
     private ColorEnum color;
 
-    @Column(name = "image")
+    @Column(name = "image", nullable = false)
     private String image;
 
     @ManyToMany

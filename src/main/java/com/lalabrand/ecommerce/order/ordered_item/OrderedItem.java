@@ -1,16 +1,12 @@
-
 package com.lalabrand.ecommerce.order.ordered_item;
 
 import com.lalabrand.ecommerce.item.Item;
 import com.lalabrand.ecommerce.item.enums.SizeType;
-import com.lalabrand.ecommerce.item.size.Size;
 import com.lalabrand.ecommerce.order.Order;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-
-import java.math.BigDecimal;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,7 +18,7 @@ import java.math.BigDecimal;
 public class OrderedItem {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false, length = 36)
     private String id;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
@@ -46,7 +42,7 @@ public class OrderedItem {
     private String color;
 
     @Column(name = "price", nullable = false, precision = 10)
-    private BigDecimal price;
+    private Float price;
 
     @Column(name = "count", nullable = false)
     private Integer count;
