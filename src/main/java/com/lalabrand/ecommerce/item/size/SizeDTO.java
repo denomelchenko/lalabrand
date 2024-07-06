@@ -25,4 +25,12 @@ public class SizeDTO {
                 .value(size.getValue())
                 .build();
     }
+
+    public Size toEntity() {
+        return Size.builder()
+                .id(this.id)
+                .sizeType(this.sizeType)
+                .value(this.value)
+                .build();
+    }
 }

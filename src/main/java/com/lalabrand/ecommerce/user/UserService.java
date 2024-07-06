@@ -33,7 +33,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserDTO saveUser(UserRequest userRequest) {
+    public UserDTO saveUser(UserInput userRequest) {
         if (userRequest.getEmail() == null || userRequest.getPassword() == null) {
             throw new BadCredentialsException("Password or email can not be null");
         }
@@ -45,6 +45,7 @@ public class UserService {
             logger.error("User with email {} already exists", userRequest.getEmail());
             throw new UserAlreadyExistException("User with this email already exist");
         } else {
+            user.setBonus(0);
             userRoleRepository.save(new UserRole(Role.USER, user));
             savedUser = userRepository.save(user);
             logger.info("User with email {} created successfully", savedUser.getEmail());
@@ -65,28 +66,28 @@ public class UserService {
     }
 
     @Transactional
-    public UserDTO updateUser(UserUpdateRequest userUpdateRequest) {
+    public UserDTO updateUser(UserUpdateInput userUpdateInput) {
         String currentUserId = CommonUtils.getCurrentUserId();
         return UserDTO.fromEntity(userRepository.save(
                 updateUserFields(userRepository.findById(currentUserId).orElseThrow(() -> {
                             logger.error("User with id {} does not exists", currentUserId);
                             return new UsernameNotFoundException("Error, the current user has been deleted");
                         }
-                ), userUpdateRequest)));
+                ), userUpdateInput)));
     }
 
-    private User updateUserFields(User user, UserUpdateRequest userUpdateRequest) {
-        if (userUpdateRequest.getFirstName() != null) {
-            user.setFirstName(userUpdateRequest.getFirstName());
+    private User updateUserFields(User user, UserUpdateInput userUpdateInput) {
+        if (userUpdateInput.getFirstName() != null) {
+            user.setFirstName(userUpdateInput.getFirstName());
         }
-        if (userUpdateRequest.getLastName() != null) {
-            user.setLastName(userUpdateRequest.getLastName());
+        if (userUpdateInput.getLastName() != null) {
+            user.setLastName(userUpdateInput.getLastName());
         }
-        if (userUpdateRequest.getPhone() != null) {
-            user.setPhone(userUpdateRequest.getPhone());
+        if (userUpdateInput.getPhone() != null) {
+            user.setPhone(userUpdateInput.getPhone());
         }
-        if (userUpdateRequest.getLanguage() != null) {
-            user.setLanguage(userUpdateRequest.getLanguage());
+        if (userUpdateInput.getLanguage() != null) {
+            user.setLanguage(userUpdateInput.getLanguage());
         }
         return user;
     }

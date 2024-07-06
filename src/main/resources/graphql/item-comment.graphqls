@@ -1,0 +1,18 @@
+extend type Mutation {
+    itemComment(itemCommentInput: ItemCommentInput!): ItemComment!
+}
+
+type ItemComment {
+    id: String!,
+    userId: String!,
+    itemId: String!,
+    text: String!,
+    rating: Float!,
+}
+
+input ItemCommentInput {
+    userId: String!
+    itemId: String!
+    text: String!
+    rating: Float!
+}

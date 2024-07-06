@@ -17,10 +17,10 @@ import org.hibernate.annotations.OnDeleteAction;
 public class UserRole {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false, length = 36)
     private String id;
 
-    @Column(name = "role", nullable = false)
+    @Column(name = "role", nullable = false, columnDefinition = "ENUM('ADMIN', 'USER')")
     @Enumerated(EnumType.STRING)
     private Role role;
 

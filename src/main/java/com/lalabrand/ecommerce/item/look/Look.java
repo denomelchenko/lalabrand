@@ -17,11 +17,11 @@ import java.util.Set;
 public class Look {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false, length = 36)
     private String id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "gender", nullable = false)
+    @Column(name = "gender", nullable = false, columnDefinition = "ENUM('MAN','WOMAN','UNISEX')")
     private Gender gender;
 
     @Column(name = "image", nullable = false)

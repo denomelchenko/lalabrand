@@ -1,5 +1,7 @@
 package com.lalabrand.ecommerce.user.cart;
 
+import com.lalabrand.ecommerce.user.User;
+import com.lalabrand.ecommerce.user.cart.cart_item.CartItem;
 import com.lalabrand.ecommerce.user.cart.cart_item.CartItemDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Value;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -25,6 +28,18 @@ public class CartDTO implements Serializable {
         return CartDTO.builder()
                 .id(cart.getId())
                 .cartItems(cart.getCartItems().stream().map(CartItemDTO::fromEntity).collect(Collectors.toSet()))
+                .build();
+    }
+
+    public Cart toEntity(User user) {
+        Set<CartItem> cartItemEntities = new HashSet<>();
+        for (CartItemDTO cartItemDTO : this.cartItems) {
+            cartItemEntities.add(cartItemDTO.toEntity());
+        }
+        return Cart.builder()
+                .id(this.id)
+                .user(user)
+                .cartItems(cartItemEntities)
                 .build();
     }
 }

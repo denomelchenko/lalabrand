@@ -2,8 +2,9 @@ package com.lalabrand.ecommerce.item;
 
 
 import com.lalabrand.ecommerce.user.enums.Language;
-import com.lalabrand.ecommerce.utils.Id;
 import com.lalabrand.ecommerce.utils.PaginationRequest;
+import com.lalabrand.ecommerce.utils.annotation.Id;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -48,8 +49,8 @@ public class ItemController {
     }
 
     @MutationMapping(name = "item")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ItemDTO createItem(@Argument ItemInput itemInput) {
+    @PreAuthorize("hasAuthority('USER')")
+    public ItemDTO createItem(@Argument @Valid ItemInput itemInput) {
         return itemService.save(itemInput);
     }
 }

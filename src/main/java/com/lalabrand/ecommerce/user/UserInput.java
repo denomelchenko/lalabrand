@@ -1,18 +1,16 @@
 package com.lalabrand.ecommerce.user;
 
-import com.lalabrand.ecommerce.utils.Password;
+import com.lalabrand.ecommerce.utils.annotation.Password;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-public class UserRequest {
+public class UserInput {
     @NotBlank(message = "Password can not be blank")
     @Password
     String password;

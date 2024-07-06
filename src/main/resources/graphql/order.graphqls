@@ -1,0 +1,33 @@
+type Order {
+    id: ID!
+    createdAt: String!
+    orderedItems: [OrderedItem!]!
+    totalPrice: Float!
+    discount: Float
+    status: Status!
+    currency: Currency!
+    shipping: ShippingInfo!
+}
+
+
+extend type Query {
+    ordersByUserId: [Order!]!
+}
+
+extend type Query {
+    ordersByStatus(status: Status!): [Order!]!
+}
+
+input ShippingInfoRequest {
+    country: Country!
+    zip: String!
+    city: String!
+    address1: String!
+    address2: String!
+    phone: String!
+    shippingOptionId: String!
+}
+
+extend type Mutation {
+    deleteOrderById(orderId: ID!): CommonResponse!
+}

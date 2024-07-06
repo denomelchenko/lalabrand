@@ -33,7 +33,7 @@ public class UserController {
     }
 
     @MutationMapping(name = "user")
-    public UserDTO saveUser(@Argument(name = "userInput") @Valid UserRequest userRequest) {
+    public UserDTO saveUser(@Argument(name = "userInput") @Valid UserInput userRequest) {
         return userService.saveUser(userRequest);
     }
 
@@ -85,7 +85,7 @@ public class UserController {
 
     @MutationMapping(name = "updateUser")
     @PreAuthorize("hasAuthority('USER')")
-    public UserDTO updateUser(@Argument(name = "userUpdateInput") @Valid UserUpdateRequest userUpdateRequest) {
-        return userService.updateUser(userUpdateRequest);
+    public UserDTO updateUser(@Argument(name = "userUpdateInput") @Valid UserUpdateInput userUpdateInput) {
+        return userService.updateUser(userUpdateInput);
     }
 }
