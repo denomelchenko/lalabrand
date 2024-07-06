@@ -1,7 +1,5 @@
-ALTER TABLE `order`
-    MODIFY shipping_fee FLOAT NOT NULL,
+ALTER TABLE `orders`
     MODIFY total_price FLOAT NOT NULL,
-    MODIFY tax FLOAT NOT NULL,
     MODIFY discount FLOAT NOT NULL;
 
 ALTER TABLE `ordered_item`
