@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -82,18 +83,25 @@ public class ItemService {
         return ItemDTO.fromEntity(itemRepository.save(itemInput.toEntity()));
     }
 
-    public List<ItemDTO> filterItems(FilterRequest request, Pageable pageable) {
-        List<ItemDTO> filteredList = itemRepository.findFilteredItems(request.getCategoryId(), request.getSizeId(),
-                request.getColor(), pageable);
-        if ("asc".equalsIgnoreCase(request.getTypeOfPriceSort())) {
-            return filteredList.stream()
-                    .sorted(Comparator.comparing(ItemDTO::getPrice))
-                    .collect(Collectors.toList());
-        } else if ("desc".equalsIgnoreCase(request.getTypeOfPriceSort())) {
-            return filteredList.stream()
-                    .sorted(Comparator.comparing(ItemDTO::getPrice).reversed())
-                    .collect(Collectors.toList());
+    public List<ItemDTO> filterItems(FilterRequest request) {
+        logger.info("Filter parameters - CategoryId: {}, Color: {}, SizeId: {}", request.getCategoryId(), request.getColor(), request.getSizeId());
+
+        List<Item> filteredList = itemRepository.findFilteredItems(request.getCategoryId(), request.getColor(), request.getSizeId());
+        if (filteredList.isEmpty()) {
+            logger.warn("No items found with the given filter parameters.");
+        } else {
+            logger.info("Found {} items with the given filter parameters.", filteredList.size());
         }
-        return filteredList;
+
+        if ("asc".equalsIgnoreCase(request.getTypeOfPriceSort())) {
+            return ItemDTO.fromEntityList(filteredList.stream()
+                    .sorted(Comparator.comparing(Item::getPrice))
+                    .collect(Collectors.toList()));
+        } else if ("desc".equalsIgnoreCase(request.getTypeOfPriceSort())) {
+            return ItemDTO.fromEntityList(filteredList.stream()
+                    .sorted(Comparator.comparing(Item::getPrice).reversed())
+                    .collect(Collectors.toList()));
+        }
+        return ItemDTO.fromEntityList(filteredList);
     }
 }

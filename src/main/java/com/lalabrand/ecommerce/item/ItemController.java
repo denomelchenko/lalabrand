@@ -56,8 +56,7 @@ public class ItemController {
     }
 
     @QueryMapping(name = "itemsFilter")
-    public List<ItemDTO> itemsFilter(@Argument FilterRequest request,
-                                     @Argument PaginationRequest paginationRequest) {
-        return itemService.filterItems(request, paginationRequest.toPageRequest());
+    public List<ItemDTO> itemsFilter(@Argument FilterRequest filterRequest) {
+        return itemService.filterItems(filterRequest);
     }
 }
