@@ -28,7 +28,7 @@ input FilterItemInput {
     categoryId: String
     sizeId: String
     typeOfPriceSort: String
-    color: String
+    color: Color
 }
 
 extend type Query {
@@ -36,7 +36,7 @@ extend type Query {
     itemsByTitle(title: String!, language: Language!, paginationRequest: PaginationRequest!): [Item!]!,
     itemsByCategoryId(categoryId: ID!, paginationRequest: PaginationRequest!): [Item!]!
     itemById(itemId: ID!): Item!
-    itemsFilter(FilterRequest: FilterItemInput!, paginationRequest: PaginationRequest!): [Item!]!
+    itemsFilter(filterRequest: FilterItemInput!): [Item!]!
 }
 
 extend type Mutation {
