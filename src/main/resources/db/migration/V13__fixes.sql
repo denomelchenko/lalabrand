@@ -1,7 +1,5 @@
-ALTER TABLE `order`
-    MODIFY shipping_fee FLOAT NOT NULL,
+ALTER TABLE `orders`
     MODIFY total_price FLOAT NOT NULL,
-    MODIFY tax FLOAT NOT NULL,
     MODIFY discount FLOAT NOT NULL;
 
 ALTER TABLE `ordered_item`
@@ -39,4 +37,5 @@ ALTER TABLE item
     MODIFY short_disc VARCHAR(128) NOT NULL,
     MODIFY price FLOAT NOT NULL,
     MODIFY title VARCHAR(40) NOT NULL,
-    MODIFY sale_price FLOAT;
+    MODIFY sale_price FLOAT,
+    MODIFY rating FLOAT NOT NULL;
