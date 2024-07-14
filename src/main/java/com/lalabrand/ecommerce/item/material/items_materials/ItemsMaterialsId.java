@@ -1,4 +1,4 @@
-package com.lalabrand.ecommerce.item.material;
+package com.lalabrand.ecommerce.item.material.items_materials;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -14,7 +14,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @Embeddable
-public class ItemsMaterialId implements Serializable {
+public class ItemsMaterialsId implements Serializable {
     private static final long serialVersionUID = -6923532036602332442L;
     @Size(max = 36)
     @NotNull
@@ -22,21 +22,21 @@ public class ItemsMaterialId implements Serializable {
     private String item;
 
     @NotNull
-    @Column(name = "material_id", nullable = false)
-    private Integer materialId;
+    @Column(name = "material_name", nullable = false)
+    private Integer material_name;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        ItemsMaterialId entity = (ItemsMaterialId) o;
+        ItemsMaterialsId entity = (ItemsMaterialsId) o;
         return Objects.equals(this.item, entity.item) &&
-                Objects.equals(this.materialId, entity.materialId);
+                Objects.equals(this.material_name, entity.material_name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(item, materialId);
+        return Objects.hash(item, material_name);
     }
 
 }
