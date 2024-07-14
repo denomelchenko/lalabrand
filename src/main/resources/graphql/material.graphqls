@@ -1,0 +1,11 @@
+extend type Query {
+    materials: [Material!]!
+}
+
+extend type Mutation {
+    material(name: String!): Material!
+}
+
+type Material {
+    name: String!
+}
