@@ -4,6 +4,7 @@ import com.lalabrand.ecommerce.item.category.Category;
 import com.lalabrand.ecommerce.item.item_comment.ItemComment;
 import com.lalabrand.ecommerce.item.item_info.ItemInfo;
 import com.lalabrand.ecommerce.item.look.Look;
+import com.lalabrand.ecommerce.item.material.items_materials.ItemsMaterials;
 import com.lalabrand.ecommerce.order.ordered_item.OrderedItem;
 import jakarta.persistence.*;
 import lombok.*;
@@ -11,6 +12,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.Instant;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -72,6 +74,9 @@ public class Item {
 
     @OneToMany(mappedBy = "item")
     private Set<ItemInfo> itemInfos;
+
+    @OneToMany(mappedBy = "item")
+    private Set<ItemsMaterials> itemsMaterials = new LinkedHashSet<>();
 
     public Item(String id) {
         this.id = id;
