@@ -4,12 +4,12 @@ extend type Mutation {
 
 input ItemsMaterialsInput {
     itemId: ID!
-    materialId: ID!
+    materialName: String!
     percentage: Int!
 }
 
 type ItemsMaterials {
     itemId: ID!
-    materialId: ID!
+    materialName: String!
     percentage: Int!
 }
