@@ -29,8 +29,8 @@ public class ItemsMaterialsDTO implements Serializable {
 
     public static ItemsMaterialsDTO fromEntity(ItemsMaterials itemsMaterials) {
         return ItemsMaterialsDTO.builder()
-                .itemId(itemsMaterials.getItemId())
-                .materialName(itemsMaterials.getMaterialName())
+                .itemId(itemsMaterials.getItem().getId())
+                .materialName(itemsMaterials.getMaterial().getName())
                 .percentage(itemsMaterials.getPercentage())
                 .build();
     }
