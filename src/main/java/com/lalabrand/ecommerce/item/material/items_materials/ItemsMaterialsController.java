@@ -2,6 +2,7 @@ package com.lalabrand.ecommerce.item.material.items_materials;
 
 import com.lalabrand.ecommerce.utils.annotation.Id;
 import jakarta.validation.Valid;
+import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.stereotype.Controller;
 
@@ -14,7 +15,7 @@ public class ItemsMaterialsController {
     }
 
     @MutationMapping("materialToItem")
-    public ItemsMaterialsDTO addMaterialToItem(@Valid ItemsMaterialsInput itemsMaterialsInput) {
+    public ItemsMaterialsDTO addMaterialToItem(@Argument @Valid ItemsMaterialsInput itemsMaterialsInput) {
         return itemsMaterialsService.addMaterialToItem(itemsMaterialsInput);
     }
 }
