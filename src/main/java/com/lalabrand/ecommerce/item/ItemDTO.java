@@ -1,6 +1,9 @@
 package com.lalabrand.ecommerce.item;
 
 import com.lalabrand.ecommerce.item.item_info.ItemInfoDTO;
+import com.lalabrand.ecommerce.item.material.Material;
+import com.lalabrand.ecommerce.item.material.MaterialDTO;
+import com.lalabrand.ecommerce.item.material.items_materials.ItemsMaterialsDTO;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,6 +31,7 @@ public class ItemDTO implements Serializable {
     Integer availableCount;
     Float salePrice;
     Integer soldCount;
+    Set<ItemsMaterialsDTO> materials;
     Set<ItemInfoDTO> itemInfos;
 
     public static ItemDTO fromEntity(Item item) {
@@ -44,6 +48,7 @@ public class ItemDTO implements Serializable {
                 .availableCount(item.getAvailableCount())
                 .salePrice(item.getSalePrice())
                 .soldCount(item.getSoldCount())
+                .materials(item.getItemsMaterials().stream().map(ItemsMaterialsDTO::fromEntity).collect(Collectors.toSet()))
                 .itemInfos(item.getItemInfos().stream().map(ItemInfoDTO::fromEntity).collect(Collectors.toSet()))
                 .build();
     }
