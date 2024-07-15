@@ -2,6 +2,7 @@ package com.lalabrand.ecommerce.item.material;
 
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -23,5 +24,9 @@ public class MaterialService {
 
     public Set<MaterialDTO> findAll() {
         return materialRepository.findAll().stream().map(MaterialDTO::fromEntity).collect(Collectors.toSet());
+    }
+
+    public Optional<Material> findByName(String name) {
+        return materialRepository.findByName(name);
     }
 }
