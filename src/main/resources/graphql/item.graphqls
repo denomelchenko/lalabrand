@@ -25,10 +25,15 @@ input ItemInput {
 }
 
 extend type Query {
-    bestSellers(limit: Int): [Item!]!,
-    itemsByTitle(title: String!, language: Language!, paginationRequest: PaginationRequest!): [Item!]!,
-    itemsByCategoryId(categoryId: ID!, paginationRequest: PaginationRequest!): [Item!]!
+    bestSellers(limit: Int): PagedItems!,
+    itemsByTitle(title: String!, language: Language!, paginationRequest: PaginationRequest!): PagedItems!,
+    itemsByCategoryId(categoryId: ID!, paginationRequest: PaginationRequest!): PagedItems!,
     itemById(itemId: ID!): Item!
+}
+
+type PagedItems {
+    pageInfo: PageInfo!
+    items: [Item!]!
 }
 
 extend type Mutation {
