@@ -11,7 +11,7 @@ import java.util.Set;
 @Service
 @Transactional
 public class OrderItemsServiceImpl implements OrderItemsService {
-    private OrderItemsRepository orderItemsRepository;
+    private final OrderItemsRepository orderItemsRepository;
 
     @Autowired
     public OrderItemsServiceImpl(OrderItemsRepository orderItemsRepository) {

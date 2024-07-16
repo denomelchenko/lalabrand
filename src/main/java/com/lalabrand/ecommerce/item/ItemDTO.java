@@ -1,8 +1,6 @@
 package com.lalabrand.ecommerce.item;
 
 import com.lalabrand.ecommerce.item.item_info.ItemInfoDTO;
-import com.lalabrand.ecommerce.item.material.Material;
-import com.lalabrand.ecommerce.item.material.MaterialDTO;
 import com.lalabrand.ecommerce.item.material.items_materials.ItemsMaterialsDTO;
 import lombok.Builder;
 import lombok.Getter;
