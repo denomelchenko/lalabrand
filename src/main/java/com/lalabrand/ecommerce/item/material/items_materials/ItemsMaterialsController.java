@@ -4,6 +4,7 @@ import com.lalabrand.ecommerce.utils.annotation.Id;
 import jakarta.validation.Valid;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
 @Controller
@@ -15,6 +16,7 @@ public class ItemsMaterialsController {
     }
 
     @MutationMapping("materialToItem")
+    @PreAuthorize("hasRole('ADMIN')")
     public ItemsMaterialsDTO addMaterialToItem(@Argument @Valid ItemsMaterialsInput itemsMaterialsInput) {
         return itemsMaterialsService.addMaterialToItem(itemsMaterialsInput);
     }
