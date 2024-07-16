@@ -6,6 +6,7 @@ type User {
     phone: String
     bonus: Int
     language: Language
+    addresses: [Address!]!
 }
 
 extend type Query {
