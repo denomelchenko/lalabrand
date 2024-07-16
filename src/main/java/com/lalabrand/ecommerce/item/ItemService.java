@@ -5,6 +5,7 @@ import com.lalabrand.ecommerce.utils.TranslationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,22 +24,21 @@ public class ItemService {
         this.translationService = translationService;
     }
 
-    public List<ItemDTO> findBestSellersItems(Optional<Integer> limit) {
+    public Page<ItemDTO> findBestSellersItems(Optional<Integer> limit) {
         limit = Optional.of(limit.filter(l -> l > 0).orElse(4));
-        return convertToItemDtoList(itemRepository.findItemsByOrderBySoldCountDesc(
-                PageRequest.of(0, limit.get()))
-        );
+        System.out.println(itemRepository.findItemsByOrderBySoldCountDesc(
+                PageRequest.of(0, limit.get())).map(ItemDTO::fromEntity));
     }
 
-    public List<ItemDTO> findItemsByTitle(String title, Language language, Pageable pageable) {
+    public Page<ItemDTO> findItemsByTitle(String title, Language language, Pageable pageable) {
         if (!language.equals(Language.EN)) {
             title = translationService.textTranslate(language.toString(), Language.EN.toString(), title);
         }
-        return convertToItemDtoList(itemRepository.findByTitleContainingIgnoreCase(title, pageable));
+        return itemRepository.findByTitleContainingIgnoreCase(title, pageable).map(ItemDTO::fromEntity);
     }
 
-    public List<ItemDTO> findItemsByCategoryId(String categoryId, Pageable pageable) {
-        return convertToItemDtoList(itemRepository.findItemsByCategoryId(categoryId, pageable));
+    public Page<ItemDTO> findItemsByCategoryId(String categoryId, Pageable pageable) {
+        return itemRepository.findItemsByCategoryId(categoryId, pageable).map(ItemDTO::fromEntity);
     }
 
     public Item findItemByIdOrThrow(String itemId) {
