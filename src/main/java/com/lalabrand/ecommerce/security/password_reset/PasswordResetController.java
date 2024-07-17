@@ -16,7 +16,7 @@ public class PasswordResetController {
     }
 
     @MutationMapping(name = "sendResetPasswordTokenOnEmail")
-    public CommonResponse sendResetPasswordOnEmail(@Argument @Valid @Email String email) {
+    public CommonResponse sendResetPasswordOnEmail(@Argument @Email String email) {
         boolean success = passwordResetService.sendPasswordResetTokenByEmail(email);
         String message = success ? "Password reset token sent successfully" : "Failed to send reset password on email";
 
