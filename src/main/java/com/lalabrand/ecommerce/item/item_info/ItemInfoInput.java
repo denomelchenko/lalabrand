@@ -1,10 +1,10 @@
 package com.lalabrand.ecommerce.item.item_info;
 
 import com.lalabrand.ecommerce.item.enums.ColorEnum;
-import com.lalabrand.ecommerce.utils.annotation.Id;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Value;
+import org.hibernate.validator.constraints.UUID;
 
 @Value
 @Getter
@@ -13,7 +13,7 @@ public class ItemInfoInput {
     String image;
     ColorEnum color;
     Boolean isColorAvailable;
-    @Id
+    @UUID(message = "Item ID is not valid")
     String itemId;
 
     public ItemInfo toEntity() {
