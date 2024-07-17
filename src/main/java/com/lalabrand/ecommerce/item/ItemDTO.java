@@ -8,6 +8,7 @@ import lombok.Value;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -60,5 +61,9 @@ public class ItemDTO implements Serializable {
                 .salePrice(this.salePrice)
                 .soldCount(this.soldCount)
                 .build();
+    }
+
+    public static List<ItemDTO> fromEntityList(List<Item> items) {
+        return items.stream().map(ItemDTO::fromEntity).collect(Collectors.toList());
     }
 }

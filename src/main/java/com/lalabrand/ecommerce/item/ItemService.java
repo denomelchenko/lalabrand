@@ -1,5 +1,6 @@
 package com.lalabrand.ecommerce.item;
 
+import com.lalabrand.ecommerce.item.filters.FilterRequest;
 import com.lalabrand.ecommerce.user.enums.Language;
 import com.lalabrand.ecommerce.utils.TranslationService;
 import org.slf4j.Logger;
@@ -8,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ItemService {
@@ -75,7 +78,30 @@ public class ItemService {
         return ItemDTO.fromEntity(item.get());
     }
 
+
     public ItemDTO save(ItemInput itemInput) {
         return ItemDTO.fromEntity(itemRepository.save(itemInput.toEntity()));
+    }
+
+    public List<ItemDTO> filterItems(FilterRequest request) {
+        logger.info("Filter parameters - CategoryId: {}, Color: {}, SizeId: {}", request.getCategoryId(), request.getColor(), request.getSizeId());
+
+        List<Item> filteredList = itemRepository.findFilteredItems(request.getCategoryId(), request.getColor(), request.getSizeId());
+        if (filteredList.isEmpty()) {
+            logger.warn("No items found with the given filter parameters.");
+        } else {
+            logger.info("Found {} items with the given filter parameters.", filteredList.size());
+        }
+
+        if ("asc".equalsIgnoreCase(request.getTypeOfPriceSort())) {
+            return ItemDTO.fromEntityList(filteredList.stream()
+                    .sorted(Comparator.comparing(Item::getPrice))
+                    .collect(Collectors.toList()));
+        } else if ("desc".equalsIgnoreCase(request.getTypeOfPriceSort())) {
+            return ItemDTO.fromEntityList(filteredList.stream()
+                    .sorted(Comparator.comparing(Item::getPrice).reversed())
+                    .collect(Collectors.toList()));
+        }
+        return ItemDTO.fromEntityList(filteredList);
     }
 }

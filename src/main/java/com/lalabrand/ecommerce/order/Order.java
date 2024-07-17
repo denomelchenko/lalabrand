@@ -12,6 +12,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Set;
 
@@ -47,20 +48,14 @@ public class Order {
     @Column(name = "total_price", nullable = false)
     private Float totalPrice;
 
-    @Column(name = "shipping_fee", precision = 10, nullable = false)
-    private Float shippingFee;
-
-    @Column(name = "discount", precision = 10)
-    private Float discount;
-
-    @Column(name = "tax", precision = 10, nullable = false)
-    private Float tax;
-
     @Column(name = "status", nullable = false, columnDefinition = "ENUM('PENDING', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'CANCELED')")
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @Column(name = "currency", nullable = false, columnDefinition = "ENUM('UAH','EUR','USD')")
+    @Column(name = "discount", precision = 10, nullable = false)
+    private Float discount;
+
+    @Column(name = "currency", nullable = false , columnDefinition = "ENUM('UAH','EUR','USD')")
     @Enumerated(EnumType.STRING)
     private Currency currency;
 

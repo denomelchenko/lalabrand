@@ -1,6 +1,7 @@
 package com.lalabrand.ecommerce.item;
 
 
+import com.lalabrand.ecommerce.item.filters.FilterRequest;
 import com.lalabrand.ecommerce.user.enums.Language;
 import com.lalabrand.ecommerce.utils.PaginationRequest;
 import com.lalabrand.ecommerce.utils.annotation.Id;
@@ -52,5 +53,10 @@ public class ItemController {
     @PreAuthorize("hasAuthority('USER')")
     public ItemDTO createItem(@Argument @Valid ItemInput itemInput) {
         return itemService.save(itemInput);
+    }
+
+    @QueryMapping(name = "itemsFilter")
+    public List<ItemDTO> itemsFilter(@Argument FilterRequest filterRequest) {
+        return itemService.filterItems(filterRequest);
     }
 }

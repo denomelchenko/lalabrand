@@ -11,6 +11,7 @@ type Item {
     itemInfos: [ItemInfo!]!
 }
 
+
 input ItemInput {
     title: String!,
     shortDisc: String!,
@@ -23,11 +24,19 @@ input ItemInput {
     soldCount: Int!
 }
 
+input FilterItemInput {
+    categoryId: String
+    sizeId: String
+    typeOfPriceSort: String
+    color: Color
+}
+
 extend type Query {
     bestSellers(limit: Int): [Item!]!,
     itemsByTitle(title: String!, language: Language!, paginationRequest: PaginationRequest!): [Item!]!,
     itemsByCategoryId(categoryId: ID!, paginationRequest: PaginationRequest!): [Item!]!
     itemById(itemId: ID!): Item!
+    itemsFilter(filterRequest: FilterItemInput!): [Item!]!
 }
 
 extend type Mutation {
