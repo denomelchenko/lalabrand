@@ -25,14 +25,15 @@ input ItemInput {
 }
 
 extend type Query {
-    bestSellers(limit: Int): PagedItems!,
-    itemsByTitle(title: String!, language: Language!, paginationRequest: PaginationRequest!): PagedItems!,
-    itemsByCategoryId(categoryId: ID!, paginationRequest: PaginationRequest!): PagedItems!,
+    bestSellers(limit: Int): PageOfItems!,
+    itemsByTitle(title: String!, language: Language!, paginationRequest: PaginationRequest!): PageOfItems!,
+    itemsByCategoryId(categoryId: ID!, paginationRequest: PaginationRequest!): PageOfItems!,
     itemById(itemId: ID!): Item!
 }
 
-type PagedItems {
-    pageInfo: PageInfo!
+type PageOfItems {
+    totalPages: Int!,
+    totalCount: Int!,
     items: [Item!]!
 }
 
