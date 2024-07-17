@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -40,8 +39,8 @@ public class ItemService {
         return convertToItemDtoList(itemRepository.findByTitleContainingIgnoreCase(title, pageable));
     }
 
-    public List<ItemDTO> findItemsByCategoryId(String categoryId, Pageable pageable) {
-        return convertToItemDtoList(itemRepository.findItemsByCategoryId(categoryId, pageable));
+    public List<ItemDTO> findItemsByCategoryName(String categoryName, Pageable pageable) {
+        return convertToItemDtoList(itemRepository.findItemsByCategoryNameIgnoreCase(categoryName, pageable));
     }
 
     public Item findItemByIdOrThrow(String itemId) {
@@ -84,9 +83,9 @@ public class ItemService {
     }
 
     public List<ItemDTO> filterItems(FilterRequest request) {
-        logger.info("Filter parameters - CategoryId: {}, Color: {}, SizeId: {}", request.getCategoryId(), request.getColor(), request.getSizeId());
+        logger.info("Filter parameters - CategoryName: {}, Color: {}, SizeId: {}", request.getCategoryName(), request.getColor(), request.getSizeId());
 
-        List<Item> filteredList = itemRepository.findFilteredItems(request.getCategoryId(), request.getColor(), request.getSizeId());
+        List<Item> filteredList = itemRepository.findFilteredItems(request.getCategoryName(), request.getColor(), request.getSizeId());
         if (filteredList.isEmpty()) {
             logger.warn("No items found with the given filter parameters.");
         } else {
