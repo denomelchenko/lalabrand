@@ -16,7 +16,7 @@ public class ItemInput {
     Integer availableCount;
     Float salePrice;
     Integer soldCount;
-    String categoryId;
+    String categoryName;
 
     public Item toEntity() {
         return Item.builder()
@@ -28,7 +28,7 @@ public class ItemInput {
                 .availableCount(this.availableCount)
                 .salePrice(this.salePrice)
                 .soldCount(this.soldCount)
-                .categoryId(categoryId)
+                .categoryName(categoryName)
                 .build();
     }
 }
