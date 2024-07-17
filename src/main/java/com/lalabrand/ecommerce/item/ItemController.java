@@ -25,7 +25,7 @@ public class ItemController {
     }
 
     @QueryMapping(name = "itemsByCategoryId")
-    public Page<ItemDTO> findItemsByCategoryId(@Argument @Id String categoryId,
+    public PageOfItems findItemsByCategoryId(@Argument @Id String categoryId,
                                                @Argument PaginationRequest paginationRequest) {
         return itemService.findItemsByCategoryId(categoryId,
                 paginationRequest.toPageRequest());
@@ -37,12 +37,12 @@ public class ItemController {
     }
 
     @QueryMapping(name = "bestSellers")
-    public Page<ItemDTO> findBestSellers(@Argument Optional<Integer> limit) {
+    public PageOfItems findBestSellers(@Argument Optional<Integer> limit) {
         return itemService.findBestSellersItems(limit);
     }
 
     @QueryMapping(name = "itemsByTitle")
-    public Page<ItemDTO> findItemsByTitle(@Argument @NotBlank String title,
+    public PageOfItems findItemsByTitle(@Argument @NotBlank String title,
                                           @Argument Language language,
                                           @Argument PaginationRequest paginationRequest) {
         return itemService.findItemsByTitle(title, language,
