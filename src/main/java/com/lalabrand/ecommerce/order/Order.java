@@ -12,7 +12,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Set;
 
@@ -55,7 +54,7 @@ public class Order {
     @Column(name = "discount", precision = 10, nullable = false)
     private Float discount;
 
-    @Column(name = "currency", nullable = false , columnDefinition = "ENUM('UAH','EUR','USD')")
+    @Column(name = "currency", nullable = false, columnDefinition = "ENUM('UAH','EUR','USD')")
     @Enumerated(EnumType.STRING)
     private Currency currency;
 
