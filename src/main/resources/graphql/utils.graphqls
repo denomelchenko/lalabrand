@@ -7,10 +7,3 @@ input PaginationRequest {
     pageSize: Int!
     pageOffset: Int!
 }
-
-type PageInfo {
-    totalPages: Int!
-    totalElements: Int!
-    currentPage: Int!
-    pageSize: Int!
-}
