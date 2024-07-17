@@ -24,21 +24,21 @@ public class ItemService {
         this.translationService = translationService;
     }
 
-    public Page<ItemDTO> findBestSellersItems(Optional<Integer> limit) {
+    public PageOfItems findBestSellersItems(Optional<Integer> limit) {
         limit = Optional.of(limit.filter(l -> l > 0).orElse(4));
-        System.out.println(itemRepository.findItemsByOrderBySoldCountDesc(
-                PageRequest.of(0, limit.get())).map(ItemDTO::fromEntity));
+        return PageOfItems.fromItemsPage(itemRepository.findItemsByOrderBySoldCountDesc(
+                PageRequest.of(0, limit.get())));
     }
 
-    public Page<ItemDTO> findItemsByTitle(String title, Language language, Pageable pageable) {
+    public PageOfItems findItemsByTitle(String title, Language language, Pageable pageable) {
         if (!language.equals(Language.EN)) {
             title = translationService.textTranslate(language.toString(), Language.EN.toString(), title);
         }
-        return itemRepository.findByTitleContainingIgnoreCase(title, pageable).map(ItemDTO::fromEntity);
+        return PageOfItems.fromItemsPage(itemRepository.findByTitleContainingIgnoreCase(title, pageable));
     }
 
-    public Page<ItemDTO> findItemsByCategoryId(String categoryId, Pageable pageable) {
-        return itemRepository.findItemsByCategoryId(categoryId, pageable).map(ItemDTO::fromEntity);
+    public PageOfItems findItemsByCategoryId(String categoryId, Pageable pageable) {
+        return PageOfItems.fromItemsPage(itemRepository.findItemsByCategoryId(categoryId, pageable));
     }
 
     public Item findItemByIdOrThrow(String itemId) {
