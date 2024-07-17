@@ -4,9 +4,9 @@ package com.lalabrand.ecommerce.item;
 import com.lalabrand.ecommerce.item.filters.FilterRequest;
 import com.lalabrand.ecommerce.user.enums.Language;
 import com.lalabrand.ecommerce.utils.PaginationRequest;
-import com.lalabrand.ecommerce.utils.annotation.Id;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
@@ -26,13 +26,13 @@ public class ItemController {
 
     @QueryMapping(name = "itemsByCategoryName")
     public List<ItemDTO> findItemsByCategoryName(@Argument @NotBlank String categoryName,
-                                               @Argument PaginationRequest paginationRequest) {
+                                                 @Argument PaginationRequest paginationRequest) {
         return itemService.findItemsByCategoryName(categoryName,
                 paginationRequest.toPageRequest());
     }
 
     @QueryMapping(name = "itemById")
-    public ItemDTO findItemById(@Argument @Id String itemId) {
+    public ItemDTO findItemById(@Argument @UUID(message = "Item ID is not valid") String itemId) {
         return itemService.findById(itemId);
     }
 
