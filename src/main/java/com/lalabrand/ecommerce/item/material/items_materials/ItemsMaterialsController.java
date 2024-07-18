@@ -15,7 +15,7 @@ public class ItemsMaterialsController {
     }
 
     @MutationMapping("materialToItem")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ItemsMaterialsDTO addMaterialToItem(@Argument @Valid ItemsMaterialsInput itemsMaterialsInput) {
         return itemsMaterialsService.addMaterialToItem(itemsMaterialsInput);
     }

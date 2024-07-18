@@ -17,13 +17,13 @@ public class MaterialController {
     }
 
     @MutationMapping("material")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public MaterialDTO addMaterial(@Argument String name) {
         return materialService.create(name);
     }
 
     @QueryMapping("materials")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Set<MaterialDTO> findAllMaterials() {
         return materialService.findAll();
     }
