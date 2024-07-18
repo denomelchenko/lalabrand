@@ -19,10 +19,5 @@ public class CategoryController {
     public List<CategoryDTO> findAllCategories() {
         return categoryService.findAllCategory();
     }
-
-    @QueryMapping(name = "categoryById")
-    public CategoryDTO findCategoryById(@Argument @Id String categoryId) {
-        return categoryService.findCategoryById(categoryId).orElse(null);
-    }
 }
 

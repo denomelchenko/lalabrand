@@ -29,19 +29,11 @@ public class CategoryService {
                     .map(CategoryDTO::fromEntity)
                     .collect(Collectors.toList());
         } catch (EntityNotFoundException ex) {
-            logger.info("No categories found: " + ex.getMessage());
+            logger.info("No categories found: {}", ex.getMessage());
             throw ex;
         } catch (Exception ex) {
-            logger.info("Error occurred while fetching categories: " + ex.getMessage());
+            logger.info("Error occurred while fetching categories: {}", ex.getMessage());
             throw ex;
         }
-    }
-
-    public Optional<CategoryDTO> findCategoryById(String categoryId) {
-        Optional<Category> categoryEntityOptional = categoryRepository.findById(categoryId);
-        if (categoryEntityOptional.isEmpty()) {
-            throw new EntityNotFoundException("Category not found for id: " + categoryId);
-        }
-        return categoryEntityOptional.map(CategoryDTO::fromEntity);
     }
 }

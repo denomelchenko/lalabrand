@@ -24,10 +24,10 @@ public class ItemController {
         this.itemService = itemService;
     }
 
-    @QueryMapping(name = "itemsByCategoryId")
-    public List<ItemDTO> findItemsByCategoryId(@Argument @Id String categoryId,
+    @QueryMapping(name = "itemsByCategoryName")
+    public List<ItemDTO> findItemsByCategoryName(@Argument @NotBlank String categoryName,
                                                @Argument PaginationRequest paginationRequest) {
-        return itemService.findItemsByCategoryId(categoryId,
+        return itemService.findItemsByCategoryName(categoryName,
                 paginationRequest.toPageRequest());
     }
 

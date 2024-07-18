@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FilterRequest {
-    String categoryId;
+    String categoryName;
     String sizeId;
     String typeOfPriceSort;
     ColorEnum color;

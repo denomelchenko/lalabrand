@@ -13,7 +13,7 @@ import java.util.Set;
 
 @Repository
 public interface ItemRepository extends JpaRepository<Item, String> {
-    List<Item> findItemsByCategoryId(String categoryId, Pageable pageable);
+    List<Item> findItemsByCategoryNameIgnoreCase(String categoryName, Pageable pageable);
 
     List<Item> findItemsByOrderBySoldCountDesc(Pageable pageable);
 
@@ -25,10 +25,10 @@ public interface ItemRepository extends JpaRepository<Item, String> {
     @Query("SELECT i FROM Item i " +
             "JOIN i.itemInfos ii " +
             "JOIN ii.sizes iii " +
-            "WHERE (:categoryId IS NULL OR i.category.id = :categoryId) " +
+            "WHERE (:categoryName IS NULL OR i.category.name = :categoryName) " +
             "AND (:color IS NULL OR ii.color = :color) " +
             "AND (:sizeId IS NULL OR iii.id = :sizeId)")
-    List<Item> findFilteredItems(@Param("categoryId") String categoryId,
+    List<Item> findFilteredItems(@Param("categoryName") String categoryName,
                                  @Param("color") ColorEnum color,
                                  @Param("sizeId") String sizeId);
 }
