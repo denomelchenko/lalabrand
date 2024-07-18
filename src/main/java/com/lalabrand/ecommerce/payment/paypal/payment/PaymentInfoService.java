@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class PaymentInfoService {
-    private Map<String, PaymentInfo> paymentInfoMap = new ConcurrentHashMap<>();
+    private final Map<String, PaymentInfo> paymentInfoMap = new ConcurrentHashMap<>();
 
     public void savePaymentInfo(String paymentId, Currency currency, ShippingInfoRequest shippingInfoRequest) {
         PaymentInfo paymentInfo = new PaymentInfo();
