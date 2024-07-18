@@ -1,5 +1,5 @@
 type Category{
-    id:ID!
+    name: String!
 }
 
 extend type Query {
