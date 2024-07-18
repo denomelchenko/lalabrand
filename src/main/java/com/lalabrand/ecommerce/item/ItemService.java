@@ -39,8 +39,8 @@ public class ItemService {
         return PageOfItems.fromItemsPage(itemRepository.findByTitleContainingIgnoreCase(title, pageable));
     }
 
-    public List<ItemDTO> findItemsByCategoryName(String categoryName, Pageable pageable) {
-        return convertToItemDtoList(itemRepository.findItemsByCategoryNameIgnoreCase(categoryName, pageable));
+    public PageOfItems findItemsByCategoryName(String categoryName, Pageable pageable) {
+        return PageOfItems.fromItemsPage(itemRepository.findItemsByCategoryNameIgnoreCase(categoryName, pageable));
     }
 
     public Item findItemByIdOrThrow(String itemId) {
@@ -59,14 +59,6 @@ public class ItemService {
             throw new IllegalArgumentException("One of the items with this Ids does not exist");
         }
         return items;
-    }
-
-    private List<ItemDTO> convertToItemDtoList(List<Item> items) {
-        List<ItemDTO> itemDTOList = new LinkedList<>();
-        for (Item item : items) {
-            itemDTOList.add(ItemDTO.fromEntity(item));
-        }
-        return itemDTOList;
     }
 
     public ItemDTO findById(String id) {
