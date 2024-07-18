@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -40,7 +41,7 @@ public class User {
     private Instant createdAt;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private Set<Address> addresses;
+    private Set<Address> addresses = new HashSet<>();
 
     @OneToMany(mappedBy = "user")
     private Set<ItemComment> itemComments;

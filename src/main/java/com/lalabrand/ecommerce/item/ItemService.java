@@ -6,6 +6,7 @@ import com.lalabrand.ecommerce.utils.TranslationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,22 +26,21 @@ public class ItemService {
         this.translationService = translationService;
     }
 
-    public List<ItemDTO> findBestSellersItems(Optional<Integer> limit) {
+    public PageOfItems findBestSellersItems(Optional<Integer> limit) {
         limit = Optional.of(limit.filter(l -> l > 0).orElse(4));
-        return convertToItemDtoList(itemRepository.findItemsByOrderBySoldCountDesc(
-                PageRequest.of(0, limit.get()))
-        );
+        return PageOfItems.fromItemsPage(itemRepository.findItemsByOrderBySoldCountDesc(
+                PageRequest.of(0, limit.get())));
     }
 
-    public List<ItemDTO> findItemsByTitle(String title, Language language, Pageable pageable) {
+    public PageOfItems findItemsByTitle(String title, Language language, Pageable pageable) {
         if (!language.equals(Language.EN)) {
             title = translationService.textTranslate(language.toString(), Language.EN.toString(), title);
         }
-        return convertToItemDtoList(itemRepository.findByTitleContainingIgnoreCase(title, pageable));
+        return PageOfItems.fromItemsPage(itemRepository.findByTitleContainingIgnoreCase(title, pageable));
     }
 
-    public List<ItemDTO> findItemsByCategoryName(String categoryName, Pageable pageable) {
-        return convertToItemDtoList(itemRepository.findItemsByCategoryNameIgnoreCase(categoryName, pageable));
+    public PageOfItems findItemsByCategoryName(String categoryName, Pageable pageable) {
+        return PageOfItems.fromItemsPage(itemRepository.findItemsByCategoryNameIgnoreCase(categoryName, pageable));
     }
 
     public Item findItemByIdOrThrow(String itemId) {
@@ -59,14 +59,6 @@ public class ItemService {
             throw new IllegalArgumentException("One of the items with this Ids does not exist");
         }
         return items;
-    }
-
-    private List<ItemDTO> convertToItemDtoList(List<Item> items) {
-        List<ItemDTO> itemDTOList = new LinkedList<>();
-        for (Item item : items) {
-            itemDTOList.add(ItemDTO.fromEntity(item));
-        }
-        return itemDTOList;
     }
 
     public ItemDTO findById(String id) {

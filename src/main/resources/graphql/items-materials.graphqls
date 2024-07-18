@@ -1,0 +1,15 @@
+extend type Mutation {
+    materialToItem(itemsMaterialsInput: ItemsMaterialsInput!): ItemsMaterials!
+}
+
+input ItemsMaterialsInput {
+    itemId: ID!
+    materialName: String!
+    percentage: Int!
+}
+
+type ItemsMaterials {
+    itemId: ID!
+    materialName: String!
+    percentage: Int!
+}
