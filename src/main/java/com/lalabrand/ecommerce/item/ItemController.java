@@ -7,6 +7,7 @@ import com.lalabrand.ecommerce.utils.PaginationRequest;
 import com.lalabrand.ecommerce.utils.annotation.Id;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import org.springframework.data.domain.Page;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
@@ -24,8 +25,8 @@ public class ItemController {
         this.itemService = itemService;
     }
 
-    @QueryMapping(name = "itemsByCategoryName")
-    public List<ItemDTO> findItemsByCategoryName(@Argument @NotBlank String categoryName,
+    @QueryMapping(name = "itemsByCategoryId")
+    public PageOfItems findItemsByCategoryName(@Argument @NotBlank String categoryName,
                                                @Argument PaginationRequest paginationRequest) {
         return itemService.findItemsByCategoryName(categoryName,
                 paginationRequest.toPageRequest());
@@ -37,12 +38,12 @@ public class ItemController {
     }
 
     @QueryMapping(name = "bestSellers")
-    public List<ItemDTO> findBestSellers(@Argument Optional<Integer> limit) {
+    public PageOfItems findBestSellers(@Argument Optional<Integer> limit) {
         return itemService.findBestSellersItems(limit);
     }
 
     @QueryMapping(name = "itemsByTitle")
-    public List<ItemDTO> findItemsByTitle(@Argument @NotBlank String title,
+    public PageOfItems findItemsByTitle(@Argument @NotBlank String title,
                                           @Argument Language language,
                                           @Argument PaginationRequest paginationRequest) {
         return itemService.findItemsByTitle(title, language,
@@ -50,7 +51,7 @@ public class ItemController {
     }
 
     @MutationMapping(name = "item")
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ItemDTO createItem(@Argument @Valid ItemInput itemInput) {
         return itemService.save(itemInput);
     }

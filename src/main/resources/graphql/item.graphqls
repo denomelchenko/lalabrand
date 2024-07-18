@@ -33,11 +33,17 @@ input FilterItemInput {
 }
 
 extend type Query {
-    bestSellers(limit: Int): [Item!]!,
-    itemsByTitle(title: String!, language: Language!, paginationRequest: PaginationRequest!): [Item!]!,
-    itemsByCategoryName(categoryName: String!, paginationRequest: PaginationRequest!): [Item!]!
+    bestSellers(limit: Int): PageOfItems!,
+    itemsByTitle(title: String!, language: Language!, paginationRequest: PaginationRequest!): PageOfItems!,
+    itemsByCategoryName(categoryName: String!, paginationRequest: PaginationRequest!): PageOfItems!,
     itemById(itemId: ID!): Item!
     itemsFilter(filterRequest: FilterItemInput!): [Item!]!
+}
+
+type PageOfItems {
+    totalPages: Int!,
+    totalCount: Int!,
+    items: [Item!]!
 }
 
 extend type Mutation {
