@@ -1,6 +1,7 @@
 package com.lalabrand.ecommerce.item;
 
 
+import com.lalabrand.ecommerce.item.filters.FilterRequest;
 import com.lalabrand.ecommerce.user.enums.Language;
 import com.lalabrand.ecommerce.utils.PaginationRequest;
 import com.lalabrand.ecommerce.utils.annotation.Id;
@@ -25,9 +26,9 @@ public class ItemController {
     }
 
     @QueryMapping(name = "itemsByCategoryId")
-    public PageOfItems findItemsByCategoryId(@Argument @Id String categoryId,
+    public PageOfItems findItemsByCategoryName(@Argument @NotBlank String categoryName,
                                                @Argument PaginationRequest paginationRequest) {
-        return itemService.findItemsByCategoryId(categoryId,
+        return itemService.findItemsByCategoryName(categoryName,
                 paginationRequest.toPageRequest());
     }
 
@@ -53,5 +54,10 @@ public class ItemController {
     @PreAuthorize("hasAuthority('ADMIN')")
     public ItemDTO createItem(@Argument @Valid ItemInput itemInput) {
         return itemService.save(itemInput);
+    }
+
+    @QueryMapping(name = "itemsFilter")
+    public List<ItemDTO> itemsFilter(@Argument FilterRequest filterRequest) {
+        return itemService.filterItems(filterRequest);
     }
 }

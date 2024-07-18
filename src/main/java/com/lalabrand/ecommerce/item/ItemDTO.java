@@ -1,8 +1,6 @@
 package com.lalabrand.ecommerce.item;
 
 import com.lalabrand.ecommerce.item.item_info.ItemInfoDTO;
-import com.lalabrand.ecommerce.item.material.Material;
-import com.lalabrand.ecommerce.item.material.MaterialDTO;
 import com.lalabrand.ecommerce.item.material.items_materials.ItemsMaterialsDTO;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,6 +9,7 @@ import lombok.Value;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -65,5 +64,9 @@ public class ItemDTO implements Serializable {
                 .salePrice(this.salePrice)
                 .soldCount(this.soldCount)
                 .build();
+    }
+
+    public static List<ItemDTO> fromEntityList(List<Item> items) {
+        return items.stream().map(ItemDTO::fromEntity).collect(Collectors.toList());
     }
 }

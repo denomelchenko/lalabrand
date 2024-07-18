@@ -37,4 +37,5 @@ ALTER TABLE item
     MODIFY short_disc VARCHAR(128) NOT NULL,
     MODIFY price FLOAT NOT NULL,
     MODIFY title VARCHAR(40) NOT NULL,
-    MODIFY sale_price FLOAT;
+    MODIFY sale_price FLOAT,
+    MODIFY rating FLOAT NOT NULL;

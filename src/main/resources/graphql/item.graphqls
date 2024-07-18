@@ -12,6 +12,7 @@ type Item {
     itemInfos: [ItemInfo!]!
 }
 
+
 input ItemInput {
     title: String!,
     shortDisc: String!,
@@ -19,16 +20,24 @@ input ItemInput {
     rating: String,
     price: Float!,
     availableCount: Int!,
-    categoryId: String!,
+    categoryName: String!,
     salePrice: Float,
     soldCount: Int!
+}
+
+input FilterItemInput {
+    categoryName: String
+    sizeId: String
+    typeOfPriceSort: String
+    color: Color
 }
 
 extend type Query {
     bestSellers(limit: Int): PageOfItems!,
     itemsByTitle(title: String!, language: Language!, paginationRequest: PaginationRequest!): PageOfItems!,
-    itemsByCategoryId(categoryId: ID!, paginationRequest: PaginationRequest!): PageOfItems!,
+    itemsByCategoryName(categoryName: String!, paginationRequest: PaginationRequest!): PageOfItems!,
     itemById(itemId: ID!): Item!
+    itemsFilter(filterRequest: FilterItemInput!): [Item!]!
 }
 
 type PageOfItems {

@@ -1,6 +1,5 @@
 package com.lalabrand.ecommerce.item.material.items_materials;
 
-import com.lalabrand.ecommerce.utils.annotation.Id;
 import jakarta.validation.Valid;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;

@@ -1,9 +1,7 @@
 type Category{
     id:ID!
-    name:String!
 }
 
 extend type Query {
     allCategories: [Category!]!
-    categoryById(categoryId: ID!): Category!
 }

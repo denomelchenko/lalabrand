@@ -27,6 +27,7 @@ public class OrderDTO implements Serializable {
     Currency currency;
     Status status;
     Float totalPrice;
+    Float discount;
     ShippingInfoDTO shippingInfoDTO;
     Set<OrderItemsDTO> orderedItems;
 
@@ -38,6 +39,7 @@ public class OrderDTO implements Serializable {
                 .currency(order.getCurrency())
                 .status(order.getStatus())
                 .totalPrice(order.getTotalPrice())
+                .discount(order.getDiscount())
                 .shippingInfoDTO(ShippingInfoDTO.fromEntity(order.getShipping()))
                 .orderedItems(order.getOrderedItems().stream().map(OrderItemsDTO::fromEntity).collect(Collectors.toSet()))
                 .build();
@@ -50,6 +52,7 @@ public class OrderDTO implements Serializable {
                 .currency(this.getCurrency())
                 .status(this.getStatus())
                 .totalPrice(this.getTotalPrice())
+                .discount(this.getDiscount())
                 .user(user)
                 .shipping(shippingInfo)
                 .orderedItems(this.getOrderedItems().stream().map(OrderItemsDTO::toEntity).collect(Collectors.toSet()))

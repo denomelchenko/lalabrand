@@ -45,11 +45,11 @@ public class Item {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.SET_NULL)
-    @JoinColumn(name = "category_id", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "category_name", nullable = false, insertable = false, updatable = false)
     private Category category;
 
-    @Column(name = "category_id", nullable = false, length = 36)
-    private String categoryId;
+    @Column(name = "category_name", nullable = false, length = 50)
+    private String categoryName;
 
     @Column(name = "available_count", nullable = false)
     private Integer availableCount;
