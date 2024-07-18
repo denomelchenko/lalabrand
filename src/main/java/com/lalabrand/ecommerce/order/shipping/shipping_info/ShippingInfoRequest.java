@@ -1,6 +1,7 @@
 package com.lalabrand.ecommerce.order.shipping.shipping_info;
 
 import com.lalabrand.ecommerce.user.enums.Country;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Data
@@ -10,11 +11,17 @@ import lombok.*;
 @Setter
 public class ShippingInfoRequest {
     Country country;
+    @NotBlank
     String city;
+    @NotBlank
     String address1;
+    @NotBlank
     String address2;
+    @NotBlank
     String phone;
+    @NotBlank
     String zip;
+    @NotBlank
     String shippingOptionId;
 
     public ShippingInfo toEntity() {

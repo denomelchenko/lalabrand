@@ -1,10 +1,10 @@
 package com.lalabrand.ecommerce.item.item_comment;
 
-import com.lalabrand.ecommerce.utils.annotation.Id;
 import com.lalabrand.ecommerce.utils.annotation.Rating;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
+import org.hibernate.validator.constraints.UUID;
 
 @Data
 @Builder
@@ -15,9 +15,9 @@ public class ItemCommentInput {
     @Rating
     private Float rating;
 
-    @Id(message = "Item ID is invalid")
+    @UUID(message = "Item ID is invalid")
     private String itemId;
 
-    @Id(message = "User ID is invalid")
+    @UUID(message = "User ID is invalid")
     private String userId;
 }

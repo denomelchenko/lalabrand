@@ -1,12 +1,12 @@
 package com.lalabrand.ecommerce.item.material.items_materials;
 
-import com.lalabrand.ecommerce.utils.annotation.Id;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Value;
+import org.hibernate.validator.constraints.UUID;
 
 import java.io.Serializable;
 
@@ -16,7 +16,7 @@ import java.io.Serializable;
 @Value
 @Builder
 public class ItemsMaterialsDTO implements Serializable {
-    @Id
+    @UUID(message = "Item ID is not valid")
     String itemId;
 
     @NotNull

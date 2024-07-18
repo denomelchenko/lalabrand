@@ -1,7 +1,7 @@
 package com.lalabrand.ecommerce.user.wishlist;
 
 import com.lalabrand.ecommerce.utils.CommonUtils;
-import com.lalabrand.ecommerce.utils.annotation.Id;
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -29,7 +29,7 @@ public class WishlistController {
 
     @MutationMapping(name = "itemToWishlist")
     @PreAuthorize("hasAuthority('USER')")
-    public WishlistDTO addItemToWishlist(@Argument @Id String itemId) {
+    public WishlistDTO addItemToWishlist(@Argument @UUID(message = "Item ID is not valid") String itemId) {
         return wishlistService.addItemToWishlist(itemId, CommonUtils.getCurrentUserId());
     }
 

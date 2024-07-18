@@ -9,6 +9,7 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
 import com.stripe.param.PaymentIntentCreateParams;
 import jakarta.annotation.PostConstruct;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ public class CardPaymentController {
 
     @MutationMapping(name = "createPaymentCard")
     public CardPaymentResponse createPaymentCard(@Argument("currency") Currency currency,
-                                                 @Argument("shippingInfo") ShippingInfoRequest shippingInfoRequest) throws StripeException {
+                                                 @Argument("shippingInfo") @Valid ShippingInfoRequest shippingInfoRequest) throws StripeException {
         String userId = CommonUtils.getCurrentUserId();
         logger.info("User {} is attempting to create a payment card with currency {} and shipping info {}", userId, currency, shippingInfoRequest);
 

@@ -1,5 +1,7 @@
 package com.lalabrand.ecommerce.item;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Value;
@@ -8,14 +10,20 @@ import lombok.Value;
 @Setter
 @Value
 public class ItemInput {
+    @NotBlank
     String title;
+    @NotBlank
     String shortDisc;
+    @NotBlank
     String longDisc;
     Float rating;
+    @NotNull
     Float price;
+    @NotNull
     Integer availableCount;
     Float salePrice;
     Integer soldCount;
+    @NotBlank
     String categoryName;
 
     public Item toEntity() {
