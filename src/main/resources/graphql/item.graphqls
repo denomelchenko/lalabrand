@@ -7,7 +7,8 @@ type Item {
     price: Float!,
     availableCount: Int!,
     salePrice: Float,
-    soldCount: Int!
+    soldCount: Int!,
+    materials: [ItemsMaterials!]!
     itemInfos: [ItemInfo!]!
 }
 
