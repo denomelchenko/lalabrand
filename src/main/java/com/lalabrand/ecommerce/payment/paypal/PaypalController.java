@@ -70,15 +70,20 @@ public class PaypalController {
     @Transactional
     public PaymentResponse paymentSuccess(@Argument("paymentId") String paymentId,
                                           @Argument("payerID") String payerId) {
+        logger.info("Handling payment success for paymentId: {} and payerId: {}", paymentId, payerId);
         Payment payment = paypalService.executePayment(paymentId, payerId);
         if (payment.getState().equals("approved")) {
             logger.info("Payment approved for paymentId {}", paymentId);
 
             PaymentInfo paymentInfo = paymentInfoService.getPaymentInfo(paymentId);
+            logger.info("Retrieved paymentInfo: {}", paymentInfo);
             Currency currency = paymentInfo.getCurrency();
+            logger.info("Payment currency: {}", currency);
             ShippingInfoRequest shippingInfoRequest = paymentInfo.getShippingInfoRequest();
+            logger.info("Shipping info request: {}", shippingInfoRequest);
 
             CommonResponse orderResponse = orderService.placeOrder(CommonUtils.getCurrentUserId(), shippingInfoRequest, currency);
+            logger.info("Order response: {}", orderResponse);
             if (orderResponse.isSuccess()) {
                 logger.info("Order placed successfully for user {}", CommonUtils.getCurrentUserId());
                 return new PaymentResponse(true, "Success to execute payment and place order", "http://localhost:9091/home", HttpStatus.OK);
@@ -88,8 +93,9 @@ public class PaypalController {
             }
         }
         logger.error("Payment execution failed for paymentId {}", paymentId);
-        return new PaymentResponse(false, "Failed to execute payment", cancelUrl, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new PaymentResponse(false, "Failed to execute payment", "http://localhost:9091/home", HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
 
     @QueryMapping("paymentCancel")

@@ -9,6 +9,8 @@ import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,8 @@ import java.util.Locale;
 @Service
 @RequiredArgsConstructor
 public class PaypalServiceImpl implements PaypalService {
+
+    private static final Logger logger = LoggerFactory.getLogger(PaypalServiceImpl.class);
 
     private final OrderService orderService;
     private final UserService userService;
@@ -39,24 +43,32 @@ public class PaypalServiceImpl implements PaypalService {
             String successUrl,
             String cancelUrl
     ) {
+        logger.info("Creating payment for userId: {}, currency: {}, method: {}, successUrl: {}, cancelUrl: {}",
+                userId, currency, method, successUrl, cancelUrl);
         Payment payment = new Payment();
         payment.setIntent("SALE");
         payment.setPayer(getPayer(userId, method));
 
         Float discount = orderService.calculateDiscount(userId);
+        logger.debug("Calculated discount for userId {}: {}", userId, discount);
         Float totalCost = orderService.calculateTotal(userId);
+        logger.debug("Calculated total cost for userId {}: {}", userId, totalCost);
 
         payment.setTransactions(getTransactions(currency, totalCost - discount));
         payment.setRedirectUrls(getRedirectUrls(successUrl, cancelUrl));
 
         try {
-            return payment.create(apiContext);
+            Payment createdPayment = payment.create(apiContext);
+            logger.info("Payment created successfully: {}", createdPayment);
+            return createdPayment;
         } catch (PayPalRESTException e) {
+            logger.error("Failed to create PayPal payment", e);
             throw new PayPalException("Failed to create PayPal payment", e);
         }
     }
 
     private Payer getPayer(String userId, String method) {
+        logger.info("Getting payer info for userId: {}", userId);
         User user = userService.findByUserId(userId).orElseThrow(EntityNotFoundException::new);
         PayerInfo payerInfo = new PayerInfo();
         payerInfo.setPayerId(userId);
@@ -71,9 +83,10 @@ public class PaypalServiceImpl implements PaypalService {
     }
 
     private List<Transaction> getTransactions(String currency, Float total) {
+        logger.info("Creating transaction with currency: {} and total: {}", currency, total);
         Amount amount = new Amount();
         amount.setCurrency(String.valueOf(currency));
-        amount.setTotal(String.format(Locale.forLanguageTag(String.valueOf(currency)), "%.2f", total));
+        amount.setTotal(String.format(Locale.forLanguageTag(String.valueOf(currency)), String.valueOf(total)));
 
         Transaction transaction = new Transaction();
         transaction.setDescription("description of purchase");
@@ -85,6 +98,7 @@ public class PaypalServiceImpl implements PaypalService {
     }
 
     private RedirectUrls getRedirectUrls(String successUrl, String cancelUrl) {
+        logger.info("Setting redirect URLs: successUrl: {}, cancelUrl: {}", successUrl, cancelUrl);
         RedirectUrls redirectUrls = new RedirectUrls();
         redirectUrls.setReturnUrl(successUrl);
         redirectUrls.setCancelUrl(cancelUrl);
@@ -96,15 +110,19 @@ public class PaypalServiceImpl implements PaypalService {
             String paymentId,
             String payerId
     ) {
+        logger.info("Executing payment with paymentId: {} and payerId: {}", paymentId, payerId);
         Payment payment = new Payment();
         payment.setId(paymentId);
 
         PaymentExecution paymentExecution = new PaymentExecution();
         paymentExecution.setPayerId(payerId);
         try {
-            return payment.execute(apiContext, paymentExecution);
+            Payment executedPayment = payment.execute(apiContext, paymentExecution);
+            logger.info("Payment executed successfully: {}", executedPayment);
+            return executedPayment;
         } catch (PayPalRESTException e) {
-            throw new PayPalException("Failed to create PayPal payment", e);
+            logger.error("Failed to execute PayPal payment", e);
+            throw new PayPalException("Failed to execute PayPal payment", e);
         }
     }
 }
