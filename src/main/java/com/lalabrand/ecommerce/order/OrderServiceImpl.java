@@ -19,6 +19,8 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
 import java.util.List;
@@ -46,18 +48,26 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public CommonResponse placeOrder(String userId, ShippingInfoRequest shippingInfoRequest, Currency currency) {
+        Logger logger = LoggerFactory.getLogger(getClass());
+        logger.info("Placing order for user: {}", userId);
+
         User currentUser = userRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
+        logger.info("Found user: {}", currentUser);
 
         CartDTO cartDto = cartService.findCartByUserId(userId).orElseThrow(
-                () -> new EntityNotFoundException("Cart hasn't been found for user ( it's empty )")
+                () -> new EntityNotFoundException("Cart hasn't been found for user (it's empty)")
         );
+        logger.info("Found cart for user: {}", userId);
 
         ShippingInfo savedShippingInfo = shippingInfoRepository.save(shippingInfoRequest.toEntity());
+        logger.info("Saved shipping information: {}", savedShippingInfo);
 
         Set<OrderedItem> orderedItems = new HashSet<>();
         Set<CartItem> cartItems = cartDto.toEntity(userRepository.getReferenceById(userId)).getCartItems();
+        logger.info("Retrieved cart items: {}", cartItems);
 
         Float discount = calculateDiscount(userId);
+        logger.info("Calculated discount: {}", discount);
 
         Order order = Order.builder()
                 .user(userRepository.getReferenceById(userId))
@@ -67,32 +77,40 @@ public class OrderServiceImpl implements OrderService {
                 .totalPrice(cartItems.stream().map(cartItem -> cartItem.getItem().getPrice() * cartItem.getCount()).reduce(0.0f, Float::sum))
                 .shipping(savedShippingInfo)
                 .build();
+        logger.info("Created order: {}", order);
 
         applyDiscountAndAdjustBonus(order, discount, currentUser);
         orderRepository.save(order);
+        logger.info("Saved order: {}", order);
 
         for (CartItem cartItem : cartItems) {
             OrderedItem orderedItem = orderItemsService.generateOrderedFromCartItem(order, cartItem);
             orderItemsService.addOrderedProduct(orderedItem);
             orderedItems.add(orderedItem);
+            logger.info("Added ordered item: {}", orderedItem);
         }
         order.setOrderedItems(orderedItems);
+        orderRepository.save(order);
+        logger.info("Updated order with ordered items: {}", order);
 
         if (userRepository.findById(userId).isPresent()) {
             currentUser.setBonus((int) ((currentUser.getBonus() + order.getTotalPrice()) - discount.intValue()));
+            logger.info("Updated user bonus: {}", currentUser.getBonus());
         }
 
-        orderRepository.save(order);
         cartService.deleteCartItems(userId);
+        logger.info("Deleted cart items for user: {}", userId);
+
         return CommonResponse.builder()
                 .message("Order has been placed successfully")
                 .success(true)
                 .build();
     }
 
+
     public void applyDiscountAndAdjustBonus(Order order, Float discount, User currentUser) {
         Float totalPrice = order.getTotalPrice();
-        Float bonusToDeduct;
+        float bonusToDeduct;
         if (totalPrice.compareTo(discount) >= 0) {
             order.setDiscount(discount);
             bonusToDeduct = discount * 100;
@@ -100,7 +118,7 @@ public class OrderServiceImpl implements OrderService {
             order.setDiscount(totalPrice);
             bonusToDeduct = totalPrice * 100;
         }
-        currentUser.setBonus(currentUser.getBonus() - Integer.parseInt(String.valueOf(bonusToDeduct)));
+        currentUser.setBonus(currentUser.getBonus() - Math.round(bonusToDeduct));
     }
 
     @Override
